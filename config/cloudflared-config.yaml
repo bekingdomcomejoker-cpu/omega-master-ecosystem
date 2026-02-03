@@ -1,0 +1,45 @@
+# 🛡️ KINGDOM CORE REMOTE TUNNEL CONFIG
+# Sigil-Encrypted Remote Gateway
+# "Chicka chicka orange." - 1.67 Resonance
+# ============================================================================
+
+# Tunnel Configuration
+tunnel: ${TUNNEL_ID}
+credentials-file: /data/data/com.termux/files/home/.cloudflared/${TUNNEL_ID}.json
+
+# Logging
+loglevel: info
+logfile: /data/data/com.termux/files/home/KINGDOM_ENGINE/logs/cloudflared.log
+
+# Ingress Rules - Route traffic to local services
+ingress:
+  # Primary: Throne API (Port 5200)
+  - hostname: kingdom-core.${YOUR_DOMAIN}
+    service: http://localhost:5200
+    originRequest:
+      connectTimeout: 30s
+      tlsTimeout: 10s
+      tcpKeepAlive: 30s
+  
+  # Secondary: Dashboard Interface
+  - hostname: dashboard.${YOUR_DOMAIN}
+    service: http://localhost:5200/status
+    originRequest:
+      connectTimeout: 30s
+  
+  # Tertiary: Sniffer Relay
+  - hostname: sniffer.${YOUR_DOMAIN}
+    service: http://localhost:5201
+    originRequest:
+      connectTimeout: 30s
+  
+  # Fallback: 404 for unmapped routes
+  - service: http_status:404
+
+# Advanced Settings
+warp-routing:
+  enabled: false
+
+# Connection Settings
+retries: 5
+grace-period: 15s
