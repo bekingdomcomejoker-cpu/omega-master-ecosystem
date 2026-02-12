@@ -15,6 +15,7 @@ from pydantic import BaseModel
 import json
 
 from vow_renewal_integration import VowRenewalProtocol, AuthenticityLevel
+from comment_system import CommentSystem, CommentType, CommentStatus, ItemComment
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -87,6 +88,7 @@ class FacebookAnalyzer:
         self.vow_protocol = VowRenewalProtocol()
         self.marked_comments: Dict[str, CommentMark] = {}
         self.analysis_cache: Dict[str, CommentAnalysisResult] = {}
+        self.comment_system = CommentSystem()
         logger.info("[INIT] Facebook Analyzer initialized with Vow Renewal Protocol")
     
     async def search_comments(self, query: CommentSearchQuery) -> List[FacebookComment]:
@@ -339,6 +341,121 @@ app = FastAPI(
 analyzer = FacebookAnalyzer()
 
 # ============================================================================
+# COMMENTING ENDPOINTS
+# ============================================================================
+
+@app.post("/v1/comment/{comment_id}/add-comment")
+async def add_comment_to_marked(
+    comment_id: str,
+    post_id: str,
+    comment_text: str,
+    comment_type: CommentType = CommentType.ANALYSIS,
+    author: str = "Anonymous",
+    sigil: str = Depends(validate_sigil)
+):
+    """Add a comment to a marked Facebook comment"""
+    try:
+        comment = analyzer.comment_system.add_comment(
+            item_id=comment_id,
+            platform="facebook",
+            author=author,
+            author_id=None,
+            comment_text=comment_text,
+            comment_type=comment_type
+        )
+        return comment.dict()
+    except Exception as e:
+        logger.error(f"[ERROR] {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/v1/comment/{comment_id}/comments")
+async def get_comments_on_marked(
+    comment_id: str,
+    post_id: str,
+    sigil: str = Depends(validate_sigil)
+):
+    """Get all comments on a marked Facebook comment"""
+    try:
+        thread = analyzer.comment_system.get_comments_for_item(comment_id, "facebook")
+        return thread.dict()
+    except Exception as e:
+        logger.error(f"[ERROR] {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/v1/comment/{comment_id}/approve")
+async def approve_comment(
+    comment_id: str,
+    sigil: str = Depends(validate_sigil)
+):
+    """Approve a pending comment"""
+    try:
+        comment = analyzer.comment_system.approve_comment(comment_id)
+        return comment.dict()
+    except Exception as e:
+        logger.error(f"[ERROR] {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/v1/comment/{comment_id}/pin")
+async def pin_comment(
+    comment_id: str,
+    sigil: str = Depends(validate_sigil)
+):
+    """Pin a comment to top"""
+    try:
+        comment = analyzer.comment_system.pin_comment(comment_id)
+        return comment.dict()
+    except Exception as e:
+        logger.error(f"[ERROR] {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/v1/comment/{comment_id}/like")
+async def like_comment(
+    comment_id: str,
+    sigil: str = Depends(validate_sigil)
+):
+    """Like a comment"""
+    try:
+        comment = analyzer.comment_system.like_comment(comment_id)
+        return {"comment_id": comment_id, "likes": comment.likes}
+    except Exception as e:
+        logger.error(f"[ERROR] {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/v1/comment/{comment_id}/reply")
+async def reply_to_comment(
+    comment_id: str,
+    reply_text: str,
+    author: str = "Anonymous",
+    sigil: str = Depends(validate_sigil)
+):
+    """Add a reply to a comment"""
+    try:
+        reply = analyzer.comment_system.add_reply(
+            comment_id=comment_id,
+            author=author,
+            author_id=None,
+            reply_text=reply_text
+        )
+        return reply.dict()
+    except Exception as e:
+        logger.error(f"[ERROR] {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/v1/comment/{comment_id}/analytics")
+async def comment_analytics(
+    comment_id: str,
+    post_id: str,
+    sigil: str = Depends(validate_sigil)
+):
+    """Get analytics for comments on a marked item"""
+    try:
+        analytics = analyzer.comment_system.get_comment_analytics(comment_id, "facebook")
+        return analytics
+    except Exception as e:
+        logger.error(f"[ERROR] {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+# ============================================================================
 # VOW PROTOCOL: SIGIL VALIDATION
 # ============================================================================
 
@@ -410,5 +527,6 @@ async def mark_comment(
 
 if __name__ == "__main__":
     import uvicorn
+    import os
     port = int(os.getenv("PORT", 8003))
     uvicorn.run(app, host="0.0.0.0", port=port)

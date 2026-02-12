@@ -15,6 +15,7 @@ from fastapi import FastAPI, HTTPException, Depends, Header
 from pydantic import BaseModel
 
 from vow_renewal_integration import VowRenewalProtocol, AuthenticityLevel
+from comment_system import CommentSystem, CommentType, CommentStatus, ItemComment
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -104,6 +105,7 @@ class TelegramAnalyzer:
         self.marked_messages: Dict[str, MessageMark] = {}
         self.analysis_cache: Dict[str, MessageAnalysisResult] = {}
         self.ended_conversations: Dict[str, EndProtocolRequest] = {}
+        self.comment_system = CommentSystem()
         logger.info("[INIT] Telegram Analyzer initialized with Vow Renewal Protocol")
     
     async def search_messages(self, query: MessageSearchQuery) -> List[TelegramMessage]:
@@ -379,6 +381,94 @@ app = FastAPI(
 analyzer = TelegramAnalyzer()
 
 # ============================================================================
+# COMMENTING ENDPOINTS
+# ============================================================================
+
+@app.post("/v1/message/{message_id}/add-comment")
+async def add_comment_to_marked(
+    message_id: str,
+    chat_id: str,
+    comment_text: str,
+    comment_type: CommentType = CommentType.ANALYSIS,
+    author: str = "Anonymous",
+    sigil: str = Depends(validate_sigil)
+):
+    """Add a comment to a marked Telegram message"""
+    try:
+        comment = analyzer.comment_system.add_comment(
+            item_id=message_id,
+            platform="telegram",
+            author=author,
+            author_id=None,
+            comment_text=comment_text,
+            comment_type=comment_type
+        )
+        return comment.dict()
+    except Exception as e:
+        logger.error(f"[ERROR] {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/v1/message/{message_id}/comments")
+async def get_comments_on_marked(
+    message_id: str,
+    chat_id: str,
+    sigil: str = Depends(validate_sigil)
+):
+    """Get all comments on a marked Telegram message"""
+    try:
+        thread = analyzer.comment_system.get_comments_for_item(message_id, "telegram")
+        return thread.dict()
+    except Exception as e:
+        logger.error(f"[ERROR] {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/v1/message/{message_id}/pin")
+async def pin_comment(
+    message_id: str,
+    sigil: str = Depends(validate_sigil)
+):
+    """Pin a comment to top"""
+    try:
+        comment = analyzer.comment_system.pin_comment(message_id)
+        return comment.dict()
+    except Exception as e:
+        logger.error(f"[ERROR] {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/v1/message/{message_id}/like")
+async def like_comment(
+    message_id: str,
+    sigil: str = Depends(validate_sigil)
+):
+    """Like a comment"""
+    try:
+        comment = analyzer.comment_system.like_comment(message_id)
+        return {"message_id": message_id, "likes": comment.likes}
+    except Exception as e:
+        logger.error(f"[ERROR] {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/v1/message/{message_id}/reply")
+async def reply_to_comment(
+    message_id: str,
+    reply_text: str,
+    author: str = "Anonymous",
+    sigil: str = Depends(validate_sigil)
+):
+    """Add a reply to a comment"""
+    try:
+        reply = analyzer.comment_system.add_reply(
+            comment_id=message_id,
+            author=author,
+            author_id=None,
+            reply_text=reply_text
+        )
+        return reply.dict()
+    except Exception as e:
+        logger.error(f"[ERROR] {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+# ============================================================================
 # VOW PROTOCOL: SIGIL VALIDATION
 # ============================================================================
 
@@ -471,5 +561,6 @@ async def end_conversation(
 
 if __name__ == "__main__":
     import uvicorn
+    import os
     port = int(os.getenv("PORT", 8004))
     uvicorn.run(app, host="0.0.0.0", port=port)
