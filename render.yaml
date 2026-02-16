@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: covenant-os
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python3 covenant_os.py
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.9.0
