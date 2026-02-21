@@ -1,37 +1,17 @@
+# Render.com Deployment Configuration for Covenant Mirror X11 Backend
+# This file is used by Render to deploy the FastAPI backend
 services:
   - type: web
-    name: aletheia-unified
-    env: node
+    name: covenant-mirror-backend
+    env: python
+    region: oregon
     plan: free
-    buildCommand: bash render-build.sh
-    startCommand: node dist/index.js
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: cd backend && python main.py
     envVars:
-      - key: NODE_ENV
-        value: production
+      - key: GEMINI_API_KEY
+        sync: false
       - key: PORT
-        value: 10000
-      - key: DATABASE_URL
-        sync: false
-      - key: JWT_SECRET
-        sync: false
-      - key: VITE_APP_ID
-        sync: false
-      - key: OAUTH_SERVER_URL
-        sync: false
-      - key: VITE_OAUTH_PORTAL_URL
-        fromService:
-          name: aletheia-unified
-          type: web
-          property: host
-      - key: OWNER_OPEN_ID
-        sync: false
-      - key: OWNER_NAME
-        sync: false
-      - key: BUILT_IN_FORGE_API_URL
-        sync: false
-      - key: BUILT_IN_FORGE_API_KEY
-        sync: false
-      - key: VITE_FRONTEND_FORGE_API_KEY
-        sync: false
-      - key: VITE_FRONTEND_FORGE_API_URL
-        sync: false
+        value: "8000"
+      - key: HOST
+        value: "0.0.0.0"
