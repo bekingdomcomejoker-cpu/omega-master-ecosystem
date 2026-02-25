@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Glass Chess — Complete System</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.13.4/chess.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+
+body {
+    background:#111;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    font-family:monospace;
+    color:white;
+    transition: background 1s ease;
+    overflow:hidden;
+}
+
+/* ── CONTROLS ─────────────────────────────── */
+.controls{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+    justify-content:center;
+    margin-bottom:10px;
+    z-index:20;
+}
+button{
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.2);
+    color:white;
+    padding:5px 10px;
+    cursor:pointer;
+    border-radius:4px;
+    font-family:monospace;
+    font-size:1.5vmin;
+    transition:0.2s;
+}
+button:hover{background:rgba(255,255,255,0.2);}
+button.active{background:rgba(0,200,255,0.3); border-color:rgba(0,200,255,0.6);}
+label{
+    display:flex;
+    align-items:center;
+    gap:4px;
+    font-size:1.5vmin;
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.15);
+    padding:5px 8px;
+    border-radius:4px;
+}
+input[type=range]{
+    width:120px;
+    accent-color:rgba(0,200,255,0.8);
+}
+
+/* ── CONTAINER ────────────────────────────── */
+.container{
+    position:relative;
+    width:min(88vmin,88vw);
+    height:min(88vmin,88vw);
+}
+
+/* ── SILHOUETTE BREATHING ─────────────────── */
+.silhouette{
+    position:absolute;
+    inset:0;
+    background:radial-gradient(circle at center, rgba(255,255,255,0.08), transparent 70%);
+    animation: breathe 6s infinite ease-in-out;
+    pointer-events:none;
+    z-index:0;
+}
+@keyframes breathe{
+    0%{opacity:0.05;}
+    50%{opacity:0.18;}
+    100%{opacity:0.05;}
+}
+
+/* ── MIRROR BOARD ─────────────────────────── */
+.mirrorBoard{
+    position:absolute;
+    inset:0;
+    display:grid;
+    grid-template-columns:repeat(8,1fr);
+    transform:rotate(180deg);
+    opacity:0.12;
+    pointer-events:none;
+    z-index:1;
+}
+
+/* ── MAIN BOARD ───────────────────────────── */
+.board{
+    position:absolute;
+    inset:0;
+    display:grid;
+    grid-template-columns:repeat(8,1fr);
+    backdrop-filter:blur(6px);
+    z-index:5;
+    transition: transform 0.5s ease;
+}
+
+/* ── SQUARES ──────────────────────────────── */
+.square{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:min(4.8vmin,4.8vw);
+    cursor:pointer;
+    position:relative;
+    transition:0.2s;
+    border:1px solid rgba(255,255,255,0.03);
+    user-select:none;
+}
+.light{background:rgba(255,255,255,0.12);}
+.dark {background:rgba(0,0,0,0.25);}
+.square:hover{background:rgba(0,255,200,0.2);}
+.selected{background:rgba(0,255,200,0.45) !important; box-shadow:inset 0 0 12px rgba(0,255,200,0.6);}
+.legalDot::after{
+    content:'';
+    position:absolute;
+    width:25%;
+    height:25%;
+    border-radius:50%;
+    background:rgba(0,255,200,0.5);
+    pointer-events:none;
+}
+
+/* ── HEAT / THREAT ────────────────────────── */
+.heat{box-shadow:inset 0 0 14px rgba(255,80,0,0.55);}
+.queenDanger{animation: queenPulse 1s infinite;}
+@keyframes queenPulse{
+    0%{box-shadow:0 0 6px red, inset 0 0 6px rgba(255,0,0,0.3);}
+    50%{box-shadow:0 0 22px red, inset 0 0 14px rgba(255,0,0,0.5);}
+    100%{box-shadow:0 0 6px red, inset 0 0 6px rgba(255,0,0,0.3);}
+}
+
+/* ── NARRATIVE CARDS ──────────────────────── */
+.card{
+    position:absolute;
+    bottom:3px;
+    font-size:min(1.2vmin,1.2vw);
+    opacity:0;
+    color:rgba(255,255,255,0.85);
+    letter-spacing:0.05em;
+    pointer-events:none;
+    text-shadow:0 0 6px rgba(255,255,255,0.6);
+    transition:0.5s;
+}
+.reveal .card{opacity:0.75;}
+
+/* ── SHADOW MOVE ECHO ─────────────────────── */
+.shadowMove{
+    position:absolute;
+    font-size:min(5vmin,5vw);
+    opacity:0.25;
+    pointer-events:none;
+    transition:opacity 0.6s ease-out;
+    z-index:30;
+}
+
+/* ── ANIMATED PIECE ───────────────────────── */
+.movingPiece{
+    position:fixed;
+    font-size:min(5vmin,5vw);
+    pointer-events:none;
+    z-index:100;
+    transition:left 0.25s linear, top 0.25s linear;
+}
+
+/* ── EVAL BAR ─────────────────────────────── */
+.evalBar{
+    width:16px;
+    height:min(88vmin,88vw);
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.15);
+    border-radius:4px;
+    overflow:hidden;
+    position:relative;
+    flex-shrink:0;
+}
+.evalFill{
+    position:absolute;
+    bottom:0;
+    width:100%;
+    height:50%;
+    background:linear-gradient(to top, rgba(255,255,255,0.7), rgba(200,200,255,0.3));
+    transition:height 0.6s ease;
+}
+.evalScore{
+    position:absolute;
+    width:100%;
+    text-align:center;
+    top:50%;
+    transform:translateY(-50%);
+    font-size:1.2vmin;
+    color:rgba(255,255,255,0.5);
+    pointer-events:none;
+}
+
+/* ── BOARD WRAPPER (board + eval side by side) */
+.boardWrap{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    z-index:10;
+}
+
+/* ── PROMOTION MODAL ──────────────────────── */
+.promoModal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.75);
+    z-index:200;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    gap:14px;
+}
+.promoModal.open{display:flex;}
+.promoModal h3{font-size:2vmin; letter-spacing:0.1em;}
+.promoOptions{display:flex; gap:12px;}
+.promoBtn{
+    font-size:6vmin;
+    background:rgba(255,255,255,0.1);
+    border:1px solid rgba(255,255,255,0.3);
+    cursor:pointer;
+    border-radius:6px;
+    padding:8px 12px;
+    transition:0.2s;
+}
+.promoBtn:hover{background:rgba(0,200,255,0.3);}
+
+/* ── STATUS BAR ───────────────────────────── */
+.status{
+    font-size:1.8vmin;
+    color:rgba(255,255,255,0.6);
+    letter-spacing:0.08em;
+    margin-top:8px;
+    height:2vmin;
+    text-align:center;
+}
+
+/* ── SLIDER ROW ───────────────────────────── */
+.sliderRow{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:1.5vmin;
+    color:rgba(255,255,255,0.5);
+    margin-top:6px;
+}
+</style>
+</head>
+<body>
+
+<!-- CONTROLS -->
+<div class="controls">
+    <button id="btnReveal" onclick="toggleReveal()" class="active">Reveal Cards</button>
+    <button id="btnMirror" onclick="toggleMirror()">Mirror Mode</button>
+    <button id="btnEVE" onclick="toggleEngineVsEngine()">Engine vs Engine</button>
+    <button onclick="saveGame()">💾 Save</button>
+    <button onclick="loadGame()">📂 Load</button>
+    <button onclick="resetGame()">↺ Reset</button>
+    <label><input type="checkbox" id="queenDeathToggle" checked> Queen-Death Rule</label>
+    <label><input type="checkbox" id="blackFirstToggle"> Black First</label>
+</div>
+
+<!-- BOARD AREA -->
+<div class="boardWrap">
+    <div class="evalBar">
+        <div class="evalFill" id="evalFill"></div>
+        <div class="evalScore" id="evalScore">+0</div>
+    </div>
+    <div class="container" id="container">
+        <div class="silhouette"></div>
+        <div class="mirrorBoard" id="mirrorBoard"></div>
+        <div class="board" id="board"></div>
+    </div>
+</div>
+
+<div class="status" id="status">White to move</div>
+
+<!-- TIMELINE SLIDER -->
+<div class="sliderRow">
+    ⏮ <input type="range" min="0" max="0" value="0" id="timeline"> ⏭
+    <span id="timeLabel">Move 0</span>
+</div>
+
+<!-- PROMOTION MODAL -->
+<div class="promoModal" id="promoModal">
+    <h3>PROMOTE PAWN</h3>
+    <div class="promoOptions" id="promoOptions"></div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════
+   DOM & CORE STATE
+══════════════════════════════════════════ */
+const game = new Chess();
+const boardEl = document.getElementById("board");
+const mirrorEl = document.getElementById("mirrorBoard");
+const container = document.getElementById("container");
+const evalFill = document.getElementById("evalFill");
+const evalScore = document.getElementById("evalScore");
+const statusEl = document.getElementById("status");
+const timeline = document.getElementById("timeline");
+const timeLabel = document.getElementById("timeLabel");
+
+let selected = null;
+let legalMoves = [];
+let historyFens = [game.fen()];
+let pendingPromo = null; // {from, to}
+let stockfish = null;
+let evalCp = 0;
+
+// UI State
+let revealMode = true;
+let mirrored = false;
+let engineVsEngine = false;
+let eveTimer = null;
+
+const pieceIcons = {
+    p: "♟", r: "♜", n: "♞", b: "♝", q: "♛", k: "♚",
+    P: "♙", R: "♖", N: "♘", B: "♗", Q: "♕", K: "♔"
+};
+
+/* ═══════════════════════════════════════════
+   STOCKFISH ENGINE
+══════════════════════════════════════════ */
+function initStockfish() {
+    try {
+        stockfish = new Worker('https://cdnjs.cloudflare.com/ajax/libs/stockfish.js/10.0.2/stockfish.js');
+        stockfish.onmessage = e => {
+            const line = e.data;
+            if (line.startsWith("info") && line.includes("score cp")) {
+                const m = line.match(/score cp (-?\d+)/);
+                if (m) updateEval(parseInt(m[1]));
+            }
+            if (line.startsWith("bestmove")) {
+                const parts = line.split(" ");
+                const mv = parts[1];
+                if (mv && mv !== "(none)" && engineVsEngine) {
+                    applyEngineMove(mv);
+                }
+            }
+        };
+        stockfish.postMessage("uci");
+        stockfish.postMessage("isready");
+    } catch (e) {
+        console.warn("Stockfish could not be initialized.");
+    }
+}
+
+function requestEngineMove() {
+    if (!stockfish) return;
+    stockfish.postMessage("position fen " + game.fen());
+    stockfish.postMessage("go movetime 400");
+}
+
+function applyEngineMove(uciMove) {
+    const from = uciMove.slice(0, 2);
+    const to = uciMove.slice(2, 4);
+    const promo = uciMove[4] || "q"; // Default to queen for engine moves
+    const move = game.move({ from, to, promotion: promo });
+    if (move) {
+        historyFens.push(game.fen());
+        updateTimeline();
+        if (document.getElementById("queenDeathToggle").checked) checkQueenDeath();
+        spawnShadow();
+        render();
+    }
+}
+
+/* ═══════════════════════════════════════════
+   BOARD RENDERING & UI
+══════════════════════════════════════════ */
+function render() {
+    boardEl.innerHTML = "";
+    mirrorEl.innerHTML = "";
+
+    const board = game.board();
+    const legalSet = new Set(legalMoves.map(m => m.to));
+    const controlMap = {};
+    game.moves({ verbose: true }).forEach(m => {
+        controlMap[m.to] = (controlMap[m.to] || 0) + 1;
+    });
+
+    for (let row = 0; row < 8; row++) {
+        for (let col = 0; col < 8; col++) {
+            const file = "abcdefgh"[col];
+            const rank = 8 - row;
+            const sq = file + rank;
+            const piece = board[row][col];
+            const color = (row + col) % 2 === 0 ? "light" : "dark";
+
+            // Main Square
+            const sqEl = createSquare(sq, piece, color, legalSet, controlMap);
+            boardEl.appendChild(sqEl);
+
+            // Mirror Square
+            const mirSq = createSquare(sq, piece, color);
+            mirrorEl.appendChild(mirSq);
+        }
+    }
+
+    updateStatus();
+    if (stockfish) {
+        stockfish.postMessage("position fen " + game.fen());
+        stockfish.postMessage("go movetime 100");
+    }
+}
+
+function createSquare(sq, piece, color, legalSet = new Set(), controlMap = {}) {
+    const sqEl = document.createElement("div");
+    sqEl.className = "square " + color;
+    if (revealMode) sqEl.classList.add("reveal");
+
+    if (piece) {
+        const sym = piece.color === "w" ? piece.type.toUpperCase() : piece.type;
+        sqEl.textContent = pieceIcons[sym] || "";
+        if (piece.type === "q" && isSquareAttacked(sq)) sqEl.classList.add("queenDanger");
+        if (piece.type === "k" && isSquareAttacked(sq)) sqEl.classList.add("heat");
+    }
+
+    if (!piece || (piece.type !== "q" && piece.type !== "k")) {
+        if (isSquareAttacked(sq)) sqEl.classList.add("heat");
+    }
+
+    if (controlMap[sq]) {
+        const alpha = Math.min(controlMap[sq] * 0.06, 0.35);
+        sqEl.style.background = `rgba(255,50,50,${alpha})`;
+    }
+
+    if (sq === selected) sqEl.classList.add("selected");
+    if (legalSet.has(sq)) sqEl.classList.add("legalDot");
+
+    const card = document.createElement("div");
+    card.className = "card";
+    card.textContent = getNarrative(sq);
+    sqEl.appendChild(card);
+
+    sqEl.addEventListener("click", () => handleClick(sq));
+    return sqEl;
+}
+
+function updateStatus() {
+    let msg;
+    if (game.in_checkmate()) {
+        const winner = game.turn() === "w" ? "Black" : "White";
+        msg = `☩ Checkmate — ${winner} wins`;
+    } else if (game.in_draw()) {
+        msg = "— Draw";
+    } else if (game.in_check()) {
+        const t = game.turn() === "w" ? "White" : "Black";
+        msg = `⚠ ${t} in check`;
+    } else {
+        const t = game.turn() === "w" ? "White" : "Black";
+        msg = `${t} to move`;
+    }
+    statusEl.textContent = msg;
+}
+
+function updateEval(cp) {
+    evalCp = cp;
+    let pct = 50 + cp / 20;
+    pct = Math.max(2, Math.min(98, pct));
+    evalFill.style.height = pct + "%";
+    const label = cp > 0 ? "+" + (cp / 100).toFixed(1) : (cp / 100).toFixed(1);
+    evalScore.textContent = label;
+
+    const r = cp > 0 ? 0 : 180;
+    const b = cp > 0 ? 200 : 0;
+    document.body.style.background = `radial-gradient(circle at center, rgba(${r},0,${b},0.18), #111 70%)`;
+}
+
+/* ═══════════════════════════════════════════
+   GAME LOGIC & RULES
+══════════════════════════════════════════ */
+function handleClick(sq) {
+    if (engineVsEngine || pendingPromo) return;
+
+    const piece = game.get(sq);
+
+    // If no piece is selected, try to select one
+    if (!selected) {
+        if (piece && piece.color === game.turn()) {
+            selected = sq;
+            legalMoves = game.moves({ square: sq, verbose: true });
+            render();
+        }
+        return;
+    }
+
+    // Deselect if the same square is clicked again
+    if (sq === selected) {
+        selected = null;
+        legalMoves = [];
+        render();
+        return;
+    }
+
+    // Reselect to another of your own pieces
+    if (piece && piece.color === game.turn()) {
+        selected = sq;
+        legalMoves = game.moves({ square: sq, verbose: true });
+        render();
+        return;
+    }
+
+    // --- Pawn Promotion Logic ---
+    const selPiece = game.get(selected);
+    if (selPiece && selPiece.type === "p" &&
+       ((selPiece.color === "w" && sq[1] === "8") ||
+        (selPiece.color === "b" && sq[1] === "1"))) {
+        
+        const valid = game.moves({ square: selected, verbose: true }).some(m => m.to === sq);
+        if (valid) {
+            showPromoModal(selected, sq, selPiece.color);
+        }
+        
+        selected = null;
+        legalMoves = [];
+        return; // Halt further execution to wait for modal
+    }
+
+    // --- Normal Move ---
+    const move = game.move({ from: selected, to: sq });
+    
+    if (move) {
+        animateMove(move);
+        spawnShadow();
+        historyFens.push(game.fen());
+        updateTimeline();
+        if (document.getElementById("queenDeathToggle").checked) checkQueenDeath();
+    }
+
+    selected = null;
+    legalMoves = [];
+    render();
+}
+
+function showPromoModal(from, to, color) {
+    pendingPromo = { from, to }; // Set pending promo state HERE
+    const modal = document.getElementById("promoModal");
+    const opts = document.getElementById("promoOptions");
+    opts.innerHTML = "";
+
+    const pieces = color === "w"
+        ? [{ s: "♕", v: "q" }, { s: "♖", v: "r" }, { s: "♗", v: "b" }, { s: "♘", v: "n" }, { s: "♔", v: "k" }]
+        : [{ s: "♛", v: "q" }, { s: "♜", v: "r" }, { s: "♝", v: "b" }, { s: "♞", v: "n" }, { s: "♚", v: "k" }];
+
+    pieces.forEach(p => {
+        const btn = document.createElement("button");
+        btn.className = "promoBtn";
+        btn.textContent = p.s;
+        btn.onclick = () => resolvePromo(p.v);
+        opts.appendChild(btn);
+    });
+    modal.classList.add("open");
+}
+
+function resolvePromo(piece) {
+    document.getElementById("promoModal").classList.remove("open");
+    if (!pendingPromo) return;
+
+    const move = game.move({ from: pendingPromo.from, to: pendingPromo.to, promotion: piece });
+    
+    if (move) {
+        animateMove(move);
+        spawnShadow();
+        historyFens.push(game.fen());
+        updateTimeline();
+        if (document.getElementById("queenDeathToggle").checked) checkQueenDeath();
+        render();
+    }
+    pendingPromo = null; // Clear after use
+}
+
+function checkQueenDeath() {
+    const board = game.board();
+    let wQ = false, bQ = false;
+    for (let r of board) {
+        for (let p of r) {
+            if (p && p.type === 'q') {
+                if (p.color === 'w') wQ = true;
+                else bQ = true;
+            }
+        }
+    }
+    if (!wQ) endGame("♛ White Queen Captured — Black wins");
+    if (!bQ) endGame("♛ Black Queen Captured — White wins");
+}
+
+function endGame(msg) {
+    statusEl.textContent = msg;
+    engineVsEngine = false;
+    document.getElementById("btnEVE").classList.remove("active");
+    selected = null;
+    legalMoves = [];
+    setTimeout(() => {
+        if (confirm(msg + "\n\nPlay again?")) resetGame();
+    }, 100);
+}
+
+/* ═══════════════════════════════════════════
+   UI CONTROLS & TOGGLES
+══════════════════════════════════════════ */
+function resetGame() {
+    game.reset();
+    // FIX: Correctly set Black as the first player if toggled
+    if (document.getElementById("blackFirstToggle").checked) {
+        game.load(game.fen().replace(" w ", " b "));
+    }
+    historyFens = [game.fen()];
+    selected = null;
+    legalMoves = [];
+    engineVsEngine = false;
+    document.getElementById("btnEVE").classList.remove("active");
+    clearTimeout(eveTimer);
+    updateTimeline();
+    updateEval(0);
+    render();
+}
+
+function saveGame() {
+    localStorage.setItem("glassChessState", JSON.stringify({
+        fen: game.fen(),
+        history: historyFens
+    }));
+    statusEl.textContent = "Game saved ✓";
+}
+
+function loadGame() {
+    const raw = localStorage.getItem("glassChessState");
+    if (!raw) {
+        statusEl.textContent = "No saved game found";
+        return;
+    }
+    const data = JSON.parse(raw);
+    game.load(data.fen);
+    historyFens = data.history || [data.fen];
+    selected = null;
+    legalMoves = [];
+    updateTimeline();
+    render();
+}
+
+function toggleReveal() {
+    revealMode = !revealMode;
+    document.getElementById("btnReveal").classList.toggle("active", revealMode);
+    render();
+}
+
+function toggleMirror() {
+    mirrored = !mirrored;
+    boardEl.style.transform = mirrored ? "rotate(180deg)" : "";
+    document.getElementById("btnMirror").classList.toggle("active", mirrored);
+}
+
+function toggleEngineVsEngine() {
+    engineVsEngine = !engineVsEngine;
+    document.getElementById("btnEVE").classList.toggle("active", engineVsEngine);
+    if (engineVsEngine) autoEngineLoop();
+}
+
+function autoEngineLoop() {
+    if (!engineVsEngine || game.game_over()) {
+        engineVsEngine = false;
+        document.getElementById("btnEVE").classList.remove("active");
+        return;
+    }
+    requestEngineMove();
+    eveTimer = setTimeout(autoEngineLoop, 900);
+}
+
+timeline.oninput = function() {
+    game.load(historyFens[this.value]);
+    timeLabel.textContent = "Move " + this.value;
+    selected = null;
+    legalMoves = [];
+    render();
+};
+
+function updateTimeline() {
+    timeline.max = historyFens.length - 1;
+    timeline.value = historyFens.length - 1;
+    timeLabel.textContent = "Move " + (historyFens.length - 1);
+}
+
+/* ═══════════════════════════════════════════
+   VISUAL & NARRATIVE HELPERS
+══════════════════════════════════════════ */
+function isSquareAttacked(sq) {
+    // Temporarily switch turn to check opponent's moves
+    const originalTurn = game.turn();
+    const opponentTurn = originalTurn === 'w' ? 'b' : 'w';
+    game.load(game.fen().replace(` ${originalTurn} `, ` ${opponentTurn} `));
+    
+    const isAttacked = game.moves({ verbose: true }).some(m => m.to === sq);
+    
+    // Revert to the original turn
+    game.load(game.fen().replace(` ${opponentTurn} `, ` ${originalTurn} `));
+    
+    return isAttacked;
+}
+
+function getNarrative(sq) {
+    const piece = game.get(sq);
+    if (piece) {
+        if (piece.type === "k") return "Sovereignty";
+        if (piece.type === "q") return "Heart";
+        if (piece.type === "p") return "Potential";
+        const mob = game.moves({ square: sq }).length;
+        if (mob > 4) return "Pressure";
+    }
+    return "";
+}
+
+function squareIndex(sq) {
+    const file = "abcdefgh".indexOf(sq[0]);
+    const rank = 8 - parseInt(sq[1]);
+    return rank * 8 + file;
+}
+
+function animateMove(move) {
+    const squares = boardEl.querySelectorAll(".square");
+    const fromEl = squares[squareIndex(move.from)];
+    const toEl = squares[squareIndex(move.to)];
+    if (!fromEl || !toEl) return;
+
+    const sym = move.color === "w" ? move.piece.toUpperCase() : move.piece;
+    const piece = document.createElement("div");
+    piece.className = "movingPiece";
+    piece.textContent = pieceIcons[sym] || "";
+
+    const fr = fromEl.getBoundingClientRect();
+    const tr = toEl.getBoundingClientRect();
+
+    piece.style.left = fr.left + "px";
+    piece.style.top = fr.top + "px";
+    document.body.appendChild(piece);
+
+    requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+            piece.style.left = tr.left + "px";
+            piece.style.top = tr.top + "px";
+        });
+    });
+    setTimeout(() => piece.remove(), 280);
+}
+
+function spawnShadow() {
+    const shadow = document.createElement("div");
+    shadow.className = "shadowMove";
+    shadow.textContent = "✦";
+    shadow.style.left = (Math.random() * 80) + "%";
+    shadow.style.top = (Math.random() * 80) + "%";
+    container.appendChild(shadow);
+    setTimeout(() => { shadow.style.opacity = "0"; }, 50);
+    setTimeout(() => shadow.remove(), 700);
+}
+
+/* ═══════════════════════════════════════════
+   INITIALIZATION
+══════════════════════════════════════════ */
+initStockfish();
+updateTimeline();
+render();
+
+</script>
+</body>
+</html>
