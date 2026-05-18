@@ -1,0 +1,39 @@
+repo: bekingdomcomejoker-cpu/merkabah-routing-optimization
+slot: 72
+visibility: private
+branch: master
+cluster: E
+role: possible routing optimization shell
+actual_contents:
+  - repository metadata visible
+  - size reported as 1 KB
+  - no file hits returned from connector search for routing/orchestrator/sync terms
+entrypoints:
+  - unknown_from_connector_search
+install_commands:
+  - none_found
+relationships:
+  uses:
+    - routing optimization concept
+  extends:
+    - multi-llm-orchestrator
+    - Repo 120 gate stack
+  deploys: []
+  visualizes: []
+  governs:
+    - possible routing policy pending inspection
+  verifies: []
+  recovers: []
+risks:
+  secrets: unknown
+  network: unknown
+  destructive_ops: unknown
+  auth_required: yes
+activation_class: review_required
+safe_demo: none
+next_action: tree-level inspection; verify routing logic cannot bypass frame/authority/coherence gates
+notes: >
+  Routing optimization must remain subordinate to Repo 120 authorization. Metadata suggests a small shell.
+source_evidence:
+  - get_repo metadata confirmed repository exists, size 1 KB, branch master
+  - connector search returned no file hits
