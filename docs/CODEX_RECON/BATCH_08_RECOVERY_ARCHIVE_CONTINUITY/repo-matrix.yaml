@@ -1,0 +1,140 @@
+batch: BATCH_08_RECOVERY_ARCHIVE_CONTINUITY
+status: first_pass_complete
+mode: metadata_matrix
+connector_search:
+  query_terms:
+    - README
+    - recovery
+    - archive
+    - continuity
+    - repair
+    - sanctuary
+    - lazarus
+    - protection
+    - healing
+    - sync
+    - chronicle
+    - backup
+    - restore
+    - main
+    - src
+    - tests
+  result: no inspectable file hits returned
+repos:
+  - repo: bekingdomcomejoker-cpu/lazarus-protocol
+    slot: 77
+    visibility: private
+    branch: master
+    size_kb: 8
+    cluster: I
+    role: Lazarus/recovery protocol shell
+    activation_class: review_required
+    next_action: tree-level inspection; identify recovery semantics, restore flow, and rollback boundaries
+  - repo: bekingdomcomejoker-cpu/universal-protection
+    slot: 78
+    visibility: private
+    branch: master
+    size_kb: 8
+    cluster: I
+    role: universal protection shell
+    activation_class: review_required
+    next_action: tree-level inspection; classify protective logic vs symbolic reference
+  - repo: bekingdomcomejoker-cpu/omega-healing-system
+    slot: 51
+    visibility: private
+    branch: master
+    size_kb: 3
+    cluster: I
+    role: healing/recovery marker shell
+    activation_class: review_required
+    next_action: tree-level inspection; classify symbolic, doc, or code
+  - repo: bekingdomcomejoker-cpu/omega-sanctuary
+    slot: 30
+    visibility: private
+    branch: master
+    size_kb: 13
+    cluster: I
+    role: sanctuary/protected continuity candidate
+    activation_class: review_required
+    next_action: tree-level inspection; compare with recovery doctrine and Repo 120 review manifest
+  - repo: bekingdomcomejoker-cpu/mega-engine-repair
+    slot: 40
+    visibility: private
+    branch: master
+    size_kb: 4
+    cluster: I
+    role: repair marker/shell
+    activation_class: review_required
+    next_action: tree-level inspection; identify repair semantics and whether any mutation logic exists
+  - repo: bekingdomcomejoker-cpu/manus-exodus
+    slot: 95
+    visibility: public
+    branch: master
+    size_kb: 19
+    cluster: I
+    role: exodus/migration candidate; largest public recovery repo in batch
+    activation_class: review_required
+    next_action: tree-level inspection first or second in Batch 08; identify migration/export/import behavior
+  - repo: bekingdomcomejoker-cpu/orange-loop
+    slot: 25
+    visibility: private
+    branch: master
+    size_kb: 6
+    cluster: I
+    role: orange loop recovery/protection reference
+    activation_class: review_required
+    next_action: tree-level inspection; compare against orange-loop-max
+  - repo: bekingdomcomejoker-cpu/orange-loop-max
+    slot: 27
+    visibility: public
+    branch: main
+    size_kb: 15
+    cluster: I
+    role: expanded orange loop candidate
+    activation_class: review_required
+    next_action: tree-level inspection; compare with orange-loop and recovery doctrine
+  - repo: bekingdomcomejoker-cpu/omega-spore
+    slot: 9
+    visibility: private
+    branch: main
+    size_kb: 18
+    cluster: I
+    role: spore/recovery or propagation candidate
+    activation_class: review_required
+    next_action: tree-level inspection; compare against omega-os spore findings from Codex lane before mutation
+  - repo: bekingdomcomejoker-cpu/exploratory-edge-sync
+    slot: 26
+    visibility: private
+    branch: master
+    size_kb: 1
+    cluster: I
+    role: exploratory edge sync marker shell
+    activation_class: reference
+    next_action: keep as reference unless tree inspection reveals sync logic
+  - repo: bekingdomcomejoker-cpu/omni-chronicle-v5
+    slot: 48
+    visibility: private
+    branch: master
+    size_kb: 4
+    cluster: I
+    role: chronicle/continuity marker shell
+    activation_class: review_required
+    next_action: tree-level inspection; identify chronology, logging, or archive structure if any
+integration_boundary:
+  - Recovery components may preserve, repair, or restore; they must not mutate source without explicit approval.
+  - Archive/continuity outputs must preserve source boundaries.
+  - Migration/exodus/spore logic requires high review for propagation, loops, and external writes.
+  - Any recovery action must pass Repo 120 gates and produce a witness packet.
+priority_order:
+  - manus-exodus
+  - omega-spore
+  - orange-loop-max
+  - omega-sanctuary
+  - lazarus-protocol
+  - universal-protection
+  - orange-loop
+  - omni-chronicle-v5
+  - mega-engine-repair
+  - omega-healing-system
+  - exploratory-edge-sync
+lock_line: Recovery that overwrites the source is just damage wearing a halo.
