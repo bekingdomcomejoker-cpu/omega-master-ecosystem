@@ -1,0 +1,37 @@
+repo: bekingdomcomejoker-cpu/termux-system-scanner-advanced
+slot: 45
+visibility: private
+branch: master
+cluster: D
+role: intended Termux/local system scanner; high review until tree inspection proves scope
+actual_contents:
+  - repository metadata visible
+  - size reported as 4 KB
+  - no file hits returned from connector search for README/install/setup/termux/bash/python/main/requirements
+entrypoints:
+  - unknown
+install_commands:
+  - none_found
+relationships:
+  uses:
+    - Termux local body audit concept
+  extends: []
+  deploys: []
+  visualizes: []
+  governs: []
+  verifies:
+    - intended local system inventory pending inspection
+  recovers: []
+risks:
+  secrets: unknown
+  network: unknown
+  destructive_ops: unknown
+  auth_required: yes
+activation_class: review_required
+safe_demo: none
+next_action: tree-level Codex/local inspection required; ensure scanner redacts secrets and stays owned-device only
+notes: >
+  System scanners can expose sensitive local paths or secrets. This repo is tiny and search-invisible in this pass. Treat as review-required until inspected; never publish raw audit contents.
+source_evidence:
+  - get_repo metadata confirmed repository exists, size 4 KB, branch master
+  - connector search returned no file hits for runtime/setup terms
