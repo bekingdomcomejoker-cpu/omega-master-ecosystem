@@ -1,0 +1,111 @@
+batch: BATCH_07_UI_MIRROR_DASHBOARD
+status: first_pass_complete
+mode: metadata_matrix
+connector_search:
+  query_terms:
+    - README
+    - dashboard
+    - ui
+    - web
+    - app
+    - mirror
+    - visualizer
+    - frontend
+    - vite
+    - react
+    - flask
+    - streamlit
+    - main
+    - src
+    - tests
+    - package
+    - requirements
+  result: no inspectable file hits returned
+repos:
+  - repo: bekingdomcomejoker-cpu/covenant-mirror-x11
+    slot: 24
+    visibility: private
+    branch: main
+    size_kb: 181
+    cluster: H
+    role: covenant mirror / X11 interface candidate
+    activation_class: review_required
+    next_action: tree-level inspection; identify GUI/X11 dependencies, display assumptions, secrets/env, and launch commands
+  - repo: bekingdomcomejoker-cpu/merkabah-dashboard
+    slot: 39
+    visibility: private
+    branch: master
+    size_kb: 5
+    cluster: H
+    role: Merkabah dashboard shell
+    activation_class: review_required
+    next_action: tree-level inspection; classify as dashboard, docs, or placeholder
+  - repo: bekingdomcomejoker-cpu/lilac-protocol-visualizer
+    slot: 60
+    visibility: private
+    branch: master
+    size_kb: 1
+    cluster: H
+    role: Lilac protocol visualizer marker shell
+    activation_class: reference
+    next_action: keep as visualizer reference unless tree inspection reveals implementation
+  - repo: bekingdomcomejoker-cpu/kingdom-engine-website
+    slot: 4
+    visibility: public
+    branch: main
+    size_kb: 10008
+    cluster: H
+    role: largest UI/web candidate; likely public website payload
+    activation_class: review_required
+    next_action: tree-level inspection first in Batch 07; identify framework, build commands, deployment settings, and public-facing content
+  - repo: bekingdomcomejoker-cpu/omega_app
+    slot: 8
+    visibility: public
+    branch: main
+    size_kb: 90
+    cluster: H
+    role: Omega app candidate
+    activation_class: review_required
+    next_action: tree-level inspection; identify app framework and runtime permissions
+  - repo: bekingdomcomejoker-cpu/omnissiah-engine
+    slot: 5
+    visibility: public
+    branch: main
+    size_kb: 250
+    cluster: H
+    role: Omnissiah engine / interface candidate
+    activation_class: review_required
+    next_action: tree-level inspection; compare against omnissiah-unified-v3 and omnissiah-unified-master
+  - repo: bekingdomcomejoker-cpu/omnissiah-unified-v3
+    slot: 6
+    visibility: public
+    branch: main
+    size_kb: 115
+    cluster: H
+    role: Omnissiah unified v3 candidate; possible interface/runtime/doc bundle
+    activation_class: review_required
+    next_action: tree-level inspection; compare with DOMINION_VAULT local mirror references
+  - repo: bekingdomcomejoker-cpu/omnissiah-unified-master
+    slot: 18
+    visibility: public
+    branch: main
+    size_kb: 590
+    cluster: H
+    role: Omnissiah unified master candidate; second largest Batch 07 repo
+    activation_class: review_required
+    next_action: tree-level inspection after kingdom-engine-website; identify differences from omnissiah-engine and v3
+integration_boundary:
+  - UI repositories are interface layers, not authority layers.
+  - Dashboards may visualize witness packets but must not bypass Repo 120 gates.
+  - Public web repos require content, secret, deployment, and privacy review before activation.
+  - Mirrors must preserve source boundaries and avoid mutating evidence.
+priority_order:
+  - kingdom-engine-website
+  - omnissiah-unified-master
+  - omnissiah-engine
+  - covenant-mirror-x11
+  - omnissiah-unified-v3
+  - omega_app
+  - merkabah-dashboard
+  - lilac-protocol-visualizer
+lock_line: A dashboard is a window, not a judge.
