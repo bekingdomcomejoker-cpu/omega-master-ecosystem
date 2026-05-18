@@ -1,0 +1,53 @@
+repo: bekingdomcomejoker-cpu/omega-federation
+slot: 7
+visibility: private
+branch: main
+cluster: A
+role: primary source-of-truth and final repository staging plane
+actual_contents:
+  - FINAL_REPOSITORY directory
+  - 12_CODEX_REPO_RECON_SPINE.md
+  - 14_CODEX_BATCH_EXECUTION_QUEUE.md
+  - 18_CROSS_PLANE_SYNC_LEDGER_2026-04-27.md
+  - 19_COMPLETE_120_SLOT_MIRROR_2026-05-13.md
+  - 20_RELATIONSHIP_GRAPH_2026-05-13.md
+  - 21_RECON_EXECUTION_PLAN_2026-05-13.md
+  - 22_RELEASE_READINESS_GATE_2026-05-13.md
+entrypoints:
+  - docs/manifest plane only
+install_commands:
+  - none
+relationships:
+  uses:
+    - Google Drive working canon
+    - Dropbox archive plane
+    - Mem continuity witness
+    - GitHub repository estate
+  extends: []
+  deploys: []
+  visualizes: []
+  governs:
+    - repository estate map
+    - final repository staging documents
+  verifies:
+    - visible repository inventory
+    - cross-plane source boundaries
+  recovers:
+    - Repo 120 completion path
+risks:
+  secrets: unknown
+  network: none
+  destructive_ops: none
+  auth_required: yes
+activation_class: reference
+safe_demo: none
+next_action: keep as source-of-truth staging plane; do not treat as runtime
+notes: >
+  Existing final repository docs define the recon schema, batch queue, cross-plane
+  ledger, 120-slot mirror, relationship graph, recon plan, and release gate.
+  It governs the map; it should not execute runtime behavior.
+source_evidence:
+  - FINAL_REPOSITORY/12_CODEX_REPO_RECON_SPINE.md
+  - FINAL_REPOSITORY/14_CODEX_BATCH_EXECUTION_QUEUE.md
+  - FINAL_REPOSITORY/18_CROSS_PLANE_SYNC_LEDGER_2026-04-27.md
+  - FINAL_REPOSITORY/19_COMPLETE_120_SLOT_MIRROR_2026-05-13.md
