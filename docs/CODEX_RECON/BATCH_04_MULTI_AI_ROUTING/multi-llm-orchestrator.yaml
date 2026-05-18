@@ -1,0 +1,38 @@
+repo: bekingdomcomejoker-cpu/multi-llm-orchestrator
+slot: 38
+visibility: private
+branch: master
+cluster: E
+role: possible multi-model orchestration shell
+actual_contents:
+  - repository metadata visible
+  - size reported as 7 KB
+  - no file hits returned from connector search for routing/orchestrator/sync terms
+entrypoints:
+  - unknown_from_connector_search
+install_commands:
+  - none_found
+relationships:
+  uses:
+    - model/node routing concept
+  extends:
+    - Repo 120 frame and authorization gates
+  deploys: []
+  visualizes: []
+  governs:
+    - possible model invocation routing pending inspection
+  verifies: []
+  recovers: []
+risks:
+  secrets: unknown
+  network: unknown
+  destructive_ops: unknown
+  auth_required: yes
+activation_class: review_required
+safe_demo: none
+next_action: tree-level inspection; verify no autonomous model invocation or credential handling
+notes: >
+  Routing/orchestration repo must not bypass Repo 120 gates. Metadata indicates a small shell.
+source_evidence:
+  - get_repo metadata confirmed repository exists, size 7 KB, branch master
+  - connector search returned no file hits
