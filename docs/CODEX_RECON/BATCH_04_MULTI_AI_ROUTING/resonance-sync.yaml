@@ -1,0 +1,34 @@
+repo: bekingdomcomejoker-cpu/resonance-sync
+slot: 93
+visibility: public
+branch: master
+cluster: E
+role: resonance sync placeholder by metadata
+actual_contents:
+  - repository metadata visible
+  - size reported as 0 KB
+entrypoints:
+  - none_found
+install_commands:
+  - none_found
+relationships:
+  uses:
+    - resonance sync concept
+  extends: []
+  deploys: []
+  visualizes: []
+  governs: []
+  verifies: []
+  recovers: []
+risks:
+  secrets: none_found_by_metadata
+  network: none_found_by_metadata
+  destructive_ops: none_found_by_metadata
+  auth_required: no
+activation_class: reference
+safe_demo: none
+next_action: keep as placeholder/reference unless content is added
+notes: >
+  Public repo with size 0 KB by metadata. Not an active routing component.
+source_evidence:
+  - get_repo metadata confirmed repository exists, size 0 KB, public visibility
