@@ -1,0 +1,40 @@
+repo: bekingdomcomejoker-cpu/query-framing-engine
+slot: 75
+visibility: private
+branch: master
+cluster: E
+role: possible query/frame shaping shell; compare directly with Repo 120 frame gate
+actual_contents:
+  - repository metadata visible
+  - size reported as 2 KB
+  - no file hits returned from connector search for routing/orchestrator/sync/query/framing terms
+entrypoints:
+  - unknown_from_connector_search
+install_commands:
+  - none_found
+relationships:
+  uses:
+    - query framing concept
+    - prompt framing concept
+  extends:
+    - Repo 120 frame_resolution_gate
+  deploys: []
+  visualizes: []
+  governs:
+    - possible query shaping pending inspection
+  verifies:
+    - possible frame classification pending inspection
+  recovers: []
+risks:
+  secrets: unknown
+  network: unknown
+  destructive_ops: unknown
+  auth_required: yes
+activation_class: review_required
+safe_demo: none
+next_action: tree-level inspection; merge only concepts that preserve source markers and operator authority
+notes: >
+  This repo may overlap with Repo 120's frame_resolution_gate. Any useful logic should be compared against that gate before integration.
+source_evidence:
+  - get_repo metadata confirmed repository exists, size 2 KB, branch master
+  - connector search returned no file hits
