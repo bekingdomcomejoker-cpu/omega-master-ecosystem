@@ -1,0 +1,81 @@
+repo: bekingdomcomejoker-cpu/termux-system-scanner-advanced
+inspection_level: deep_connector_read
+inspected_at: "2026-05-13T21:52:00+02:00"
+default_branch: master
+source_files_read:
+  - README.md via commit diff
+  - scripts/termux_scanner_advanced.sh current master
+  - termux_system_scanner_advanced.py via latest commit diff
+role: >-
+  Termux diagnostic scanner intended to inspect local Android/Termux device state,
+  performance, processes, networking, storage, permissions, SELinux, battery state,
+  and basic anomaly thresholds.
+actual_contents:
+  - README describes full/quick/performance/security/monitor/report commands and claims production readiness.
+  - scripts/termux_scanner_advanced.sh is a real Bash scanner with functions for system info, performance,
+    process analysis, network analysis, storage analysis, security analysis, battery analysis, anomaly detection,
+    full scan, and quick scan.
+  - termux_system_scanner_advanced.py is a minimal placeholder class and is not connected to the Bash scanner.
+entrypoints:
+  - bash scripts/termux_scanner_advanced.sh full
+  - bash scripts/termux_scanner_advanced.sh quick
+  - bash scripts/termux_scanner_advanced.sh performance
+  - bash scripts/termux_scanner_advanced.sh security
+  - bash scripts/termux_scanner_advanced.sh network
+  - bash scripts/termux_scanner_advanced.sh storage
+  - bash scripts/termux_scanner_advanced.sh battery
+runtime_surfaces:
+  read_only_system_queries:
+    - getprop ro.product.model / brand / Android version / API level
+    - uname
+    - nproc
+    - /proc/cpuinfo
+    - free
+    - df
+    - uptime
+    - ps aux
+    - ip link / ip addr
+    - netstat if available
+    - du -sh home subdirectories
+    - ls -ld home and PREFIX
+    - /sys/fs/selinux/enforce
+    - /sys/class/power_supply/battery/*
+  filesystem_writes: none observed in scanner script
+  network_actions: none observed beyond reading local interface/connection state
+  package_install: none observed in scanner script
+mismatches:
+  - README install command references scripts/install_scanner.sh, but current master has scripts/termux_scanner_advanced.sh instead.
+  - README usage references termux-scanner wrapper, but no installer/wrapper file was found in current master.
+  - README advertises monitor/report/output formats, but current script only implements full/quick/performance/security/network/storage/battery.
+  - Python wrapper is placeholder and not wired to scanner behavior.
+risk_review:
+  positive:
+    - No destructive actions observed.
+    - No settings mutation observed.
+    - No package installation in current scanner script.
+    - No external network calls observed.
+    - Useful as local diagnostic flashlight for owned Termux device.
+  gaps:
+    - May expose sensitive local environment details in output if reports are shared raw.
+    - Uses ps/ip/netstat/du outputs that can reveal process names, IPs, and local directory names.
+    - Uses bc in anomaly detection but bc is not listed as a dependency; may fail on minimal Termux.
+    - CPU frequency grep may be empty on Android/Termux.
+    - README and actual script are out of sync.
+activation_class: low_risk_inspection_tool_but_docs_mismatch
+activation_reason: >-
+  The current scanner script is mostly read-only diagnostics and can be useful after local review.
+  It is not connected to an installer/wrapper as claimed. Before use as part of the runtime lane,
+  README and command wrapper should be corrected, and output-handling should warn against sharing raw reports.
+recommended_patches:
+  - Add scripts/install_scanner.sh that installs a termux-scanner wrapper pointing to scripts/termux_scanner_advanced.sh.
+  - Add --json output or structured report mode for machine parsing.
+  - Add --redact option to hide IPs, paths, process command names, and device identifiers.
+  - Add dependency checks for bc, ip, netstat, and fallback behavior when unavailable.
+  - Align README with actual commands.
+  - Add report output path under ~/omega-local/reports or $PREFIX/var/log/omega.
+relationship_to_runtime_lane: >-
+  Useful diagnostic limb for the Termux local bridge. It can support owned-device health checks,
+  but should not be treated as a full security scanner or monitor until wrapper/report modes exist.
+next_action: >-
+  Continue Codex inspection with python-hybrid-interpreter, or explicitly patch scanner docs/wrapper after operator request.
+status: inspected_not_activated
