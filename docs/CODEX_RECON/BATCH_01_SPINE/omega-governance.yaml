@@ -1,0 +1,38 @@
+repo: bekingdomcomejoker-cpu/omega-governance
+slot: 98
+visibility: private
+branch: main
+cluster: A
+role: possible governance/reference module; sparse or not code-search-indexed
+actual_contents:
+  - repository metadata visible
+  - no file hits returned from connector code search for README/governance/manifest/policy/rules
+entrypoints:
+  - unknown
+install_commands:
+  - none_found
+relationships:
+  uses: []
+  extends:
+    - omega-federation
+  deploys: []
+  visualizes: []
+  governs:
+    - governance concepts pending inspection
+  verifies: []
+  recovers: []
+risks:
+  secrets: unknown
+  network: unknown
+  destructive_ops: unknown
+  auth_required: yes
+activation_class: reference
+safe_demo: none
+next_action: inspect repository tree with Codex/local clone; compare any governance rules with Repo 120 release gate
+notes: >
+  Repository exists with admin/maintain/push permissions and size 5 KB. Code
+  search returned no file hits for governance terms. Treat as small reference
+  shell until inspected.
+source_evidence:
+  - get_repo metadata confirmed repository exists
+  - connector search returned no results for README/governance/manifest/policy/rules
