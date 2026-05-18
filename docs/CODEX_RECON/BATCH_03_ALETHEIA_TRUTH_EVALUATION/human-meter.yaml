@@ -1,0 +1,38 @@
+repo: bekingdomcomejoker-cpu/human-meter
+slot: 10
+visibility: private
+branch: main
+cluster: B
+role: human-factor/evaluation candidate; inspect for scoring logic and privacy boundary
+actual_contents:
+  - repository metadata visible
+  - size reported as 169 KB
+  - no file hits returned from connector search for README/truth/aletheia/alignment/evaluation/dataset/training/tests/main/src/app
+entrypoints:
+  - unknown_from_connector_search
+install_commands:
+  - none_found
+relationships:
+  uses:
+    - human-factor evaluation concept
+  extends:
+    - Aletheia/truth evaluation stack
+  deploys: []
+  visualizes: []
+  governs: []
+  verifies:
+    - possible human-factor state pending inspection
+  recovers: []
+risks:
+  secrets: unknown
+  network: unknown
+  destructive_ops: unknown
+  auth_required: yes
+activation_class: review_required
+safe_demo: none
+next_action: tree-level inspection; verify scoring logic, privacy handling, and whether any personal data exists
+notes: >
+  Medium-sized evaluation repo. Because it implies human measurement, inspect privacy and scoring assumptions before use.
+source_evidence:
+  - get_repo metadata confirmed repository exists, size 169 KB, branch main
+  - connector search returned no file hits for truth/evaluation terms
