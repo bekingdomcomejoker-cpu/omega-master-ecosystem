@@ -1,0 +1,38 @@
+repo: bekingdomcomejoker-cpu/omega-federation-continuation
+slot: 13
+visibility: private
+branch: main
+cluster: A
+role: continuation/reference shell for federation work
+actual_contents:
+  - repository metadata visible
+  - no file hits returned from connector code search for README/continuation/manifest/main
+entrypoints:
+  - unknown
+install_commands:
+  - none_found
+relationships:
+  uses: []
+  extends:
+    - omega-federation
+  deploys: []
+  visualizes: []
+  governs: []
+  verifies: []
+  recovers:
+    - continuity concept pending tree inspection
+risks:
+  secrets: unknown
+  network: unknown
+  destructive_ops: unknown
+  auth_required: yes
+activation_class: reference
+safe_demo: none
+next_action: inspect repository tree with Codex/local clone; compare against omega-federation final docs
+notes: >
+  Repository exists with size 22 KB and main branch, but connector search found
+  no common manifest or continuation terms. Treat as reference until tree-level
+  inspection proves active content.
+source_evidence:
+  - get_repo metadata confirmed repository exists
+  - connector search returned no results for README/continuation/manifest/main
