@@ -13,6 +13,13 @@ from .active_aletheia_probe import (
     ProbeResult,
     active_aletheia_probe,
 )
+from .frame_resolution_gate import (
+    FrameDecision,
+    FrameInput,
+    FrameResult,
+    SpeakerRole,
+    resolve_frame,
+)
 
 __all__ = [
     "AngelEngine",
@@ -28,4 +35,9 @@ __all__ = [
     "ProbeInput",
     "ProbeResult",
     "active_aletheia_probe",
+    "FrameDecision",
+    "FrameInput",
+    "FrameResult",
+    "SpeakerRole",
+    "resolve_frame",
 ]
