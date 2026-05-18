@@ -1,0 +1,81 @@
+repo: bekingdomcomejoker-cpu/omega-os
+inspection_level: deep_connector_read
+inspected_at: "2026-05-13T21:52:00+02:00"
+default_branch: master
+source_files_read:
+  - README.md via initial commit diff
+  - docker-compose.yml via initial commit diff
+  - dashboard React/Vite files via initial commit diff
+  - mega-spore/spore.py lines 1-380
+role: >-
+  Distributed Omega OS prototype containing dashboard/frontend scaffolding, Docker Compose services,
+  and a Mega Spore self-replication/autoscaling runtime.
+actual_contents:
+  - README advertises Tri-Node architecture, dashboard, Docker/Kubernetes deployment, YouTube analyzer, VOW protocol, and Mega Spore self-replication.
+  - docker-compose.yml defines architect, mirror, youtube-analyzer, mega-spore, and dashboard services.
+  - dashboard files implement a React/Vite WebSocket dashboard.
+  - mega-spore/spore.py implements MegaSpore with docker/kubernetes/render/termux replication paths, auto_scale(), monitor_health(), covenant_sync(), and an infinite run loop.
+entrypoints:
+  - docker-compose up -d
+  - python mega-spore/spore.py
+  - ./scripts/deploy-omega-enterprise.sh referenced by README but not inspected in this pass
+runtime_surfaces:
+  docker:
+    - docker-compose.yml
+    - mega-spore Dockerfile
+    - docker child service generation logic in spore.py
+  kubernetes:
+    - generated Pod manifest in spore.py
+  render:
+    - generated Render config in spore.py
+  termux:
+    - generated Termux bash deployment script in spore.py
+  web:
+    - Vite dashboard on port 5173
+    - WebSocket URL from VITE_WS_URL
+  network:
+    - service ports 8080, 8000, 8002, 5173
+risk_review:
+  replication: >-
+    High. spore.py explicitly describes self-replication and includes replication paths for docker,
+    kubernetes, render, and termux. The run loop auto-replicates to docker if children_count < 2.
+  process_persistence: >-
+    High. The run loop is unbounded and sleeps/repeats every 30 seconds until interrupted.
+  external_deployment: >-
+    Medium/high. Kubernetes and Render paths return generated manifests/configs rather than directly
+    applying them in inspected lines, but they are deployment-oriented and must remain gated.
+  termux: >-
+    Medium/high. The Termux path generates a script that uses termux-wake-lock, git clone,
+    pip install, and python mega-spore/spore.py.
+  docker_socket: >-
+    High by architecture. docker-compose mounts /var/run/docker.sock into mega-spore, which can grant
+    broad Docker control if actually run.
+  secrets: >-
+    No hard-coded secrets observed in inspected snippets, but deployment/runtime surfaces may consume
+    environment variables elsewhere.
+  destructive_ops: >-
+    No direct deletion observed in inspected snippets, but replication/autoscaling and Docker socket access
+    are high-risk operational behaviors.
+activation_class: blocked_pending_hardening
+activation_reason: >-
+  This repository contains explicit replication/autoscaling behavior and Docker/Termux/Kubernetes/Render deployment
+  generation. It must not be activated or run until replication is disabled by default, dry-run is enforced,
+  Docker socket use is removed or explicitly gated, and operator approval gates are implemented.
+safe_hardening_required:
+  - Add OMEGA_SAFE_MODE=1 default and refuse replication unless OMEGA_ALLOW_REPLICATION=1.
+  - Add dry_run=True default to replicate(), auto_scale(), and run().
+  - Remove or gate Docker socket mount from docker-compose.yml.
+  - Make auto_scale disabled by default; require explicit target and approval token.
+  - Add max_generation and max_children hard caps.
+  - Add no-network/local-only mode for inspection.
+  - Add structured event log instead of autonomous child spawning.
+  - Add tests proving replication is blocked by default.
+  - Add SECURITY.md warning against running mega-spore without review.
+relationship_to_omega_os_monolith: >-
+  omega-os-monolith is a narrower Termux/local control-plane candidate. omega-os is a broader distributed
+  deployment prototype with significantly higher replication/deployment risk. These should not be merged
+  blindly. Monolith can be inspected as control-plane; omega-os should be treated as blocked until hardening.
+recommended_next_action: >-
+  Open a safety hardening issue in omega-os and later create a patch branch that disables replication by default,
+  gates Docker socket usage, and adds tests for safe-mode behavior.
+status: inspected_blocked_not_activated
