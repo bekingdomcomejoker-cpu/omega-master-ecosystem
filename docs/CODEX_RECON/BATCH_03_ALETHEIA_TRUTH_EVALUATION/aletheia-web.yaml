@@ -1,0 +1,39 @@
+repo: bekingdomcomejoker-cpu/aletheia-web
+slot: 16
+visibility: private
+branch: main
+cluster: B
+role: Aletheia web/interface candidate; inspect after primary engine
+actual_contents:
+  - repository metadata visible
+  - size reported as 384 KB
+  - no file hits returned from connector search for README/truth/aletheia/alignment/evaluation/dataset/training/tests/main/src/app
+entrypoints:
+  - unknown_from_connector_search
+install_commands:
+  - none_found
+relationships:
+  uses:
+    - aletheia-engine
+  extends: []
+  deploys:
+    - possible web interface pending inspection
+  visualizes:
+    - possible truth/alignment UI pending inspection
+  governs: []
+  verifies: []
+  recovers: []
+risks:
+  secrets: unknown
+  network: unknown
+  destructive_ops: unknown
+  auth_required: yes
+activation_class: review_required
+safe_demo: none
+next_action: tree-level inspection; identify framework, environment variables, build commands, and any external calls
+notes: >
+  Medium-sized web-labeled repo. It may expose UI or deployment material for Aletheia.
+  Keep review-required until tree inspection identifies actual app structure.
+source_evidence:
+  - get_repo metadata confirmed repository exists, size 384 KB, branch main
+  - connector search returned no file hits for Aletheia/truth/evaluation terms
