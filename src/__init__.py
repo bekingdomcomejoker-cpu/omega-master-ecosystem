@@ -1,6 +1,18 @@
 """Angel Engine package for Repository 120."""
 
 from .angel_engine import AngelEngine, Decision, Reason, SelectionResult, Signal
+from .coherence_gate import (
+    CoherenceDecision,
+    CoherenceInput,
+    CoherenceResult,
+    evaluate_coherence,
+)
+from .active_aletheia_probe import (
+    ProbeDecision,
+    ProbeInput,
+    ProbeResult,
+    active_aletheia_probe,
+)
 
 __all__ = [
     "AngelEngine",
@@ -8,4 +20,12 @@ __all__ = [
     "Reason",
     "SelectionResult",
     "Signal",
+    "CoherenceDecision",
+    "CoherenceInput",
+    "CoherenceResult",
+    "evaluate_coherence",
+    "ProbeDecision",
+    "ProbeInput",
+    "ProbeResult",
+    "active_aletheia_probe",
 ]
