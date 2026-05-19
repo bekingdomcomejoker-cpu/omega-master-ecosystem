@@ -1,7 +1,7 @@
 # Source Gap Register
 
-**Status:** active register  
-**Purpose:** track unresolved or partial source boundaries after first-pass recon.
+**Status:** active register / Drive-integrated 2026-05-19  
+**Purpose:** track unresolved or partial source boundaries after first-pass recon and Drive sync updates.
 
 ---
 
@@ -10,19 +10,49 @@
 ```text
 slot: 115
 name: Dropbox Runtime Archive Zip Plane
-status: partial_resolved_by_dropbox_surface
-needed: exact Dropbox archive path/list
+status: SOURCE_POINTERS_FOUND / TEXT_MIRROR_PARTIAL / RAW_BINARY_MIRROR_PENDING
 ```
 
 Observed surface:
 
 ```text
 Dropbox root continuity docs
-/Downloads/OMEGA_FEDERATION_ESSENTIAL_DNA/AI_ENGINE_ARCHIVE/LORNA-Android/.git
+/Downloads/OMEGA_FEDERATION_ESSENTIAL_DNA/AI_ENGINE_ARCHIVE/LORNA-Android/.git/hooks sample files
+/Downloads/Impressive 🇿🇦.pdf
+/Screenshot_20260419_145052_com.gbox.android.jpg
+```
+
+Drive byte audit update:
+
+```text
+Visible Dropbox inventory total: 1,286,815 bytes
+Copied into Drive as text/native docs: 39,260 bytes = 3.05%
+Raw binary still not copied: 1,247,555 bytes = 96.95%
+```
+
+Raw binary still pending:
+
+```text
+/Downloads/Impressive 🇿🇦.pdf — 898,690 bytes
+/Screenshot_20260419_145052_com.gbox.android.jpg — 348,865 bytes
+```
+
+Important correction:
+
+```text
+The nested LORNA-Android material exposed by Dropbox was only .git/hooks sample files, and those have now been mirrored as text.
+The remaining blocker is raw PDF/JPG file-body transfer, not unknown archive structure.
+```
+
+Current blocker:
+
+```text
+No direct raw Dropbox binary → raw Google Drive file transfer tool is exposed in this workspace.
+No Drive raw upload_file tool is exposed here.
 ```
 
 Next action:
-Attach exact archive names/paths when Dropbox list/export is available.
+Manual/rclone/future-tool transfer of raw PDF/JPG into Drive, then mark Slot 115 as RAW_BINARY_MIRRORED.
 
 ---
 
@@ -45,11 +75,34 @@ Attach exact archive names/paths when Dropbox list/export is available.
 Status:
 Partial resolved through Drive/Mem checkpoint evidence.
 
-Needed:
-Original Mem note IDs, Drive doc IDs, local file paths, or archive artifact names.
+Mem mirror update:
+
+```text
+50 / 50 Mem notes accounted for in Drive batch documents.
+Not fully strict-verbatim for all oversized notes.
+```
+
+High-value strict-verbatim repair docs still needed:
+
+```text
+CAT EOF v6 Full Script
+MACHINE_BRIDGE.md [CANONICAL SPEC v1.1]
+OPERATOR_BRIDGE.md v1.0
+OPERATOR_BRIDGE.md v1.1
+OPERATOR_BRIDGE.md v1.2
+Optional registry batch expansion
+```
+
+Duplicate/stale marker:
+
+```text
+Duplicate Batch 006 exists.
+Canonical final Batch 006 is document ID 1IZ14ehbSTqLNmwMojuXPCCsOcrgxv1zrdWoATUXFSHM.
+Do not treat duplicate Batch 006 as canonical unless manually reviewed.
+```
 
 Next action:
-Pull original pointers from Mem/Drive/local audit when available.
+Create one dedicated Drive document per oversized note and verify by reading Drive text back after write.
 
 ---
 
@@ -82,12 +135,27 @@ If needed, add workflow manually through GitHub UI/Codex with explicit review.
 ## Gap 5 — Install Spine
 
 ```text
-status: not cleared
-reason: Batch 02 runtime repos require tree-level inspection
+status: partially advanced but not release-cleared
+```
+
+Drive/Codex update:
+
+```text
+complete-system-installer now includes omega-os-monolith.
+aletheia-control can call monolith local controls.
+termux-merkabah-suite no longer has a missing core path after reconstructed non-verbatim core was added.
+```
+
+Still required:
+
+```text
+owned-device dry-run sequence
+local test evidence
+explicit release decision
 ```
 
 Next action:
-Only create install spine after runtime inspections clear a safe path.
+Treat installer/control-plane path as build-progress, not release clearance.
 
 ---
 
@@ -99,7 +167,7 @@ reason: may be useful, but tests and inspection should define exact checks first
 ```
 
 Next action:
-Add after test command and tree inspections stabilize.
+Add after test command and tree inspections stabilize, or explicitly defer in release report.
 
 ---
 
