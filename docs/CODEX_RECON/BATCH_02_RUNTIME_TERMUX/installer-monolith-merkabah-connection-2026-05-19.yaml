@@ -1,0 +1,72 @@
+record_type: connection_patch_and_recovery_status
+recorded_at: "2026-05-19T08:42:00+02:00"
+lanes:
+  recovery_lane:
+    target: termux-merkabah-suite/scripts/merkabah_termux_core.sh
+    exact_file_recovered: false
+    searches:
+      - Google Drive exact search for merkabah_termux_core.sh returned no results.
+      - GitHub user/code search for merkabah_termux_core terms returned no exact file.
+      - Mem search found CAT EOF v6 Full Script and CAT EOF/Termux bridge doctrine.
+    source_basis:
+      - CAT EOF v6 Full Script from Mem.
+      - MEMORY SAVE — Mem Batch 4 — CAT EOF / Termux Local Bridge Anchor.
+      - MEMORY SAVE — Mem Batch 10 — Cat → EOF / Local Bridge / Song-Bridge Anchor.
+      - omega-os-monolith CONTROL_PLANE runtime files.
+    action: >-
+      Created a reconstructed operational core rather than claiming verbatim recovery.
+    file_created:
+      repo: bekingdomcomejoker-cpu/termux-merkabah-suite
+      path: scripts/merkabah_termux_core.sh
+      commit: 33a6a744bfe29efe1c347bc39b284f4e43d83045
+    capabilities:
+      - merkabah status
+      - merkabah faces
+      - merkabah harmony once/watch
+      - merkabah process TEXT
+      - merkabah route ROUTE PROMPT
+      - merkabah health
+      - merkabah llama start/stop/status/dry-run
+      - merkabah cat-bridge
+      - merkabah daemon status compatibility
+    boundary: >-
+      The file explicitly states it is reconstructed from recovered doctrine and live control-plane sources,
+      not the lost original merkabah_termux_core.sh.
+  connection_lane:
+    installer_patch:
+      repo: bekingdomcomejoker-cpu/complete-system-installer
+      path: scripts/install_complete_system.sh
+      commit: df799713096e17c2d7226358752f92ec9e758d02
+      changes:
+        - Added omega-os-monolith to component list.
+        - Added Termux pkg dependency support.
+        - Added --no-deps option.
+        - Improved existing checkout handling.
+        - Generated aletheia-control wrapper connected to omega-os-monolith status/dry-run/healthcheck/oroute.
+    termux_suite_patch:
+      repo: bekingdomcomejoker-cpu/termux-merkabah-suite
+      path: scripts/install_termux_merkabah.sh
+      commit: fff85a29b547edb46fe82ddeedecef668893f894
+      changes:
+        - Added --dry-run and --no-deps options.
+        - Uses pkg when available.
+        - Installs reconstructed core.
+        - Creates merkabah command wrapper.
+        - Writes config with OMEGA_ROOT / OMEGA_MONOLITH / OMEGA_CONTROL_PLANE / CAT_EOF_BASE guidance.
+        - Keeps init.d wrapper as compatibility only; no hidden daemon starts by default.
+operator_value:
+  - complete-system-installer now installs/discovers omega-os-monolith.
+  - aletheia-control can call monolith control-plane commands.
+  - termux-merkabah-suite now has the missing core path filled by a source-derived wrapper.
+  - merkabah can call omega-os-monolith router and local llama control.
+  - CAT EOF bridge snapshot is visible to the wrapper if present.
+status: patched_and_synced_to_repo120
+next_owned_device_sequence:
+  - Clone/run complete-system-installer with --dry-run first.
+  - Run aletheia-control status.
+  - Install termux-merkabah-suite with --dry-run first.
+  - Run merkabah status.
+  - Run merkabah harmony once.
+  - Run merkabah llama dry-run 8080.
+  - Run merkabah health after local llama starts.
+  - Run merkabah process "say ready".
