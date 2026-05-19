@@ -1,0 +1,40 @@
+repo: bekingdomcomejoker-cpu/omega-os-monolith
+record_type: owned_device_test_plan
+recorded_at: "2026-05-19T08:42:00+02:00"
+source_file:
+  path: CONTROL_PLANE/OWNED_DEVICE_TEST_PLAN.md
+  commit: badc8a594f8447285bc907b1e306a4609d194351
+purpose: >-
+  Provide a concrete owned-device verification sequence for the patched Omega Control Plane.
+  This moves the lane from source mapping into runnable local validation without activating secondary layers first.
+covered_sequence:
+  - Confirm working directory and CONTROL_PLANE files.
+  - Optionally set OMEGA_MODEL_PATH and OMEGA_SERVER_BIN.
+  - Run start_local_llama.sh dry-run.
+  - Check status before start.
+  - Start local llama-server.
+  - Run router healthcheck.
+  - Run local-only no-clipboard/no-notify route test.
+  - Run normal route test.
+  - Run interactive route test.
+  - Stop server.
+  - Collect evidence bundle under ~/omega-local/reports/control-plane-test.
+  - Do not proceed to secondary layers until direct route passes.
+operator_boundary:
+  - Do not pipe model output directly into shell.
+  - Read commands first.
+  - Paste only commands understood by the operator into an owned terminal.
+pass_conditions:
+  - /v1/models healthcheck returns OK.
+  - comm_bus.jsonl is written.
+  - terminal_router_state.json is written.
+  - local-only mode does not call Gemini.
+  - clipboard and notification flags are respected.
+  - PID file points to expected llama-server process.
+next_layer_after_pass:
+  - clipboard watcher
+  - notification listener
+  - bridge automation
+  - external model fallback orchestration
+  - multi-node router logic
+status: synced
