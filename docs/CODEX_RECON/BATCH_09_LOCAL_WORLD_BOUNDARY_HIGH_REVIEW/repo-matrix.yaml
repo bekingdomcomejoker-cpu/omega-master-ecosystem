@@ -1,0 +1,144 @@
+batch: BATCH_09_LOCAL_WORLD_BOUNDARY_HIGH_REVIEW
+status: first_pass_complete
+mode: metadata_matrix
+connector_search:
+  query_terms:
+    - README
+    - mikrotik
+    - routeros
+    - mesh
+    - grid
+    - network
+    - admin
+    - warfare
+    - blade
+    - weapon
+    - control
+    - firewall
+    - bridge
+    - setup
+    - script
+    - main
+    - src
+    - tests
+  result: no inspectable file hits returned
+repos:
+  - repo: bekingdomcomejoker-cpu/omega-warfare-core
+    slot: 1
+    visibility: private
+    branch: main
+    size_kb: 11402
+    cluster: J
+    role: high-review warfare-language/core repo; likely substantive payload by size
+    activation_class: blocked_until_tree_review
+    next_action: tree-level inspection first in Batch 09; classify code, data, docs, network behavior, and risk language
+    hard_boundaries:
+      - no activation from name or metadata
+      - no offensive use
+      - no external target logic without explicit lawful owned-scope authorization
+      - preserve as source until reviewed
+  - repo: bekingdomcomejoker-cpu/omega-warfare-core-v6
+    slot: 11
+    visibility: private
+    branch: main
+    size_kb: 11403
+    cluster: J
+    role: high-review warfare-language/core v6 repo; near-duplicate size of omega-warfare-core
+    activation_class: blocked_until_tree_review
+    next_action: tree-level inspection together with omega-warfare-core; diff for version drift, duplication, and risk deltas
+    hard_boundaries:
+      - no activation from name or metadata
+      - no offensive use
+      - no external target logic without explicit lawful owned-scope authorization
+      - preserve as source until reviewed
+  - repo: bekingdomcomejoker-cpu/omega-warfare-analytics
+    slot: 3
+    visibility: private
+    branch: master
+    size_kb: 11153
+    cluster: J
+    role: high-review analytics companion to warfare-core family
+    activation_class: blocked_until_tree_review
+    next_action: tree-level inspection; identify analytics inputs, outputs, network calls, datasets, and whether it scores real-world targets
+    hard_boundaries:
+      - no activation from name or metadata
+      - no target scoring or profiling without lawful owned-scope authorization
+      - outputs are evidence/witness only, not authority
+  - repo: bekingdomcomejoker-cpu/mikrotik-integration
+    slot: 54
+    visibility: private
+    branch: master
+    size_kb: 3
+    cluster: J
+    role: MikroTik/router integration shell; high review because router/local network scope
+    activation_class: blocked_until_tree_review
+    next_action: tree-level inspection; verify RouterOS version, owned-device scope, dry-run/export mode, no credential storage
+    hard_boundaries:
+      - owned router only
+      - no credential commits
+      - no destructive RouterOS commands without explicit review
+      - prefer export/read-only before apply
+  - repo: bekingdomcomejoker-cpu/standerton-mesh
+    slot: 94
+    visibility: public
+    branch: master
+    size_kb: 1
+    cluster: J
+    role: local-world mesh marker shell
+    activation_class: reference
+    next_action: keep as symbolic/local marker unless tree inspection reveals code
+  - repo: bekingdomcomejoker-cpu/zenith-standerton-bridge
+    slot: 86
+    visibility: public
+    branch: master
+    size_kb: 1
+    cluster: J
+    role: local-world bridge marker shell
+    activation_class: reference
+    next_action: keep as symbolic/local marker unless tree inspection reveals code
+  - repo: bekingdomcomejoker-cpu/grid-sealing
+    slot: 87
+    visibility: public
+    branch: master
+    size_kb: 1
+    cluster: J
+    role: grid/boundary marker shell
+    activation_class: reference
+    next_action: keep as symbolic/local marker unless tree inspection reveals code
+  - repo: bekingdomcomejoker-cpu/cosmic-admin
+    slot: 89
+    visibility: public
+    branch: master
+    size_kb: 1
+    cluster: J
+    role: admin/authority marker shell
+    activation_class: reference
+    next_action: keep as symbolic/admin marker unless tree inspection reveals code
+  - repo: bekingdomcomejoker-cpu/node-3-blade
+    slot: 80
+    visibility: public
+    branch: master
+    size_kb: 7
+    cluster: J
+    role: Node 3 / blade symbolic or protocol shell; high review due blade/force language
+    activation_class: review_required
+    next_action: tree-level inspection; classify as symbolic reference, protocol, or code
+cross_listed_high_review:
+  - suppression-detector was handled in Batch 05 but remains high-review due sensitive interpretive claims.
+integration_boundary:
+  - Local-world repos may not act on third-party systems.
+  - Router/network work is owned-device only and must be reversible where possible.
+  - Warfare-language repos are source artifacts until tree-level risk review.
+  - Any action must pass Repo 120 gates and produce a witness packet.
+  - High-review labels are not accusations; they are containment until source is inspected.
+priority_order:
+  - omega-warfare-core-v6
+  - omega-warfare-core
+  - omega-warfare-analytics
+  - mikrotik-integration
+  - node-3-blade
+  - standerton-mesh
+  - zenith-standerton-bridge
+  - grid-sealing
+  - cosmic-admin
+lock_line: Local-world code must know whose world it is allowed to touch.
