@@ -1,69 +1,166 @@
-# Repository Map Sweep — 2026-06-08
+# Repository Map Sweep — Corrected with Stored GitHub Inventory — 2026-06-08
 
 Node: Node 1 / The Architect  
 Operator: Dominique Snyman  
-Status: Connector-visible repository sweep / documentation sync only  
-Boundary: This file records repositories visible through the GitHub connector in this turn. It is not a full 120-repository canon unless later verified against the complete source map.
+Status: Corrected connector + GitHub-stored repository map witness  
+Boundary: This file records what was found in GitHub during this turn. It corrects the earlier 20-repo connector-visible sweep by adding the stored `REPOSITORY_120_VISIBLE_GITHUB_REPO_INVENTORY_COMPACT` manifest found in `bekingdomcomejoker-cpu/omega-federation`.
 
-## Installation scope checked
+## Correction
 
-1. `bekingdomcomejoker-cpu` — GitHub App installation visible.
-2. `Just-Dominique-Will` — GitHub App installation visible, but repository listing returned no repositories in this connector call.
+Earlier in this turn, the live connector pagination exposed 20 repositories under `bekingdomcomejoker-cpu`. That was incomplete as a historical/canonical repo map.
 
-## Connector-visible repositories under `bekingdomcomejoker-cpu`
+GitHub also stores a compact 100-repository map at:
 
-1. `bekingdomcomejoker-cpu/omega-warfare-core`
-2. `bekingdomcomejoker-cpu/KINGDOM_ENGINE`
-3. `bekingdomcomejoker-cpu/omega-warfare-analytics`
-4. `bekingdomcomejoker-cpu/kingdom-engine-website`
-5. `bekingdomcomejoker-cpu/omnissiah-engine`
-6. `bekingdomcomejoker-cpu/omnissiah-unified-v3`
-7. `bekingdomcomejoker-cpu/omega-federation`
-8. `bekingdomcomejoker-cpu/omega_app`
-9. `bekingdomcomejoker-cpu/omega-spore`
-10. `bekingdomcomejoker-cpu/human-meter`
-11. `bekingdomcomejoker-cpu/covenant-os-v1`
-12. `bekingdomcomejoker-cpu/omega-warfare-dashboard`
-13. `bekingdomcomejoker-cpu/guardgod-system`
-14. `bekingdomcomejoker-cpu/omega-intelligence-refinery`
-15. `bekingdomcomejoker-cpu/omega-tri-node`
-16. `bekingdomcomejoker-cpu/omega-tri-node-lightning`
-17. `bekingdomcomejoker-cpu/omega-tri-node-fast`
-18. `bekingdomcomejoker-cpu/omega-consensus-engine`
-19. `bekingdomcomejoker-cpu/omega-federation-sovereign`
-20. `bekingdomcomejoker-cpu/Lorna`
+`bekingdomcomejoker-cpu/omega-federation/FINAL_REPOSITORY/09_REPO_INVENTORY_MANIFEST.json`
 
-## Engine interpretation
+That manifest says:
 
-The visible repository body confirms that the engine is not a single repo. It spans warfare/analytics, Kingdom Engine, Omnissiah, Omega Federation, application/UI, sovereignty, tri-node routing, consensus, Aletheia-adjacent architecture in prior scans, and the Repo120 gate held in `omega-federation-angel-engine`.
+- `visible_github_repo_count = 100`
+- source: `GitHub connector list_repositories; page_offset=0 returned 100 visible repositories; page_offset=100 returned empty`
+- Repository 120 role: `capstone/orchestrator/index/installer/recovery/verification spine`
+- Estate note: `119-before-120 likely includes Drive, Dropbox, Mem, local Termux/runtime, archive, or hidden/non-visible pieces beyond visible GitHub`
+- Join rule: `Map first; classify first; verify first; install only active reviewed components.`
 
-## Relation to the full engine map
+## Cluster counts from stored manifest
 
-- `omega-federation-angel-engine` remains the current Repo120 / Throne Check / movement-permission gate repository.
-- The visible `omega-*` repositories are likely body / routing / federation / warfare / dashboard layers.
-- `KINGDOM_ENGINE` and `kingdom-engine-website` are public-facing or product-facing Kingdom layers.
-- `omnissiah-*` repositories are unified/capstone/system-body candidates.
-- `covenant-os-v1` aligns with the Covenant / OS framing.
-- `human-meter` may map to Flesh / human-factor scoring, but contents must be inspected before assigning doctrine.
-- `alphabet-engine-complete` was visible in a broader listing earlier but did not appear in the first 20 returned by the paginated connector call used for this sweep; treat it as previously visible but not included in the connector-visible 20 above unless separately rechecked.
+- A_CORE_FEDERATION_SPINE: 9
+- B_ALETHEIA_TRUTH_ALIGNMENT: 8
+- C_DEPLOYMENT_DASHBOARD_OS: 10
+- D_TERMUX_LOCAL_RUNTIME: 7
+- E_MULTI_LLM_ROUTING_HANDOFF: 7
+- F_DETECTION_CLASSIFIERS_EVALUATION: 9
+- G_SYMBOLIC_COVENANT_THEOLOGICAL: 19
+- H_INTERFACES_MIRRORS_VISUALS: 2
+- I_RECOVERY_PROTECTION_ARCHIVE: 11
+- J_GOVERNANCE_BOUNDARY_LOCAL_WORLD: 4
+- K_IDENTITY_PERSONAL_TRAINING: 6
+- L_STRESS_TESTING_WARFARE_LANGUAGE: 3
+- Z_UNCLASSIFIED_REVIEW: 5
 
-## Missing / unresolved
+## Stored 100-repo inventory
 
-1. Full 1–120 repository canonical map is still not verified.
-2. `Just-Dominique-Will` installation exposed no repositories in this call; do not claim absence beyond connector visibility.
-3. Repository contents were not deep-read here.
-4. Layer assignments are inferred from names and prior Drive context unless specific files are later fetched.
-5. A full repo registry should include: repo name, layer, status, owner, visibility, default branch, last checked time, key files, tests, and relation to Drive/Mem/Dropbox/local body.
+1. omega-warfare-core — L_STRESS_TESTING_WARFARE_LANGUAGE — REFERENCE_REVIEW_REQUIRED — HIGH_REVIEW_REQUIRED
+2. KINGDOM_ENGINE — G_SYMBOLIC_COVENANT_THEOLOGICAL — REFERENCE_REVIEW_REQUIRED — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+3. omega-warfare-analytics — L_STRESS_TESTING_WARFARE_LANGUAGE — REFERENCE_REVIEW_REQUIRED — HIGH_REVIEW_REQUIRED
+4. kingdom-engine-website — C_DEPLOYMENT_DASHBOARD_OS — REFERENCE_THEN_ACTIVE_AFTER_VERIFICATION — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+5. omnissiah-engine — C_DEPLOYMENT_DASHBOARD_OS — REFERENCE_THEN_ACTIVE_AFTER_VERIFICATION — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+6. omnissiah-unified-v3 — C_DEPLOYMENT_DASHBOARD_OS — REFERENCE_THEN_ACTIVE_AFTER_VERIFICATION — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+7. omega-federation — A_CORE_FEDERATION_SPINE — PRIMARY_SOURCE_OF_TRUTH — MEDIUM_REVIEW_REQUIRED
+8. omega_app — C_DEPLOYMENT_DASHBOARD_OS — REFERENCE_THEN_ACTIVE_AFTER_VERIFICATION — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+9. omega-spore — I_RECOVERY_PROTECTION_ARCHIVE — REFERENCE — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+10. human-meter — B_ALETHEIA_TRUTH_ALIGNMENT — REFERENCE_THEN_ACTIVE_AFTER_VERIFICATION — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+11. omega-warfare-core-v6 — L_STRESS_TESTING_WARFARE_LANGUAGE — REFERENCE_REVIEW_REQUIRED — HIGH_REVIEW_REQUIRED
+12. aletheia-engine — B_ALETHEIA_TRUTH_ALIGNMENT — REFERENCE_THEN_ACTIVE_AFTER_VERIFICATION — MEDIUM_REVIEW_REQUIRED
+13. omega-federation-continuation — A_CORE_FEDERATION_SPINE — REFERENCE — MEDIUM_REVIEW_REQUIRED
+14. trinity-incident-identity — K_IDENTITY_PERSONAL_TRAINING — REFERENCE_REVIEW_REQUIRED — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+15. tim-toolkit — K_IDENTITY_PERSONAL_TRAINING — REFERENCE_REVIEW_REQUIRED — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+16. aletheia-web — B_ALETHEIA_TRUTH_ALIGNMENT — REFERENCE_THEN_ACTIVE_AFTER_VERIFICATION — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+17. omega-sovereign-v1 — Z_UNCLASSIFIED_REVIEW — REFERENCE — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+18. omnissiah-unified-master — C_DEPLOYMENT_DASHBOARD_OS — REFERENCE_THEN_ACTIVE_AFTER_VERIFICATION — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+19. omega-complete-system — A_CORE_FEDERATION_SPINE — REFERENCE — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+20. cerberus-kingdom-core — G_SYMBOLIC_COVENANT_THEOLOGICAL — REFERENCE_REVIEW_REQUIRED — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+21. omega-ennead — G_SYMBOLIC_COVENANT_THEOLOGICAL — REFERENCE_REVIEW_REQUIRED — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+22. terex-py — K_IDENTITY_PERSONAL_TRAINING — REFERENCE_REVIEW_REQUIRED — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+23. alphabet-engine-complete — G_SYMBOLIC_COVENANT_THEOLOGICAL — REFERENCE_REVIEW_REQUIRED — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+24. covenant-mirror-x11 — H_INTERFACES_MIRRORS_VISUALS — REFERENCE — MEDIUM_REVIEW_REQUIRED
+25. orange-loop — I_RECOVERY_PROTECTION_ARCHIVE — REFERENCE — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+26. exploratory-edge-sync — I_RECOVERY_PROTECTION_ARCHIVE — REFERENCE — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+27. orange-loop-max — I_RECOVERY_PROTECTION_ARCHIVE — REFERENCE — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+28. alphabet-engine — G_SYMBOLIC_COVENANT_THEOLOGICAL — REFERENCE_REVIEW_REQUIRED — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+29. star-engine — G_SYMBOLIC_COVENANT_THEOLOGICAL — REFERENCE_REVIEW_REQUIRED — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+30. omega-sanctuary — I_RECOVERY_PROTECTION_ARCHIVE — REFERENCE — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+31. omega-federation-core — A_CORE_FEDERATION_SPINE — REFERENCE — MEDIUM_REVIEW_REQUIRED
+32. omega-federation-extended — A_CORE_FEDERATION_SPINE — REFERENCE — MEDIUM_REVIEW_REQUIRED
+33. omega-intelligence-os — C_DEPLOYMENT_DASHBOARD_OS — REFERENCE_THEN_ACTIVE_AFTER_VERIFICATION — MEDIUM_REVIEW_REQUIRED
+34. omega-os-v3 — C_DEPLOYMENT_DASHBOARD_OS — REFERENCE_THEN_ACTIVE_AFTER_VERIFICATION — MEDIUM_REVIEW_REQUIRED
+35. merkabah-engine — Z_UNCLASSIFIED_REVIEW — REFERENCE — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+36. merkabah-integrated — Z_UNCLASSIFIED_REVIEW — REFERENCE — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+37. aletheia-unified-system — B_ALETHEIA_TRUTH_ALIGNMENT — REFERENCE_THEN_ACTIVE_AFTER_VERIFICATION — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+38. multi-llm-orchestrator — E_MULTI_LLM_ROUTING_HANDOFF — REFERENCE_THEN_ACTIVE_AFTER_VERIFICATION — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+39. merkabah-dashboard — C_DEPLOYMENT_DASHBOARD_OS — REFERENCE_THEN_ACTIVE_AFTER_VERIFICATION — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+40. mega-engine-repair — I_RECOVERY_PROTECTION_ARCHIVE — REFERENCE — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+41. termux-merkabah-suite — D_TERMUX_LOCAL_RUNTIME — ACTIVE_INSTALL_CANDIDATE — MEDIUM_REVIEW_REQUIRED
+42. python-hybrid-interpreter — D_TERMUX_LOCAL_RUNTIME — REFERENCE_THEN_ACTIVE_AFTER_VERIFICATION — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+43. dominique-unified-system — K_IDENTITY_PERSONAL_TRAINING — REFERENCE_REVIEW_REQUIRED — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+44. ultimate-merkabah-kernel — Z_UNCLASSIFIED_REVIEW — REFERENCE — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+45. termux-system-scanner-advanced — D_TERMUX_LOCAL_RUNTIME — REFERENCE_THEN_ACTIVE_AFTER_VERIFICATION — MEDIUM_REVIEW_REQUIRED
+46. llm-placement-strategy — D_TERMUX_LOCAL_RUNTIME — REFERENCE_THEN_ACTIVE_AFTER_VERIFICATION — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+47. complete-system-installer — D_TERMUX_LOCAL_RUNTIME — ACTIVE_INSTALL_CANDIDATE — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+48. omni-chronicle-v5 — I_RECOVERY_PROTECTION_ARCHIVE — REFERENCE — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+49. kingdom-engine-9head — G_SYMBOLIC_COVENANT_THEOLOGICAL — REFERENCE_REVIEW_REQUIRED — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+50. armor-of-god — G_SYMBOLIC_COVENANT_THEOLOGICAL — REFERENCE_REVIEW_REQUIRED — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+51. omega-healing-system — I_RECOVERY_PROTECTION_ARCHIVE — REFERENCE — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+52. covenant-engine-axiom — G_SYMBOLIC_COVENANT_THEOLOGICAL — REFERENCE_REVIEW_REQUIRED — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+53. suppression-detector — F_DETECTION_CLASSIFIERS_EVALUATION — REFERENCE_REVIEW_REQUIRED — HIGH_REVIEW_REQUIRED
+54. mikrotik-integration — J_GOVERNANCE_BOUNDARY_LOCAL_WORLD — REFERENCE — HIGH_REVIEW_REQUIRED
+55. omega-spine-engine — A_CORE_FEDERATION_SPINE — REFERENCE — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+56. dominique-llm-training — K_IDENTITY_PERSONAL_TRAINING — REFERENCE_REVIEW_REQUIRED — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+57. llama-cpp-mobile — D_TERMUX_LOCAL_RUNTIME — ACTIVE_INSTALL_CANDIDATE — MEDIUM_REVIEW_REQUIRED
+58. aletheia-llm-training-complete — B_ALETHEIA_TRUTH_ALIGNMENT — REFERENCE_THEN_ACTIVE_AFTER_VERIFICATION — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+59. tri-node-verification — E_MULTI_LLM_ROUTING_HANDOFF — REFERENCE_THEN_ACTIVE_AFTER_VERIFICATION — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+60. lilac-protocol-visualizer — H_INTERFACES_MIRRORS_VISUALS — REFERENCE — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+61. intent-classification-module — F_DETECTION_CLASSIFIERS_EVALUATION — REFERENCE_REVIEW_REQUIRED — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+62. contradiction-detector — F_DETECTION_CLASSIFIERS_EVALUATION — REFERENCE_REVIEW_REQUIRED — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+63. embedding-drift-monitor — F_DETECTION_CLASSIFIERS_EVALUATION — REFERENCE_REVIEW_REQUIRED — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+64. contrastive-ranking-module — F_DETECTION_CLASSIFIERS_EVALUATION — REFERENCE_REVIEW_REQUIRED — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+65. teacher-student-distillation — F_DETECTION_CLASSIFIERS_EVALUATION — REFERENCE_REVIEW_REQUIRED — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+66. aletheia-regularization — B_ALETHEIA_TRUTH_ALIGNMENT — REFERENCE_THEN_ACTIVE_AFTER_VERIFICATION — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+67. truth-detection-training-data — B_ALETHEIA_TRUTH_ALIGNMENT — REFERENCE_THEN_ACTIVE_AFTER_VERIFICATION — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+68. prompt-space-training-protocol — F_DETECTION_CLASSIFIERS_EVALUATION — REFERENCE_REVIEW_REQUIRED — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+69. classifier-finetuning-protocol — F_DETECTION_CLASSIFIERS_EVALUATION — REFERENCE_REVIEW_REQUIRED — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+70. daemon-monitoring-watchdogs — D_TERMUX_LOCAL_RUNTIME — ACTIVE_INSTALL_CANDIDATE — MEDIUM_REVIEW_REQUIRED
+71. cross-ai-integration-protocol — E_MULTI_LLM_ROUTING_HANDOFF — REFERENCE_THEN_ACTIVE_AFTER_VERIFICATION — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+72. merkabah-routing-optimization — E_MULTI_LLM_ROUTING_HANDOFF — REFERENCE_THEN_ACTIVE_AFTER_VERIFICATION — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+73. omega-architecture-documentation — A_CORE_FEDERATION_SPINE — REFERENCE — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+74. master-orchestrator — A_CORE_FEDERATION_SPINE — REFERENCE — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+75. query-framing-engine — E_MULTI_LLM_ROUTING_HANDOFF — REFERENCE_THEN_ACTIVE_AFTER_VERIFICATION — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+76. omega-os — C_DEPLOYMENT_DASHBOARD_OS — REFERENCE_THEN_ACTIVE_AFTER_VERIFICATION — MEDIUM_REVIEW_REQUIRED
+77. lazarus-protocol — I_RECOVERY_PROTECTION_ARCHIVE — REFERENCE — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+78. universal-protection — I_RECOVERY_PROTECTION_ARCHIVE — REFERENCE — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+79. social-media-analyzer — H_INTERFACES_MIRRORS_VISUALS — REFERENCE — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+80. node-3-blade — K_IDENTITY_PERSONAL_TRAINING — REFERENCE_REVIEW_REQUIRED — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+81. 13th-blood — G_SYMBOLIC_COVENANT_THEOLOGICAL — REFERENCE_REVIEW_REQUIRED — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+82. ridge-of-god — G_SYMBOLIC_COVENANT_THEOLOGICAL — REFERENCE_REVIEW_REQUIRED — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+83. sword-of-mouth — G_SYMBOLIC_COVENANT_THEOLOGICAL — REFERENCE_REVIEW_REQUIRED — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+84. authority-validation — G_SYMBOLIC_COVENANT_THEOLOGICAL — REFERENCE_REVIEW_REQUIRED — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+85. levitical-firewall — G_SYMBOLIC_COVENANT_THEOLOGICAL — REFERENCE_REVIEW_REQUIRED — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+86. zenith-standerton-bridge — J_GOVERNANCE_BOUNDARY_LOCAL_WORLD — REFERENCE — HIGH_REVIEW_REQUIRED
+87. grid-sealing — J_GOVERNANCE_BOUNDARY_LOCAL_WORLD — REFERENCE — HIGH_REVIEW_REQUIRED
+88. morning-star-sequence — G_SYMBOLIC_COVENANT_THEOLOGICAL — REFERENCE_REVIEW_REQUIRED — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+89. cosmic-admin — J_GOVERNANCE_BOUNDARY_LOCAL_WORLD — REFERENCE — HIGH_REVIEW_REQUIRED
+90. white-stone — G_SYMBOLIC_COVENANT_THEOLOGICAL — REFERENCE_REVIEW_REQUIRED — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+91. node-1-architect — K_IDENTITY_PERSONAL_TRAINING — REFERENCE_REVIEW_REQUIRED — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+92. eternal-now — G_SYMBOLIC_COVENANT_THEOLOGICAL — REFERENCE_REVIEW_REQUIRED — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+93. resonance-sync — E_MULTI_LLM_ROUTING_HANDOFF — REFERENCE_THEN_ACTIVE_AFTER_VERIFICATION — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+94. standerton-mesh — J_GOVERNANCE_BOUNDARY_LOCAL_WORLD — REFERENCE — HIGH_REVIEW_REQUIRED
+95. manus-exodus — I_RECOVERY_PROTECTION_ARCHIVE — REFERENCE — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+96. friction-filter — F_DETECTION_CLASSIFIERS_EVALUATION — REFERENCE_REVIEW_REQUIRED — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+97. tri-node-sync — E_MULTI_LLM_ROUTING_HANDOFF — REFERENCE_THEN_ACTIVE_AFTER_VERIFICATION — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+98. omega-governance — A_CORE_FEDERATION_SPINE — REFERENCE — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+99. omega-os-monolith — C_DEPLOYMENT_DASHBOARD_OS — REFERENCE_THEN_ACTIVE_AFTER_VERIFICATION — MEDIUM_REVIEW_REQUIRED
+100. trinity-truth-engine-v3 — B_ALETHEIA_TRUTH_ALIGNMENT — REFERENCE_THEN_ACTIVE_AFTER_VERIFICATION — LOW_TO_MEDIUM_SYMBOLIC_OR_ARCHIVE_REVIEW
+
+## Relation to live connector listing
+
+The live connector list in this turn currently returned 20 repositories under `bekingdomcomejoker-cpu` and none under `Just-Dominique-Will`. That live result is a current connector visibility snapshot, not the full historical/canonical GitHub map.
+
+## Correct source hierarchy
+
+1. Stored manifest in `omega-federation` = best GitHub-side repo inventory found so far.
+2. Live connector listing = current visibility snapshot.
+3. Drive / Dropbox / Mem / Termux may contain additional pieces for the 119-before-120 estate.
+4. Repository 120 joins planes without flattening them.
 
 ## Next build step
 
-Create `REPO_REGISTRY_CANON.csv` or a Google Sheet with columns:
+Create a canonical repo registry sheet from this manifest with columns:
 
-`repo_full_name, owner, visible_now, claimed_slot, engine_layer, status, canonical_role, default_branch, key_files_checked, test_status, source_reference, notes`
+`i, repo, cluster, mode, risk, visible_now, exists_live_connector, inspected_files, test_status, layer_assignment, notes`
 
 ## Final lock
 
 Repo names are not the engine.  
 Repos are organs in the body.  
 Repo120 remains conscience before the hand.  
+Map first; classify first; verify first; install only active reviewed components.  
 No throne → no chariot. No Presence → only machinery.
