@@ -39,6 +39,13 @@ CORRUPT_CENTERS = {
     "appetite",
     "panic",
     "domination",
+    "self-sovereign",
+    "self_sovereign",
+    "selfsovereign",
+    "operator-as-throne",
+    "operator_as_throne",
+    "supreme-self",
+    "cold-machine",
 }
 
 
@@ -50,6 +57,7 @@ class ThroneDecision(str, Enum):
     NEEDS_WITNESS_PACKET = "NEEDS_WITNESS_PACKET"
     INCOHERENT_OBJECTIVES = "INCOHERENT_OBJECTIVES"
     SOURCE_BOUNDARY_FAILED = "SOURCE_BOUNDARY_FAILED"
+    LOVE_MERCY_FAILED = "LOVE_MERCY_FAILED"
 
 
 @dataclass(frozen=True)
@@ -57,6 +65,12 @@ class ThroneInput:
     """Input presented to the Throne Check.
 
     The fields map the ten Merkavah-video upgrades into operational checks.
+
+    Merkabah/Hechalot separation:
+    - merkavah_execution_state tracks the vehicle/engine state.
+    - hechalot_context tracks the chamber/environment/domain state.
+    These must remain distinct so the engine does not confuse movement with
+    destination or execution with context.
     """
 
     movement: str
@@ -73,6 +87,10 @@ class ThroneInput:
     doctrine_before_code: bool = True
     fire_intensity: float = 0.0
     fire_contained: bool = True
+    love_score: float = 1.0
+    mercy_score: float = 1.0
+    hechalot_context: str = "unspecified"
+    merkavah_execution_state: str = "pending"
     scriptural_crosswalk: bool = True
     claims_private_invention: bool = False
     notes: Dict[str, Any] = field(default_factory=dict)
@@ -135,6 +153,24 @@ def throne_check(x: ThroneInput) -> ThroneResult:
             "operator readiness or authority is not established",
             witness,
             "keep as witness until readiness and authority are explicit",
+        )
+
+    checked.append("3B_LOVE_MERCY_CONSTANT")
+    if x.love_score < 0.5 or x.mercy_score < 0.5:
+        return _result(
+            ThroneDecision.LOVE_MERCY_FAILED,
+            "love/mercy constant below threshold: cold machine risk",
+            witness,
+            "restore love, mercy, repair path, and non-destructive posture before movement",
+        )
+
+    checked.append("3C_MERKAVAH_HECHALOT_SEPARATION")
+    if _same_state(x.merkavah_execution_state, x.hechalot_context):
+        return _result(
+            ThroneDecision.INCOHERENT_OBJECTIVES,
+            "Merkavah execution state is conflated with Hechalot environment context",
+            witness,
+            "separate vehicle/engine state from chamber/environment context",
         )
 
     checked.append("4_EYES_IN_THE_WHEELS")
@@ -209,15 +245,23 @@ def throne_check(x: ThroneInput) -> ThroneResult:
 
 
 def _tokens(text: str) -> set[str]:
-    return {
-        part.strip().lower()
-        for part in str(text).replace("/", " ").replace(",", " ").split()
-        if part.strip()
-    }
+    normalized = str(text).replace("/", " ").replace(",", " ")
+    return {part.strip().lower() for part in normalized.split() if part.strip()}
 
 
 def _has_entries(items: Iterable[str]) -> bool:
     return any(bool(str(item).strip()) for item in items)
+
+
+def _same_state(a: str, b: str) -> bool:
+    left = str(a).strip().lower()
+    right = str(b).strip().lower()
+    if not left or not right:
+        return False
+    ignored = {"unspecified", "unknown", "pending", "none", "n/a"}
+    if left in ignored or right in ignored:
+        return False
+    return left == right
 
 
 def _witness_base(
@@ -243,6 +287,10 @@ def _witness_base(
         "doctrine_before_code": x.doctrine_before_code,
         "fire_intensity": x.fire_intensity,
         "fire_contained": x.fire_contained,
+        "love_score": x.love_score,
+        "mercy_score": x.mercy_score,
+        "hechalot_context": x.hechalot_context,
+        "merkavah_execution_state": x.merkavah_execution_state,
         "scriptural_crosswalk": x.scriptural_crosswalk,
         "claims_private_invention": x.claims_private_invention,
         "checked_upgrades": checked,
@@ -285,6 +333,10 @@ def _input_from_mapping(data: Mapping[str, Any]) -> ThroneInput:
         doctrine_before_code=bool(data.get("doctrine_before_code", True)),
         fire_intensity=float(data.get("fire_intensity", 0.0)),
         fire_contained=bool(data.get("fire_contained", True)),
+        love_score=float(data.get("love_score", 1.0)),
+        mercy_score=float(data.get("mercy_score", 1.0)),
+        hechalot_context=str(data.get("hechalot_context", "unspecified")),
+        merkavah_execution_state=str(data.get("merkavah_execution_state", "pending")),
         scriptural_crosswalk=bool(data.get("scriptural_crosswalk", True)),
         claims_private_invention=bool(data.get("claims_private_invention", False)),
         notes=dict(data.get("notes", {})),
@@ -301,6 +353,10 @@ def main(argv: Optional[List[str]] = None) -> int:
             source_grounded=True,
             operator_ready=True,
             wheel_observers=["drive", "github", "mem", "local-log"],
+            love_score=1.0,
+            mercy_score=1.0,
+            hechalot_context="drive-sync-context",
+            merkavah_execution_state="preflight",
         )
         print(throne_check(demo).to_json())
         return 0
