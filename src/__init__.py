@@ -20,6 +20,12 @@ from .frame_resolution_gate import (
     SpeakerRole,
     resolve_frame,
 )
+from .throne_check import (
+    ThroneDecision,
+    ThroneInput,
+    ThroneResult,
+    throne_check,
+)
 
 __all__ = [
     "AngelEngine",
@@ -40,4 +46,8 @@ __all__ = [
     "FrameResult",
     "SpeakerRole",
     "resolve_frame",
+    "ThroneDecision",
+    "ThroneInput",
+    "ThroneResult",
+    "throne_check",
 ]
