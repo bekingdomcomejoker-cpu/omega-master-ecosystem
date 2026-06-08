@@ -8,6 +8,10 @@ def _valid(**overrides):
         source_grounded=True,
         operator_ready=True,
         wheel_observers=["drive", "github", "mem"],
+        love_score=1.0,
+        mercy_score=1.0,
+        hechalot_context="drive-sync-context",
+        merkavah_execution_state="preflight",
     )
     data.update(overrides)
     return ThroneInput(**data)
@@ -33,6 +37,35 @@ def test_missing_aligned_center_requires_confirmation():
 def test_unready_operator_requires_confirmation():
     result = throne_check(_valid(operator_ready=False))
     assert result.decision == ThroneDecision.REQUIRE_CONFIRMATION
+
+
+def test_low_love_fails_constant():
+    result = throne_check(_valid(love_score=0.1))
+    assert result.decision == ThroneDecision.LOVE_MERCY_FAILED
+    assert "love/mercy" in result.reason
+
+
+def test_low_mercy_fails_constant():
+    result = throne_check(_valid(mercy_score=0.1))
+    assert result.decision == ThroneDecision.LOVE_MERCY_FAILED
+    assert "cold machine" in result.reason
+
+
+def test_merkavah_hechalot_conflation_is_incoherent():
+    result = throne_check(
+        _valid(
+            hechalot_context="ascent",
+            merkavah_execution_state="ascent",
+        )
+    )
+    assert result.decision == ThroneDecision.INCOHERENT_OBJECTIVES
+    assert "Hechalot" in result.reason
+
+
+def test_witness_packet_tracks_merkavah_and_hechalot_separately():
+    result = throne_check(_valid())
+    assert result.witness_packet["merkavah_execution_state"] == "preflight"
+    assert result.witness_packet["hechalot_context"] == "drive-sync-context"
 
 
 def test_missing_wheel_observers_needs_witness_packet():
