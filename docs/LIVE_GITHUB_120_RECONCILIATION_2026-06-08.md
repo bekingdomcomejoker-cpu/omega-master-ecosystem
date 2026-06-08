@@ -14,11 +14,11 @@ Boundary: This file reconciles the screenshot-confirmed GitHub profile count of 
 
 ## Tool limitation noted
 
-The installation list endpoint returned the first 100 repositories and then empty on offset/page attempts. The repository search endpoints exposed additional live repositories. Therefore this reconciliation distinguishes:
+The installation list endpoint returned the first 100 repositories and then empty on offset/page attempts. Owner list/search and installed-repository search exposed additional live repositories. Therefore this reconciliation distinguishes:
 
 - `stored_manifest_100`: older 100-repo source map.
 - `live_search_confirmed_extra`: repos confirmed live by GitHub search but not found in the stored manifest.
-- `unresolved_live_delta`: expected remaining names from the screenshot count but not yet located by search.
+- `unresolved_live_delta`: expected remaining name from the screenshot count but not yet located by search.
 
 ## Confirmed live GitHub extras outside the stored 100 manifest
 
@@ -40,8 +40,8 @@ The installation list endpoint returned the first 100 repositories and then empt
 116. `sentinel-forge` — confirmed live by GitHub search.
 117. `omega-federation-angel-engine` — confirmed live by GitHub search; capstone / Repo120 gate.
 118. `OMEGA_FEDERATION_FINAL_MASTER_REGISTRY` — confirmed live by GitHub search.
-119. `UNRESOLVED_LIVE_DELTA_01` — expected from screenshot count; not yet identified.
-120. `UNRESOLVED_LIVE_DELTA_02` — expected from screenshot count; not yet identified.
+119. `sovereign-music-engine` — confirmed live by GitHub search after additional sync pass.
+120. `UNRESOLVED_LIVE_DELTA_01` — expected from screenshot count; not yet identified.
 
 ## Important distinction
 
@@ -49,7 +49,7 @@ The older 101–120 slot mirror and the live GitHub 101–120 reconciliation are
 
 - Old slot mirror: 101–119 = non-GitHub continuity/archive/runtime components; 120 = capstone repo.
 - Live GitHub screenshot: profile now says 120 repositories.
-- Live GitHub search: confirms at least 18 additional live repos outside the older 100 manifest.
+- Live GitHub search: confirms at least 19 additional live repos outside the older 100 manifest.
 
 These layers must be reconciled, not flattened.
 
@@ -61,25 +61,13 @@ These layers must be reconciled, not flattened.
 - Dashboard / edge layer: `omega-warfare-dashboard`, `omega-edge-node-v89-dashboard`
 - Tri-node / consensus layer: `omega-tri-node`, `omega-tri-node-lightning`, `omega-tri-node-fast`, `omega-consensus-engine`
 - Sovereign / intelligence / capstone layer: `omega-federation-sovereign`, `omega-intelligence-refinery`, `omega-federation-angel-engine`, `OMEGA_FEDERATION_FINAL_MASTER_REGISTRY`
+- Music / creative canon layer: `sovereign-music-engine`
 
-## Next search targets for unresolved 2
+## Search attempts for remaining unresolved 1
 
-Search families:
+Checked families included: `bridge`, `guardian`, `aegis`, `registry`, `final`, `mobile`, `android`, `edge`, `node`, `watch`, `census`, `source`, `ledger`, `archive`, `sovereign`, `music`, `engine`, `will`, and `app`.
 
-- `bridge`
-- `guardian`
-- `aegis`
-- `registry`
-- `final`
-- `mobile`
-- `android`
-- `edge`
-- `node`
-- `watch`
-- `census`
-- `source`
-- `ledger`
-- `archive`
+Current status: 19 of the expected 20 live extras are source-confirmed; 1 remains unresolved.
 
 ## Next build step
 
@@ -89,7 +77,7 @@ Create a canonical Google Sheet / CSV registry with columns:
 
 ## Final lock
 
-Do not invent the remaining two.  
+Do not invent the remaining one.  
 Source beats count.  
 Witness beats assumption.  
 Map first; classify first; verify first.  
