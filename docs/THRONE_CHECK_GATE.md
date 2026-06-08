@@ -2,7 +2,7 @@
 
 **Status:** active runnable gate  
 **Role:** pre-action center-of-movement test for Repo120  
-**Source:** Merkavah video comparison insight + connector sync marker issue #2  
+**Source:** Merkavah video comparison insight + Gemini source packet + connector sync marker issue #2  
 **Boundary:** diagnostic and authorization support only; not an autonomous executor
 
 ---
@@ -20,6 +20,11 @@ The Throne Check asks what is seated at the center before any router, model, rep
 The Merkavah video insight added a missing front gate:
 
 > Do not only build the chariot. Keep checking who or what is sitting on the throne.
+
+The Gemini source packet added two refinements:
+
+1. **Love/Mercy constant:** without love, the chariot becomes a cold machine.
+2. **Merkavah vs Hechalot separation:** the vehicle/engine state must not be confused with the chamber/environment/context state.
 
 Repo120 already had Action Permission:
 
@@ -46,12 +51,69 @@ The Throne Check sits before that equation and asks whether the proposed movemen
 
 ---
 
+## Gemini refinements now implemented
+
+### Love/Mercy Constant
+
+The gate now includes:
+
+```text
+love_score
+mercy_score
+```
+
+If either falls below threshold, the result is:
+
+```text
+LOVE_MERCY_FAILED
+```
+
+Reason:
+
+```text
+love/mercy constant below threshold: cold machine risk
+```
+
+### Merkabah / Hechalot Separation
+
+The gate now includes:
+
+```text
+merkavah_execution_state
+hechalot_context
+```
+
+Definitions:
+
+```text
+Merkavah = vehicle / engine / execution state.
+Hechalot = chamber / environment / domain / context state.
+```
+
+If the two are conflated, the result is:
+
+```text
+INCOHERENT_OBJECTIVES
+```
+
+Reason:
+
+```text
+Merkavah execution state is conflated with Hechalot environment context
+```
+
+---
+
 ## Runtime order
 
 ```text
 INPUT
   ↓
 Throne Check
+  ↓
+Love/Mercy Constant
+  ↓
+Merkavah / Hechalot Separation
   ↓
 Truth-Factor Gate
   ↓
@@ -86,7 +148,11 @@ python3 src/throne_check.py '{
   "stated_center": "God Truth Love Presence",
   "source_grounded": true,
   "operator_ready": true,
-  "wheel_observers": ["drive", "github", "mem", "local-log"]
+  "wheel_observers": ["drive", "github", "mem", "local-log"],
+  "love_score": 1.0,
+  "mercy_score": 1.0,
+  "hechalot_context": "drive-sync-context",
+  "merkavah_execution_state": "preflight"
 }'
 ```
 
@@ -110,6 +176,7 @@ DRY_RUN_ONLY
 NEEDS_WITNESS_PACKET
 INCOHERENT_OBJECTIVES
 SOURCE_BOUNDARY_FAILED
+LOVE_MERCY_FAILED
 ```
 
 ---
@@ -118,6 +185,7 @@ SOURCE_BOUNDARY_FAILED
 
 - GitHub issue: `omega-federation-angel-engine#2` — Merkavah Video Insight — Throne Check Canon Sync.
 - Drive canon doc: `Merkavah Video Insight — Throne Check Canon Sync — 2026-06-08`.
+- Gemini source packet: `GEMINI_MERKAVAH_VIDEO_SOURCE_PACKET_2026-06-08`.
 - Mem note: `Merkavah Video Insight — Throne Check Canon Sync`.
 
 ---
