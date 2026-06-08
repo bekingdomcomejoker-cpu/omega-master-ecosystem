@@ -32,12 +32,23 @@ God / Source / Truth / Love / Presence?
 Or ego / fear / revenge / institution / profit / control / spectacle?
 ```
 
+The Gemini source packet added two refinements:
+
+```text
+Love/Mercy Constant: prevents the engine from becoming a cold machine.
+Merkavah / Hechalot Separation: keeps vehicle/execution state separate from chamber/environment context.
+```
+
 Runtime order:
 
 ```text
 INPUT
   ↓
 Throne Check
+  ↓
+Love/Mercy Constant
+  ↓
+Merkavah / Hechalot Separation
   ↓
 Truth-Factor Gate
   ↓
@@ -87,6 +98,10 @@ front_gate = throne_check(ThroneInput(
     source_grounded=True,
     operator_ready=True,
     wheel_observers=["drive", "github", "mem", "local-log"],
+    love_score=1.0,
+    mercy_score=1.0,
+    hechalot_context="drive-sync-context",
+    merkavah_execution_state="preflight",
 ))
 print(front_gate.to_json())
 
@@ -116,6 +131,14 @@ python3 src/angel_engine.py
 PYTHONPATH=. python3 -m pytest tests/test_angel_engine.py
 PYTHONPATH=. python3 -m pytest tests/test_coherence_gate.py
 ```
+
+### Doctrine-Only Notes
+
+```text
+docs/MERKAVAH_GEOMETRY.md
+```
+
+Mer-Ka-Ba geometry, tetrahedron imagery, hemispheric synchronization, and ego-death language are preserved as doctrine/theory only. They are not runnable execution loops.
 
 ### Federation Role
 
