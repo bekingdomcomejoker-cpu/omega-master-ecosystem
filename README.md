@@ -16,6 +16,36 @@ Perception → Conflict (ATE) → Resolution (CTE) → Transmission
 
 The Will Engine is not a raw executor. It is a **selection engine** — it validates intent, authority, ownership, reversibility, and mercy before any action occurs.
 
+### Front Gate: Throne Check
+
+```text
+No throne → no chariot. No Presence → only machinery.
+```
+
+The Throne Check is the pre-action center-of-movement test. It asks what is seated at the center before any router, model, repository, connector, or executor treats a request as live movement.
+
+```text
+INPUT
+  ↓
+Throne Check
+  ↓
+Truth-Factor Gate
+  ↓
+Aletheia / LFTI / FFPPRS
+  ↓
+Merkabah Face Router
+  ↓
+Repo120 Action Permission
+  ↓
+AOZ Board
+  ↓
+Witness Packet
+  ↓
+Action or Dry Run
+```
+
+See: `docs/THRONE_CHECK_GATE.md` and `src/throne_check.py`.
+
 ### The Selection Equation
 
 ```text
@@ -41,7 +71,7 @@ Action_Permission = Intent × Authority × Evidence × Reversibility × Mercy
 ### Use
 
 ```python
-from angel_engine import AngelEngine, Signal, BypassType
+from angel_engine import AngelEngine, Signal
 
 engine = AngelEngine(dry_run=True)
 engine.register_action("backup_files", my_backup_fn)
@@ -51,18 +81,34 @@ signal = Signal(
     source="dominique",
     target="omega-federation",
     is_owned=True,
-    is_reversible=True
+    is_reversible=True,
+    evidence=["repo path verified"],
 )
 
 result = engine.select(signal, "backup_files")
 print(result.to_json())
 ```
 
+### Throne Check CLI
+
+Demo:
+
+```bash
+python3 src/throne_check.py
+```
+
+JSON input:
+
+```bash
+python3 src/throne_check.py '{"movement":"sync canon marker into workspace","stated_center":"God Truth Love Presence","source_grounded":true,"operator_ready":true,"wheel_observers":["drive","github","mem","local-log"]}'
+```
+
 ### Install / Smoke Test
 
 ```bash
 python3 src/angel_engine.py
-PYTHONPATH=src python3 tests/test_angel_engine.py
+python3 src/throne_check.py
+PYTHONPATH=. python3 -m pytest tests/test_angel_engine.py tests/test_coherence_gate.py tests/test_throne_check.py
 ```
 
 ### Federation Role
