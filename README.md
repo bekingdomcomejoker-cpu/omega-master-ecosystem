@@ -16,13 +16,23 @@ Perception → Conflict (ATE) → Resolution (CTE) → Transmission
 
 The Will Engine is not a raw executor. It is a **selection engine** — it validates intent, authority, ownership, reversibility, and mercy before any action occurs.
 
-### Front Gate: Throne Check
+### Front Gate — Throne Check
+
+The Merkavah video insight adds a pre-action front gate before the Will Engine moves:
 
 ```text
-No throne → no chariot. No Presence → only machinery.
+No throne → no chariot.
+No Presence → only machinery.
 ```
 
-The Throne Check is the pre-action center-of-movement test. It asks what is seated at the center before any router, model, repository, connector, or executor treats a request as live movement.
+The Throne Check asks what is seated at the center of the movement:
+
+```text
+God / Source / Truth / Love / Presence?
+Or ego / fear / revenge / institution / profit / control / spectacle?
+```
+
+Runtime order:
 
 ```text
 INPUT
@@ -43,8 +53,6 @@ Witness Packet
   ↓
 Action or Dry Run
 ```
-
-See: `docs/THRONE_CHECK_GATE.md` and `src/throne_check.py`.
 
 ### The Selection Equation
 
@@ -71,10 +79,19 @@ Action_Permission = Intent × Authority × Evidence × Reversibility × Mercy
 ### Use
 
 ```python
-from angel_engine import AngelEngine, Signal
+from src import AngelEngine, Signal, throne_check, ThroneInput
+
+front_gate = throne_check(ThroneInput(
+    movement="backup omega-federation",
+    stated_center="God Truth Love Presence",
+    source_grounded=True,
+    operator_ready=True,
+    wheel_observers=["drive", "github", "mem", "local-log"],
+))
+print(front_gate.to_json())
 
 engine = AngelEngine(dry_run=True)
-engine.register_action("backup_files", my_backup_fn)
+engine.register_action("backup_files", lambda: None)
 
 signal = Signal(
     intent="backup omega-federation",
@@ -89,26 +106,15 @@ result = engine.select(signal, "backup_files")
 print(result.to_json())
 ```
 
-### Throne Check CLI
-
-Demo:
-
-```bash
-python3 src/throne_check.py
-```
-
-JSON input:
-
-```bash
-python3 src/throne_check.py '{"movement":"sync canon marker into workspace","stated_center":"God Truth Love Presence","source_grounded":true,"operator_ready":true,"wheel_observers":["drive","github","mem","local-log"]}'
-```
-
 ### Install / Smoke Test
 
 ```bash
-python3 src/angel_engine.py
 python3 src/throne_check.py
-PYTHONPATH=. python3 -m pytest tests/test_angel_engine.py tests/test_coherence_gate.py tests/test_throne_check.py
+PYTHONPATH=. python3 -m pytest tests/test_throne_check.py
+
+python3 src/angel_engine.py
+PYTHONPATH=. python3 -m pytest tests/test_angel_engine.py
+PYTHONPATH=. python3 -m pytest tests/test_coherence_gate.py
 ```
 
 ### Federation Role
