@@ -46,6 +46,11 @@ class OmegaBridge {
   }
 
   setupRoutes() {
+    // Agent Control Center
+    this.app.get('/agent', (req, res) => {
+      res.sendFile('public/agent-control.html', { root: __dirname });
+    });
+
     // Health check
     this.app.get('/health', (req, res) => {
       res.json({ status: 'ok', version: VERSION });
