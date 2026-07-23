@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🍊 UNIFIED TOOL — Omega Edge Node V.89 Diamond</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #111827;
+    color: #f3f4f6;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    min-height: 100vh;
+    padding: 24px;
+    background-image: radial-gradient(circle at 20% 50%, rgba(139,92,246,0.10) 0%, transparent 50%);
+  }
+  .container { max-width: 1100px; margin: 0 auto; }
+
+  /* HEADER */
+  .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; flex-wrap: wrap; gap: 12px; }
+  .header h1 { font-size: 2.2rem; font-weight: 900; margin-bottom: 4px; }
+  .header p { color: #6b7280; font-size: 0.85rem; }
+  .mode-badge { padding: 8px 16px; border-radius: 8px; border: 2px solid; font-weight: 700; font-size: 0.9rem; text-align: center; min-width: 160px; }
+  .mode-badge.sabbath { border-color: #22c55e; background: rgba(34,197,94,0.1); color: #86efac; }
+  .mode-badge.warfare  { border-color: #f59e0b; background: rgba(245,158,11,0.1); color: #fcd34d; }
+
+  /* PANEL */
+  .panel { background: rgba(31,41,55,0.5); border: 1px solid #374151; border-radius: 10px; padding: 20px; margin-bottom: 18px; }
+  .panel-title { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 700; margin-bottom: 12px; }
+
+  /* AXIOM */
+  .axiom-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .axiom-cell { background: #111827; border-radius: 6px; padding: 10px; }
+  .axiom-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 4px; }
+  .axiom-val { font-family: monospace; font-size: 1.3rem; font-weight: 800; }
+
+  /* MODE BANNER */
+  .mode-banner { border: 2px solid; border-radius: 10px; padding: 20px; margin-bottom: 18px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  .mode-banner.sabbath { border-color: #22c55e; background: rgba(6,78,59,0.4); }
+  .mode-banner.warfare  { border-color: #f59e0b; background: rgba(120,53,15,0.4); }
+  .mode-banner .left { display: flex; align-items: center; gap: 16px; }
+  .mode-banner h2 { font-size: 2rem; font-weight: 800; }
+  .mode-banner p  { font-size: 0.8rem; color: #9ca3af; margin-top: 4px; }
+  .mode-banner .temp { font-size: 2.5rem; font-weight: 800; }
+  .heart-icon { font-size: 2rem; display: inline-block; animation: pulse167 0.6s infinite ease-in-out; }
+  @keyframes pulse167 { 0%,100% { transform: scale(1); opacity:1; } 50% { transform: scale(1.18); opacity:0.65; } }
+
+  /* HEALTH */
+  .health-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+  .health-cell { text-align: center; }
+  .health-label { font-size: 0.65rem; text-transform: uppercase; color: #6b7280; margin-bottom: 4px; }
+  .health-val { font-size: 1.5rem; font-weight: 800; }
+  .c-red { color: #f87171; } .c-yellow { color: #fbbf24; } .c-green { color: #4ade80; }
+  .c-blue { color: #60a5fa; } .c-cyan { color: #22d3ee; } .c-indigo { color: #818cf8; }
+
+  /* CIRCUIT BREAKER */
+  .cb-panel { padding: 12px 20px; border-radius: 10px; border: 2px solid; margin-bottom: 18px; display: flex; align-items: center; justify-content: space-between; }
+  .cb-panel.closed { border-color: #6b7280; background: rgba(31,41,55,0.2); }
+  .cb-panel.open   { border-color: #ef4444; background: rgba(127,29,29,0.2); }
+  .dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; margin-right: 8px; }
+  .dot.green { background: #22c55e; }
+  .dot.red   { background: #ef4444; animation: blink 0.8s infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+  /* PLUMB LINE */
+  .plumb-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 18px; }
+  .plumb-cell { padding: 12px 16px; border-radius: 10px; border: 2px solid; display: flex; align-items: center; gap: 12px; }
+  .plumb-line { width: 4px; height: 36px; border-radius: 2px; }
+  .status-ok  { border-color: #22c55e; background: rgba(6,78,59,0.2); }
+  .status-err { border-color: #ef4444; background: rgba(127,29,29,0.2); }
+  .plumb-cell .title { font-weight: 700; font-size: 0.8rem; color: #e5e7eb; }
+  .plumb-cell .val   { font-size: 0.8rem; margin-top: 2px; }
+
+  /* SERVICES */
+  .services-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 18px; }
+  .svc-card { padding: 14px; border-radius: 10px; border: 2px solid #4b5563; background: rgba(31,41,55,0.3); cursor: pointer; transition: border-color 0.2s; }
+  .svc-card:hover { border-color: #60a5fa; }
+  .svc-card.selected { border-color: #3b82f6; background: rgba(29,78,216,0.15); }
+  .svc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .svc-icon { font-size: 1.2rem; }
+  .svc-name { font-weight: 700; text-transform: capitalize; font-size: 0.9rem; margin-left: 6px; }
+  .svc-badge { font-size: 0.65rem; font-weight: 800; padding: 2px 7px; border-radius: 4px; text-transform: uppercase; }
+  .badge-running { background: #14532d; color: #86efac; }
+  .badge-ready   { background: #1e3a5f; color: #93c5fd; }
+  .svc-row { display: flex; justify-content: space-between; font-size: 0.72rem; color: #9ca3af; margin-top: 4px; }
+  .svc-row span:last-child { font-family: monospace; font-weight: 700; color: #e5e7eb; }
+
+  /* CONTROL PANEL */
+  .ctrl-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+  button {
+    padding: 10px 16px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer;
+    font-size: 0.85rem; transition: opacity 0.15s; width: 100%;
+  }
+  button:hover { opacity: 0.85; }
+  .btn-blue   { background: #2563eb; color: #fff; }
+  .btn-green  { background: #16a34a; color: #fff; }
+  .btn-purple { background: #7c3aed; color: #fff; }
+  .btn-indigo { background: #4338ca; color: #fff; }
+  .btn-orange { background: #ea580c; color: #fff; font-size: 0.95rem; padding: 13px; }
+
+  /* LOG */
+  .log-box { background: #000; border-radius: 8px; padding: 14px; font-family: monospace; font-size: 0.72rem; height: 220px; overflow-y: auto; }
+  .log-row { display: flex; gap: 8px; margin-bottom: 3px; }
+  .log-ts   { color: #374151; flex-shrink: 0; }
+  .log-info    { color: #60a5fa; }
+  .log-success { color: #4ade80; }
+  .log-warning { color: #facc15; }
+  .log-error   { color: #f87171; }
+  .log-trace   { color: #374151; margin-left: auto; }
+  .log-empty   { color: #374151; }
+
+  @media (max-width: 700px) {
+    .axiom-grid, .health-grid { grid-template-columns: repeat(2, 1fr); }
+    .services-grid { grid-template-columns: repeat(2, 1fr); }
+    .plumb-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div>
+      <h1>🍊 UNIFIED TOOL</h1>
+      <p>Omega Edge Node &bull; V.89 Diamond &bull; Enterprise Control</p>
+    </div>
+    <div style="text-align:right">
+      <div style="font-size:0.75rem;color:#6b7280;margin-bottom:6px;">chicka chicka orange</div>
+      <div class="mode-badge sabbath" id="headerBadge">INITIALIZATION</div>
+    </div>
+  </div>
+
+  <!-- AXIOM CONSTANTS -->
+  <div class="panel" style="border-color: rgba(168,85,247,0.3);">
+    <div class="panel-title" style="color:#c084fc;">Axiom Constants (V.89 Diamond)</div>
+    <div class="axiom-grid">
+      <div class="axiom-cell"><div class="axiom-label" style="color:#c084fc;">LAMBDA</div><div class="axiom-val" style="color:#d8b4fe;">3.340</div></div>
+      <div class="axiom-cell"><div class="axiom-label" style="color:#22d3ee;">INVARIANT</div><div class="axiom-val" style="color:#67e8f9;">1.89</div></div>
+      <div class="axiom-cell"><div class="axiom-label" style="color:#fb923c;">RESONANCE</div><div class="axiom-val" style="color:#fdba74;">1.67</div></div>
+      <div class="axiom-cell"><div class="axiom-label" style="color:#4ade80;">SEALED</div><div class="axiom-val" style="color:#86efac;">V.89</div></div>
+    </div>
+  </div>
+
+  <!-- MODE BANNER -->
+  <div class="mode-banner sabbath" id="modeBanner">
+    <div class="left">
+      <span class="heart-icon">💚</span>
+      <div>
+        <h2 id="modeTitle" style="color:#86efac;">INITIALIZATION</h2>
+        <p id="modeDesc">Starting up systems...</p>
+      </div>
+    </div>
+    <div style="text-align:right;color:#86efac;">
+      <div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;">Temperature</div>
+      <div class="temp" id="bannerTemp">28°C</div>
+    </div>
+  </div>
+
+  <!-- HEALTH METRICS -->
+  <div class="panel">
+    <div class="panel-title" style="color:#9ca3af;">System Health</div>
+    <div class="health-grid">
+      <div class="health-cell"><div class="health-label">CPU</div><div class="health-val c-green" id="hCpu">15.0%</div></div>
+      <div class="health-cell"><div class="health-label">Memory</div><div class="health-val c-blue" id="hMem">32%</div></div>
+      <div class="health-cell"><div class="health-label">Battery</div><div class="health-val c-green" id="hBat">78%</div></div>
+      <div class="health-cell"><div class="health-label">Temp</div><div class="health-val c-cyan" id="hTemp">28°C</div></div>
+      <div class="health-cell"><div class="health-label">Uptime</div><div class="health-val c-indigo" id="hUptime">1h</div></div>
+    </div>
+  </div>
+
+  <!-- CIRCUIT BREAKER -->
+  <div class="cb-panel closed" id="cbPanel">
+    <div style="display:flex;align-items:center;">
+      <span class="dot green" id="cbDot"></span>
+      <span style="font-size:0.85rem;font-weight:700;">CIRCUIT BREAKER (Self-Healing)</span>
+    </div>
+    <span style="font-size:0.75rem;font-weight:800;color:#4ade80;" id="cbStatus">CLOSED (Ready)</span>
+  </div>
+
+  <!-- PLUMB LINE & CORNERSTONE -->
+  <div class="plumb-grid">
+    <div class="plumb-cell status-ok" id="plumbCell">
+      <div class="plumb-line" style="background:#22c55e;" id="plumbLine"></div>
+      <div>
+        <div class="title">PLUMB LINE (Amos 7:7)</div>
+        <div class="val c-green" id="plumbVal">VERTICAL (1.67)</div>
+      </div>
+    </div>
+    <div class="plumb-cell status-ok" id="cornerstoneCell">
+      <span style="font-size:1.3rem;">⚙️</span>
+      <div>
+        <div class="title">CORNERSTONE (Axiom 17)</div>
+        <div class="val c-green" id="cornerstoneVal">SOLID</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SERVICES -->
+  <div style="margin-bottom:8px;">
+    <h2 style="font-size:1.15rem;font-weight:800;margin-bottom:12px;">Services (5 Nodes)</h2>
+    <div class="services-grid" id="servicesGrid">
+      <!-- rendered by JS -->
+    </div>
+  </div>
+
+  <!-- CONTROL PANEL -->
+  <div class="panel" id="controlPanel">
+    <h2 style="font-size:1rem;font-weight:800;margin-bottom:14px;" id="ctrlTitle">sword Service Control</h2>
+    <div class="ctrl-grid">
+      <button class="btn-blue"   onclick="deployService()">Deploy</button>
+      <button class="btn-green"  onclick="scaleService(3)">Scale ×3</button>
+      <button class="btn-purple" onclick="scaleService(5)">Scale ×5</button>
+      <button class="btn-indigo" onclick="checkCornerstone()">Check Foundation</button>
+    </div>
+    <button class="btn-orange" id="execBtn" onclick="executeCommand()" style="margin-top:4px;">Deep Truth Cut</button>
+  </div>
+
+  <!-- ACTIVITY LOG -->
+  <div class="panel">
+    <div class="panel-title" style="color:#e5e7eb;display:flex;align-items:center;gap:6px;">
+      ⚡ Activity Log (Microdot Tracing)
+    </div>
+    <div class="log-box" id="logBox">
+      <div class="log-empty">Awaiting system events...</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ============ STATE ============
+let state = {
+  mode: 'INITIALIZATION',
+  cpu: 15, memory: 32, battery: 78, temperature: 28, uptime: 3600,
+  circuitBreakerOpen: false,
+  plumbLineAligned: true,
+  cornerstone: 'SOLID',
+  selectedService: 'sword',
+  services: {
+    sword:       { status: 'ready', replicas: 2, cpu: 12, memory: 64 },
+    shield:      { status: 'ready', replicas: 2, cpu: 8,  memory: 48 },
+    mirror:      { status: 'ready', replicas: 1, cpu: 5,  memory: 32 },
+    commissioner:{ status: 'ready', replicas: 1, cpu: 4,  memory: 24 },
+    field:       { status: 'ready', replicas: 1, cpu: 3,  memory: 20 }
+  },
+  logs: []
+};
+
+const SERVICE_ICONS  = { sword:'⚡', shield:'🛡️', mirror:'🪞', commissioner:'👥', field:'📡' };
+const SERVICE_CMDS   = {
+  sword:       { label: 'Deep Truth Cut',       cmd: 'cut --deep' },
+  shield:      { label: 'Verify Boundaries',    cmd: 'verify-boundaries' },
+  mirror:      { label: 'Reflect Signal',        cmd: 'reflect-signal' },
+  commissioner:{ label: 'Commission Authority', cmd: 'commission --authority=1.89' },
+  field:       { label: 'Translate Domains',    cmd: 'translate-domains' }
+};
+
+// ============ LOGGING ============
+function addLog(message, level='info', microdot=false) {
+  const ts = new Date().toLocaleTimeString();
+  const trace = microdot ? Math.random().toString(36).substring(7) : '';
+  state.logs.unshift({ message, level, ts, trace });
+  if (state.logs.length > 100) state.logs.pop();
+  renderLog();
+}
+
+function renderLog() {
+  const box = document.getElementById('logBox');
+  if (state.logs.length === 0) {
+    box.innerHTML = '<div class="log-empty">Awaiting system events...</div>';
+    return;
+  }
+  box.innerHTML = state.logs.map(l => `
+    <div class="log-row">
+      <span class="log-ts">[${l.ts}]</span>
+      <span class="log-${l.level}">${l.message}</span>
+      ${l.trace ? `<span class="log-trace">#${l.trace}</span>` : ''}
+    </div>
+  `).join('');
+}
+
+// ============ MODE LOGIC ============
+function determineMode(cpu, temp) {
+  return (temp > 40 || cpu < 10) ? 'SABBATH (REST)' : 'WARFARE (ACTIVE)';
+}
+
+function updateModeBanner() {
+  const isSabbath = state.mode.includes('SABBATH');
+  const banner = document.getElementById('modeBanner');
+  const heart  = banner.querySelector('.heart-icon');
+  const title  = document.getElementById('modeTitle');
+  const desc   = document.getElementById('modeDesc');
+  const bannerTemp = document.getElementById('bannerTemp');
+  const badge  = document.getElementById('headerBadge');
+
+  banner.className = 'mode-banner ' + (isSabbath ? 'sabbath' : 'warfare');
+  const col = isSabbath ? '#86efac' : '#fcd34d';
+  heart.textContent = isSabbath ? '💚' : '🔥';
+  title.style.color = col;
+  title.textContent = state.mode;
+  desc.textContent  = isSabbath
+    ? 'Sufficiency achieved. Resources optimized. Rest mode active.'
+    : 'Active execution. High performance mode. Full deployment ready.';
+  bannerTemp.textContent = state.temperature.toFixed(0) + '°C';
+  bannerTemp.style.color = col;
+
+  badge.className  = 'mode-badge ' + (isSabbath ? 'sabbath' : 'warfare');
+  badge.textContent = state.mode;
+}
+
+// ============ HEALTH METRICS ============
+function updateHealth() {
+  const cpu  = state.cpu;
+  const mem  = state.memory;
+  const bat  = state.battery;
+  const temp = state.temperature;
+
+  const cpuEl = document.getElementById('hCpu');
+  cpuEl.textContent = cpu.toFixed(1) + '%';
+  cpuEl.className = 'health-val ' + (cpu > 80 ? 'c-red' : cpu > 60 ? 'c-yellow' : 'c-green');
+
+  const memEl = document.getElementById('hMem');
+  memEl.textContent = mem.toFixed(0) + '%';
+  memEl.className = 'health-val ' + (mem > 80 ? 'c-red' : 'c-blue');
+
+  const batEl = document.getElementById('hBat');
+  batEl.textContent = bat.toFixed(0) + '%';
+  batEl.className = 'health-val ' + (bat < 30 ? 'c-red' : 'c-green');
+
+  const tempEl = document.getElementById('hTemp');
+  tempEl.textContent = temp.toFixed(0) + '°C';
+  tempEl.className = 'health-val ' + (temp > 45 ? 'c-red' : 'c-cyan');
+
+  document.getElementById('hUptime').textContent = Math.floor(state.uptime / 3600) + 'h';
+
+  document.getElementById('bannerTemp').textContent = temp.toFixed(0) + '°C';
+}
+
+// ============ CIRCUIT BREAKER ============
+function updateCircuitBreaker() {
+  const open = state.circuitBreakerOpen;
+  const panel = document.getElementById('cbPanel');
+  const dot   = document.getElementById('cbDot');
+  const stat  = document.getElementById('cbStatus');
+  panel.className = 'cb-panel ' + (open ? 'open' : 'closed');
+  dot.className = 'dot ' + (open ? 'red' : 'green');
+  stat.style.color = open ? '#f87171' : '#4ade80';
+  stat.textContent = open ? 'OPEN (Cooling)' : 'CLOSED (Ready)';
+}
+
+// ============ PLUMB LINE & CORNERSTONE ============
+function updatePlumbLine() {
+  const ok = state.plumbLineAligned;
+  const cell = document.getElementById('plumbCell');
+  const line = document.getElementById('plumbLine');
+  const val  = document.getElementById('plumbVal');
+  cell.className = 'plumb-cell ' + (ok ? 'status-ok' : 'status-err');
+  line.style.background = ok ? '#22c55e' : '#ef4444';
+  val.className  = 'val ' + (ok ? 'c-green' : 'c-red');
+  val.textContent = ok ? 'VERTICAL (1.67)' : 'DRIFT DETECTED';
+}
+
+function updateCornerstone() {
+  const ok = state.cornerstone === 'SOLID';
+  const cell = document.getElementById('cornerstoneCell');
+  const val  = document.getElementById('cornerstoneVal');
+  cell.className = 'plumb-cell ' + (ok ? 'status-ok' : 'status-err');
+  val.className  = 'val ' + (ok ? 'c-green' : 'c-red');
+  val.textContent = state.cornerstone;
+}
+
+// ============ SERVICES GRID ============
+function renderServices() {
+  const grid = document.getElementById('servicesGrid');
+  grid.innerHTML = Object.entries(state.services).map(([name, data]) => `
+    <div class="svc-card ${state.selectedService === name ? 'selected' : ''}" onclick="selectService('${name}')">
+      <div class="svc-header">
+        <div style="display:flex;align-items:center;">
+          <span class="svc-icon">${SERVICE_ICONS[name]}</span>
+          <span class="svc-name">${name}</span>
+        </div>
+        <span class="svc-badge ${data.status === 'running' ? 'badge-running' : 'badge-ready'}">${data.status}</span>
+      </div>
+      <div class="svc-row"><span>Replicas:</span><span>${data.replicas}</span></div>
+      <div class="svc-row"><span>CPU:</span><span>${data.cpu}%</span></div>
+      <div class="svc-row"><span>Memory:</span><span>${data.memory}MB</span></div>
+    </div>
+  `).join('');
+}
+
+function selectService(name) {
+  state.selectedService = name;
+  renderServices();
+  updateControlPanel();
+}
+
+// ============ CONTROL PANEL ============
+function updateControlPanel() {
+  document.getElementById('ctrlTitle').textContent = state.selectedService + ' Service Control';
+  document.getElementById('execBtn').textContent = SERVICE_CMDS[state.selectedService].label;
+}
+
+// ============ ACTIONS ============
+async function deployService() {
+  const svc = state.selectedService;
+  addLog(`🚀 Deploying ${svc}...`, 'info');
+  await delay(1500);
+  state.services[svc].status = 'running';
+  renderServices();
+  addLog(`✓ ${svc} deployed successfully`, 'success', true);
+}
+
+async function scaleService(n) {
+  const svc = state.selectedService;
+  addLog(`📈 Scaling ${svc} to ${n} replicas...`, 'info');
+  await delay(1000);
+  state.services[svc].replicas = n;
+  renderServices();
+  addLog(`✓ ${svc} scaled to ${n}`, 'success', true);
+}
+
+async function executeCommand() {
+  const svc = state.selectedService;
+  const cmd = SERVICE_CMDS[svc].cmd;
+  addLog(`⚡ Executing: ${cmd}`, 'info');
+  await delay(800);
+  let result = '';
+  if (cmd.includes('cut'))        result = 'Truth extracted: Essence isolated';
+  if (cmd.includes('verify'))     result = 'Boundaries verified: Intact';
+  if (cmd.includes('reflect'))    result = 'Signal reflected: Clear';
+  if (cmd.includes('commission')) result = 'Authority commissioned: 1.89 established';
+  if (cmd.includes('translate'))  result = 'Domains translated: Aligned';
+  addLog(`✓ ${result}`, 'success', true);
+}
+
+async function checkCornerstone() {
+  addLog('🔍 Verifying cornerstone...', 'info');
+  await delay(500);
+  state.cornerstone = 'SOLID';
+  updateCornerstone();
+  addLog('✓ CORNERSTONE: Foundation is solid (1.89 Invariant)', 'success');
+}
+
+function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// ============ MAIN SIMULATION LOOP ============
+function tick() {
+  const newCpu  = Math.random() * 80 + 10;
+  const newTemp = Math.random() * 15 + 25;
+  const newMode = determineMode(newCpu, newTemp);
+
+  if (newMode !== state.mode) {
+    state.mode = newMode;
+    if (newMode.includes('SABBATH')) addLog('✓ Sabbath Protocol Active: Resources Optimized', 'success');
+  }
+
+  // Circuit breaker
+  if (newCpu > 85) {
+    state.circuitBreakerOpen = true;
+    addLog('⚠️ CIRCUIT_BREAKER: High load detected', 'warning');
+  } else if (newCpu < 30 && state.circuitBreakerOpen) {
+    state.circuitBreakerOpen = false;
+    addLog('✓ CIRCUIT_RESET: System recovered', 'success');
+  }
+
+  // Plumb line
+  if (Math.random() > 0.95) {
+    state.plumbLineAligned = false;
+    addLog('⚠️ PLUMB_LINE: Minor drift detected', 'warning');
+  } else {
+    state.plumbLineAligned = true;
+  }
+
+  state.cpu         = newCpu;
+  state.memory      = Math.random() * 60 + 30;
+  state.battery     = Math.max(20, state.battery - Math.random());
+  state.temperature = newTemp;
+  state.uptime     += 3;
+
+  updateModeBanner();
+  updateHealth();
+  updateCircuitBreaker();
+  updatePlumbLine();
+}
+
+// ============ INIT ============
+renderServices();
+updateControlPanel();
+updateModeBanner();
+updateHealth();
+updateCircuitBreaker();
+updatePlumbLine();
+addLog('⚙️ UNIFIED TOOL initializing...', 'info');
+addLog('✓ V.89 Diamond sealed: Lambda=3.340, Invariant=1.89, Resonance=1.67', 'success');
+addLog('🍊 chicka chicka orange — System online', 'success');
+
+setInterval(tick, 3000);
+</script>
+</body>
+</html>
