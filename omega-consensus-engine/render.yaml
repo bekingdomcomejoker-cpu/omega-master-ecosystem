@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: omega-consensus-engine
+    env: node
+    plan: free
+    buildCommand: pnpm install && pnpm build
+    startCommand: pnpm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        value: mysql://user:pass@host:3306/db # User should update this
+      - key: MANUS_OAUTH_CLIENT_ID
+        value: placeholder
+      - key: MANUS_OAUTH_CLIENT_SECRET
+        value: placeholder
+      - key: MANUS_OAUTH_REDIRECT_URI
+        value: placeholder
