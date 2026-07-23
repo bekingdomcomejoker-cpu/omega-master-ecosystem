@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OMEGA BRIDGE - Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0a0e27;
+            color: #00ff41;
+            font-family: 'Courier New', monospace;
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .sidebar {
+            width: 300px;
+            background: #0f1535;
+            border-right: 2px solid #00ff41;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #00ff41;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px #00ff41;
+        }
+
+        h2 {
+            color: #00ff41;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .session-item {
+            background: #1a2050;
+            border: 1px solid #00ff41;
+            padding: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .session-item:hover {
+            background: #2a3060;
+        }
+
+        .session-item.active {
+            background: #00ff41;
+            color: #0a0e27;
+        }
+
+        .status {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .status.connected {
+            background: #00ff41;
+            box-shadow: 0 0 10px #00ff41;
+        }
+
+        .status.disconnected {
+            background: #ff0000;
+        }
+
+        .command-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .output {
+            flex: 1;
+            background: #0f1535;
+            border: 2px solid #00ff41;
+            padding: 15px;
+            margin-bottom: 15px;
+            overflow-y: auto;
+            font-size: 12px;
+            line-height: 1.5;
+            border-radius: 4px;
+        }
+
+        .output-line {
+            margin-bottom: 5px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            background: #0f1535;
+            border: 2px solid #00ff41;
+            color: #00ff41;
+            padding: 10px;
+            font-family: 'Courier New', monospace;
+            border-radius: 4px;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            box-shadow: 0 0 10px #00ff41;
+        }
+
+        button {
+            background: #00ff41;
+            color: #0a0e27;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background: #00dd33;
+            box-shadow: 0 0 10px #00ff41;
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        button.secondary {
+            background: #1a2050;
+            color: #00ff41;
+            border: 2px solid #00ff41;
+        }
+
+        button.secondary:hover {
+            background: #2a3060;
+        }
+
+        .info {
+            background: #1a2050;
+            border: 1px solid #00ff41;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        .error {
+            color: #ff0000;
+        }
+
+        .success {
+            color: #00ff41;
+        }
+
+        .warning {
+            color: #ffff00;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <h1>OMEGA</h1>
+            <h2>Sessions</h2>
+            <div id="sessionsList"></div>
+            <button onclick="createNewSession()" style="width: 100%; margin-top: 10px;">+ New Session</button>
+        </div>
+
+        <div class="main">
+            <h1>OMEGA BRIDGE - Dashboard</h1>
+
+            <div class="button-group">
+                <button onclick="sendCommand()">Send Command</button>
+                <button class="secondary" onclick="clearOutput()">Clear Output</button>
+            </div>
+
+            <div id="sessionInfo" class="info" style="display: none;">
+                <strong>Session:</strong> <span id="sessionId"></span><br>
+                <strong>Status:</strong> <span id="sessionStatus"></span><br>
+                <strong>Connection Token:</strong> <span id="connectionToken" style="font-size: 10px;"></span>
+            </div>
+
+            <div class="output" id="output">
+                <div class="output-line">[*] OMEGA BRIDGE - Dashboard Ready</div>
+                <div class="output-line">[*] Create or select a session to begin</div>
+            </div>
+
+            <div class="input-group">
+                <input type="text" id="commandInput" placeholder="Enter command..." onkeypress="if(event.key==='Enter') sendCommand()">
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <script>
+        let socket = null;
+        let currentSessionId = null;
+
+        function log(message, type = 'info') {
+            const output = document.getElementById('output');
+            const line = document.createElement('div');
+            line.className = 'output-line ' + type;
+            const timestamp = new Date().toLocaleTimeString();
+            line.textContent = `[${timestamp}] ${message}`;
+            output.appendChild(line);
+            output.scrollTop = output.scrollHeight;
+        }
+
+        function connectSocket() {
+            socket = io();
+
+            socket.on('connect', () => {
+                log('[✓] Connected to bridge server', 'success');
+            });
+
+            socket.on('disconnect', () => {
+                log('[✗] Disconnected from bridge server', 'error');
+            });
+
+            socket.on('sessionStatusChanged', (data) => {
+                log(`[*] Session ${data.sessionId} status: ${data.status}`, 'warning');
+                if (currentSessionId === data.sessionId) {
+                    document.getElementById('sessionStatus').textContent = data.status;
+                }
+                loadSessions();
+            });
+
+            socket.on('commandOutput', (data) => {
+                log(`[OUTPUT] ${data.output}`, 'success');
+            });
+
+            socket.on('commandStatusChanged', (data) => {
+                log(`[*] Command ${data.commandId} status: ${data.status}`, 'warning');
+            });
+
+            socket.on('error', (error) => {
+                log(`[✗] Error: ${error.message}`, 'error');
+            });
+        }
+
+        function loadSessions() {
+            fetch('/api/sessions')
+                .then(r => r.json())
+                .then(sessions => {
+                    const list = document.getElementById('sessionsList');
+                    list.innerHTML = '';
+                    sessions.forEach(session => {
+                        const item = document.createElement('div');
+                        item.className = 'session-item' + (currentSessionId === session.id ? ' active' : '');
+                        item.innerHTML = `
+                            <span class="status ${session.status}"></span>
+                            <strong>${session.name}</strong><br>
+                            <small>${session.id}</small>
+                        `;
+                        item.onclick = () => selectSession(session);
+                        list.appendChild(item);
+                    });
+                });
+        }
+
+        function selectSession(session) {
+            currentSessionId = session.id;
+            document.getElementById('sessionInfo').style.display = 'block';
+            document.getElementById('sessionId').textContent = session.id;
+            document.getElementById('sessionStatus').textContent = session.status;
+            document.getElementById('connectionToken').textContent = session.connectionToken;
+            log(`[*] Selected session: ${session.name}`, 'warning');
+            loadSessions();
+        }
+
+        function createNewSession() {
+            fetch('/api/session/create', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name: `Session-${Date.now()}` })
+            })
+                .then(r => r.json())
+                .then(session => {
+                    log(`[✓] Created session: ${session.sessionId}`, 'success');
+                    log(`[*] Connection token: ${session.connectionToken}`, 'warning');
+                    loadSessions();
+                    selectSession(session);
+                });
+        }
+
+        function sendCommand() {
+            if (!currentSessionId) {
+                log('[✗] No session selected', 'error');
+                return;
+            }
+
+            const command = document.getElementById('commandInput').value;
+            if (!command) return;
+
+            log(`[→] Sending command: ${command}`, 'warning');
+            socket.emit('dashboardCommand', {
+                sessionId: currentSessionId,
+                command: command
+            });
+
+            document.getElementById('commandInput').value = '';
+        }
+
+        function clearOutput() {
+            document.getElementById('output').innerHTML = '';
+        }
+
+        // Initialize
+        connectSocket();
+        loadSessions();
+    </script>
+</body>
+</html>

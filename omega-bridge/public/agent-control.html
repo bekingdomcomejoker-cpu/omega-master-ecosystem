@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OMEGA AGENT - Autonomous Control Center</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+            color: #00ff41;
+            font-family: 'Courier New', monospace;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .header {
+            background: #0f1535;
+            border-bottom: 2px solid #00ff41;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+        }
+
+        .header h1 {
+            font-size: 24px;
+            text-shadow: 0 0 10px #00ff41;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #00ff41;
+            box-shadow: 0 0 10px #00ff41;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .header-info {
+            display: flex;
+            gap: 30px;
+            font-size: 12px;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .info-label {
+            color: #00aa00;
+            opacity: 0.7;
+        }
+
+        .info-value {
+            color: #00ff41;
+            font-weight: bold;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            padding: 10px;
+            height: calc(100vh - 80px);
+        }
+
+        .panel {
+            background: #0f1535;
+            border: 2px solid #00ff41;
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.2);
+        }
+
+        .panel-header {
+            background: #1a2050;
+            border-bottom: 1px solid #00ff41;
+            padding: 12px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        .panel-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        .vnc-container {
+            width: 100%;
+            height: 100%;
+            background: #000;
+            border-radius: 2px;
+        }
+
+        .vnc-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 2px;
+        }
+
+        .command-input-group {
+            display: flex;
+            gap: 8px;
+            padding: 10px;
+            border-top: 1px solid #00ff41;
+            background: #0a0e27;
+        }
+
+        .command-input-group input {
+            flex: 1;
+            background: #1a2050;
+            border: 1px solid #00ff41;
+            color: #00ff41;
+            padding: 8px 12px;
+            font-family: 'Courier New', monospace;
+            border-radius: 2px;
+            font-size: 12px;
+        }
+
+        .command-input-group input:focus {
+            outline: none;
+            box-shadow: 0 0 10px #00ff41;
+        }
+
+        .command-input-group button {
+            background: #00ff41;
+            color: #0a0e27;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            border-radius: 2px;
+            transition: all 0.3s;
+        }
+
+        .command-input-group button:hover {
+            background: #00dd33;
+            box-shadow: 0 0 10px #00ff41;
+        }
+
+        .command-input-group button:active {
+            transform: scale(0.95);
+        }
+
+        .output-line {
+            margin-bottom: 5px;
+            font-size: 11px;
+            line-height: 1.4;
+            word-break: break-all;
+        }
+
+        .output-line.info {
+            color: #00ff41;
+        }
+
+        .output-line.error {
+            color: #ff0000;
+        }
+
+        .output-line.warning {
+            color: #ffff00;
+        }
+
+        .output-line.success {
+            color: #00ff41;
+        }
+
+        .agent-status {
+            background: #1a2050;
+            border: 1px solid #00ff41;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 2px;
+            font-size: 11px;
+        }
+
+        .agent-status-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #003300;
+        }
+
+        .agent-status-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .status-label {
+            color: #00aa00;
+        }
+
+        .status-value {
+            color: #00ff41;
+            font-weight: bold;
+        }
+
+        .agent-controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .agent-btn {
+            background: #1a2050;
+            border: 1px solid #00ff41;
+            color: #00ff41;
+            padding: 8px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            border-radius: 2px;
+            transition: all 0.3s;
+        }
+
+        .agent-btn:hover {
+            background: #2a3060;
+            box-shadow: 0 0 8px #00ff41;
+        }
+
+        .agent-btn.active {
+            background: #00ff41;
+            color: #0a0e27;
+        }
+
+        .agent-log {
+            font-size: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+            background: #0a0e27;
+            border: 1px solid #003300;
+            padding: 8px;
+            border-radius: 2px;
+            margin-top: 10px;
+        }
+
+        .agent-log-entry {
+            margin-bottom: 3px;
+            color: #00aa00;
+        }
+
+        .agent-log-entry.command {
+            color: #00ff41;
+        }
+
+        .agent-log-entry.error {
+            color: #ff0000;
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0a0e27;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #00ff41;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00dd33;
+        }
+
+        .resize-handle {
+            position: absolute;
+            width: 4px;
+            height: 100%;
+            background: #00ff41;
+            cursor: col-resize;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .resize-handle:hover {
+            opacity: 0.5;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #0f1535;
+            border: 2px solid #00ff41;
+            padding: 20px;
+            border-radius: 4px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.5);
+        }
+
+        .modal-content h2 {
+            margin-bottom: 15px;
+            color: #00ff41;
+            text-shadow: 0 0 10px #00ff41;
+        }
+
+        .modal-content input {
+            width: 100%;
+            background: #1a2050;
+            border: 1px solid #00ff41;
+            color: #00ff41;
+            padding: 10px;
+            margin-bottom: 10px;
+            font-family: 'Courier New', monospace;
+            border-radius: 2px;
+        }
+
+        .modal-content button {
+            background: #00ff41;
+            color: #0a0e27;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 2px;
+            margin-right: 10px;
+        }
+
+        .modal-content button:hover {
+            background: #00dd33;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>
+            <span class="status-indicator"></span>
+            OMEGA AGENT - Autonomous Control Center
+        </h1>
+        <div class="header-info">
+            <div class="info-item">
+                <span class="info-label">VNC Status</span>
+                <span class="info-value" id="vncStatus">READY</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Bridge Status</span>
+                <span class="info-value" id="bridgeStatus">READY</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Agent Status</span>
+                <span class="info-value" id="agentStatus">IDLE</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Session</span>
+                <span class="info-value" id="sessionId">lzm7pd</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- VNC Panel -->
+        <div class="panel">
+            <div class="panel-header">
+                📺 VNC VISUAL DESKTOP
+                <button class="agent-btn" onclick="toggleVNC()" style="padding: 4px 8px; font-size: 10px;">Fullscreen</button>
+                <button class="agent-btn" onclick="switchVNCMode()" style="padding: 4px 8px; font-size: 10px;" id="vncModeBtn">Public</button>
+            </div>
+            <div class="panel-content">
+                <div class="vnc-container">
+                    <iframe id="vncFrame" class="vnc-frame" src="http://192.168.110.196:5800/vnc.html?autoconnect=true&show_dot=true&host=192.168.110.196&port=5900"></iframe>
+                </div>
+            </div>
+        </div>
+
+        <!-- Command Bridge Panel -->
+        <div class="panel">
+            <div class="panel-header">
+                ⚡ COMMAND BRIDGE
+                <span id="bridgeConnected" style="color: #ff0000;">●</span>
+            </div>
+            <div class="panel-content" id="commandOutput">
+                <div class="output-line info">[*] Command Bridge Ready</div>
+                <div class="output-line info">[*] Session: lzm7pd</div>
+                <div class="output-line info">[*] Waiting for commands...</div>
+            </div>
+            <div class="command-input-group">
+                <input type="text" id="commandInput" placeholder="Enter command..." onkeypress="if(event.key==='Enter') sendCommand()">
+                <button onclick="sendCommand()">SEND</button>
+            </div>
+        </div>
+
+        <!-- Agent Orchestration Panel -->
+        <div class="panel">
+            <div class="panel-header">
+                🤖 AGENT ORCHESTRATION
+                <span id="agentMode" style="font-size: 10px; color: #00aa00;">IDLE</span>
+            </div>
+            <div class="panel-content">
+                <div class="agent-status">
+                    <div class="agent-status-item">
+                        <span class="status-label">Mode:</span>
+                        <span class="status-value" id="modeValue">MANUAL</span>
+                    </div>
+                    <div class="agent-status-item">
+                        <span class="status-label">VNC Endpoint:</span>
+                        <span class="status-value" id="vncEndpointValue">LOCAL</span>
+                    </div>
+                    <div class="agent-status-item">
+                        <span class="status-label">VNC Connected:</span>
+                        <span class="status-value" id="vncConnectedValue">YES</span>
+                    </div>
+                    <div class="agent-status-item">
+                        <span class="status-label">Bridge Connected:</span>
+                        <span class="status-value" id="bridgeConnectedValue">CONNECTING</span>
+                    </div>
+                    <div class="agent-status-item">
+                        <span class="status-label">Commands Executed:</span>
+                        <span class="status-value" id="commandCount">0</span>
+                    </div>
+                    <div class="agent-status-item">
+                        <span class="status-label">Uptime:</span>
+                        <span class="status-value" id="uptime">0s</span>
+                    </div>
+                </div>
+
+                <div class="agent-controls">
+                    <button class="agent-btn" onclick="switchMode('manual')">Manual Mode</button>
+                    <button class="agent-btn" onclick="switchMode('autonomous')">Autonomous Mode</button>
+                    <button class="agent-btn" onclick="syncVNCandBridge()">Sync VNC↔Bridge</button>
+                    <button class="agent-btn" onclick="clearLogs()">Clear Logs</button>
+                </div>
+
+                <div class="agent-log" id="agentLog">
+                    <div class="agent-log-entry">[INIT] OMEGA Agent initialized</div>
+                    <div class="agent-log-entry">[INIT] VNC viewer loaded</div>
+                    <div class="agent-log-entry">[INIT] Command bridge ready</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="settingsModal">
+        <div class="modal-content">
+            <h2>⚙️ Agent Settings</h2>
+            <label>VNC Local Host:</label>
+            <input type="text" id="vncHostLocal" value="192.168.110.196">
+            <label>VNC Public Host:</label>
+            <input type="text" id="vncHostPublic" value="55.114.195.92">
+            <label>VNC Port:</label>
+            <input type="text" id="vncPort" value="5900">
+            <label>Bridge URL:</label>
+            <input type="text" id="bridgeUrl" value="https://3000-i57mmtxn4knpj4c91pn2f-fc86f8e6.us1.manus.computer">
+            <label>Session Token:</label>
+            <input type="text" id="sessionToken" value="jyo9vy58aupi7pei7m7bg">
+            <button onclick="saveSettings()">Save</button>
+            <button onclick="closeModal()" style="background: #1a2050; color: #00ff41; border: 1px solid #00ff41;">Cancel</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <script>
+        let socket = null;
+        let commandCount = 0;
+        let startTime = Date.now();
+        let currentMode = 'manual';
+        let bridgeConnected = false;
+        let vncMode = 'local'; // 'local' or 'public'
+        const VNC_LOCAL = {
+            host: '192.168.110.196',
+            port: 5900,
+            webPort: 5800
+        };
+        const VNC_PUBLIC = {
+            host: '55.114.195.92',
+            port: 5900,
+            webPort: 5800
+        };
+
+        // Initialize
+        function init() {
+            connectBridge();
+            updateUptime();
+            setInterval(updateUptime, 1000);
+            addLog('[INIT] OMEGA Agent Control Center started');
+        }
+
+        // Connect to bridge
+        function connectBridge() {
+            const bridgeUrl = document.getElementById('bridgeUrl').value || 'https://3000-i57mmtxn4knpj4c91pn2f-fc86f8e6.us1.manus.computer';
+            
+            socket = io(bridgeUrl);
+
+            socket.on('connect', () => {
+                addLog('[BRIDGE] Connected to server');
+                document.getElementById('bridgeConnected').style.color = '#00ff41';
+                document.getElementById('bridgeStatus').textContent = 'CONNECTED';
+                document.getElementById('bridgeConnectedValue').textContent = 'YES';
+                bridgeConnected = true;
+            });
+
+            socket.on('disconnect', () => {
+                addLog('[BRIDGE] Disconnected from server');
+                document.getElementById('bridgeConnected').style.color = '#ff0000';
+                document.getElementById('bridgeStatus').textContent = 'DISCONNECTED';
+                document.getElementById('bridgeConnectedValue').textContent = 'NO';
+                bridgeConnected = false;
+            });
+
+            socket.on('commandOutput', (data) => {
+                addOutput(`[OUTPUT] ${data.output}`, 'success');
+                addLog(`[COMMAND] Output received: ${data.output.substring(0, 50)}...`);
+            });
+
+            socket.on('error', (error) => {
+                addOutput(`[ERROR] ${error.message}`, 'error');
+                addLog(`[ERROR] ${error.message}`, true);
+            });
+        }
+
+        // Send command
+        function sendCommand() {
+            const input = document.getElementById('commandInput');
+            const command = input.value.trim();
+            
+            if (!command) return;
+
+            if (!bridgeConnected) {
+                addOutput('[ERROR] Bridge not connected', 'error');
+                return;
+            }
+
+            const sessionId = document.getElementById('sessionId').textContent;
+            addOutput(`[→] Executing: ${command}`, 'info');
+            addLog(`[COMMAND] Sent: ${command}`);
+
+            socket.emit('dashboardCommand', {
+                sessionId: sessionId,
+                command: command
+            });
+
+            commandCount++;
+            document.getElementById('commandCount').textContent = commandCount;
+            input.value = '';
+        }
+
+        // Add output line
+        function addOutput(message, type = 'info') {
+            const output = document.getElementById('commandOutput');
+            const line = document.createElement('div');
+            line.className = `output-line ${type}`;
+            line.textContent = message;
+            output.appendChild(line);
+            output.scrollTop = output.scrollHeight;
+        }
+
+        // Add agent log entry
+        function addLog(message, isError = false) {
+            const log = document.getElementById('agentLog');
+            const entry = document.createElement('div');
+            entry.className = `agent-log-entry ${isError ? 'error' : 'command'}`;
+            const timestamp = new Date().toLocaleTimeString();
+            entry.textContent = `[${timestamp}] ${message}`;
+            log.appendChild(entry);
+            log.scrollTop = log.scrollHeight;
+        }
+
+        // Update uptime
+        function updateUptime() {
+            const elapsed = Math.floor((Date.now() - startTime) / 1000);
+            const hours = Math.floor(elapsed / 3600);
+            const minutes = Math.floor((elapsed % 3600) / 60);
+            const seconds = elapsed % 60;
+            
+            let uptime = '';
+            if (hours > 0) uptime += `${hours}h `;
+            if (minutes > 0) uptime += `${minutes}m `;
+            uptime += `${seconds}s`;
+            
+            document.getElementById('uptime').textContent = uptime;
+        }
+
+        // Switch mode
+        function switchMode(mode) {
+            currentMode = mode;
+            document.getElementById('modeValue').textContent = mode.toUpperCase();
+            document.getElementById('agentStatus').textContent = mode === 'autonomous' ? 'AUTONOMOUS' : 'MANUAL';
+            addLog(`[MODE] Switched to ${mode.toUpperCase()} mode`);
+        }
+
+        // Sync VNC and Bridge
+        function syncVNCandBridge() {
+            addLog('[SYNC] Synchronizing VNC and Command Bridge');
+            addOutput('[*] Syncing visual and command execution...', 'info');
+            // In a real implementation, this would coordinate actions between VNC and commands
+        }
+
+        // Clear logs
+        function clearLogs() {
+            document.getElementById('agentLog').innerHTML = '';
+            addLog('[CLEAR] Logs cleared');
+        }
+
+        // Toggle VNC fullscreen
+        function toggleVNC() {
+            const frame = document.getElementById('vncFrame');
+            if (frame.requestFullscreen) {
+                frame.requestFullscreen();
+            }
+        }
+
+        // Switch VNC mode (local/public)
+        function switchVNCMode() {
+            const currentVNC = vncMode === 'local' ? VNC_LOCAL : VNC_PUBLIC;
+            const nextVNC = vncMode === 'local' ? VNC_PUBLIC : VNC_LOCAL;
+            const nextMode = vncMode === 'local' ? 'public' : 'local';
+            
+            vncMode = nextMode;
+            const btn = document.getElementById('vncModeBtn');
+            btn.textContent = nextMode === 'local' ? 'Public' : 'Local';
+            
+            const vncUrl = `http://${nextVNC.host}:${nextVNC.webPort}/vnc.html?autoconnect=true&show_dot=true&host=${nextVNC.host}&port=${nextVNC.port}`;
+            document.getElementById('vncFrame').src = vncUrl;
+            
+            addLog(`[VNC] Switched to ${nextMode.toUpperCase()} mode (${nextVNC.host}:${nextVNC.port})`);
+            addOutput(`[*] VNC switched to ${nextMode.toUpperCase()} endpoint`, 'info');
+        }
+
+        // Settings
+        function saveSettings() {
+            VNC_LOCAL.host = document.getElementById('vncHostLocal').value;
+            VNC_PUBLIC.host = document.getElementById('vncHostPublic').value;
+            const port = document.getElementById('vncPort').value;
+            VNC_LOCAL.port = port;
+            VNC_PUBLIC.port = port;
+            
+            addLog('[SETTINGS] VNC configuration updated');
+            addLog(`[SETTINGS] Local: ${VNC_LOCAL.host}:${VNC_LOCAL.port}`);
+            addLog(`[SETTINGS] Public: ${VNC_PUBLIC.host}:${VNC_PUBLIC.port}`);
+            closeModal();
+            
+            // Reconnect with new settings
+            const currentVNC = vncMode === 'local' ? VNC_LOCAL : VNC_PUBLIC;
+            const vncUrl = `http://${currentVNC.host}:${currentVNC.webPort}/vnc.html?autoconnect=true&show_dot=true&host=${currentVNC.host}&port=${currentVNC.port}`;
+            document.getElementById('vncFrame').src = vncUrl;
+        }
+
+        function closeModal() {
+            document.getElementById('settingsModal').classList.remove('active');
+        }
+
+        // Initialize on load
+        window.addEventListener('load', () => {
+            init();
+            document.getElementById('vncEndpointValue').textContent = 'LOCAL (192.168.110.196)';
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === 'Enter') {
+                sendCommand();
+            }
+            if (e.ctrlKey && e.key === 'v') {
+                e.preventDefault();
+                switchVNCMode();
+            }
+        });
+    </script>
+</body>
+</html>
