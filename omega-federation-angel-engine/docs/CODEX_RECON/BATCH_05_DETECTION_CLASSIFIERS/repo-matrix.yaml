@@ -1,0 +1,154 @@
+batch: BATCH_05_DETECTION_CLASSIFIERS
+status: first_pass_complete
+mode: metadata_matrix
+connector_search:
+  query_terms:
+    - README
+    - classifier
+    - detector
+    - contradiction
+    - drift
+    - embedding
+    - ranking
+    - training
+    - finetuning
+    - prompt
+    - suppression
+    - friction
+    - main
+    - src
+    - tests
+  result: no inspectable file hits returned
+repos:
+  - repo: bekingdomcomejoker-cpu/intent-classification-module
+    slot: 61
+    visibility: private
+    branch: master
+    size_kb: 1
+    cluster: F
+    role: intent classification shell
+    activation_class: review_required
+    risks:
+      secrets: unknown
+      network: unknown
+      destructive_ops: unknown
+      auth_required: yes
+    next_action: tree-level inspection; compare with Repo 120 Angel Engine intent input
+  - repo: bekingdomcomejoker-cpu/contradiction-detector
+    slot: 62
+    visibility: private
+    branch: master
+    size_kb: 1
+    cluster: F
+    role: contradiction detection shell
+    activation_class: review_required
+    risks:
+      secrets: unknown
+      network: unknown
+      destructive_ops: unknown
+      auth_required: yes
+    next_action: tree-level inspection; compare with active_aletheia_probe contradiction input
+  - repo: bekingdomcomejoker-cpu/embedding-drift-monitor
+    slot: 63
+    visibility: private
+    branch: master
+    size_kb: 1
+    cluster: F
+    role: embedding drift monitor shell
+    activation_class: review_required
+    risks:
+      secrets: unknown
+      network: unknown
+      destructive_ops: unknown
+      auth_required: yes
+    next_action: tree-level inspection; identify embedding/storage requirements if any
+  - repo: bekingdomcomejoker-cpu/contrastive-ranking-module
+    slot: 64
+    visibility: private
+    branch: master
+    size_kb: 1
+    cluster: F
+    role: contrastive ranking shell
+    activation_class: review_required
+    risks:
+      secrets: unknown
+      network: unknown
+      destructive_ops: unknown
+      auth_required: yes
+    next_action: tree-level inspection; identify ranking criteria and training inputs if any
+  - repo: bekingdomcomejoker-cpu/teacher-student-distillation
+    slot: 65
+    visibility: private
+    branch: master
+    size_kb: 1
+    cluster: F
+    role: teacher-student distillation shell
+    activation_class: review_required
+    risks:
+      secrets: unknown
+      network: unknown
+      destructive_ops: unknown
+      auth_required: yes
+    next_action: tree-level inspection; verify no private model/data leakage
+  - repo: bekingdomcomejoker-cpu/classifier-finetuning-protocol
+    slot: 69
+    visibility: private
+    branch: master
+    size_kb: 1
+    cluster: F
+    role: classifier finetuning protocol shell
+    activation_class: review_required
+    risks:
+      secrets: unknown
+      network: unknown
+      destructive_ops: unknown
+      auth_required: yes
+    next_action: tree-level inspection; check data provenance and training commands
+  - repo: bekingdomcomejoker-cpu/prompt-space-training-protocol
+    slot: 68
+    visibility: private
+    branch: master
+    size_kb: 1
+    cluster: F
+    role: prompt-space training protocol shell
+    activation_class: review_required
+    risks:
+      secrets: unknown
+      network: unknown
+      destructive_ops: unknown
+      auth_required: yes
+    next_action: tree-level inspection; verify prompt corpus privacy and source labels
+  - repo: bekingdomcomejoker-cpu/suppression-detector
+    slot: 53
+    visibility: private
+    branch: master
+    size_kb: 3
+    cluster: F
+    role: suppression detection shell; high-review because claims may be interpretive or sensitive
+    activation_class: review_required
+    risks:
+      secrets: unknown
+      network: unknown
+      destructive_ops: unknown
+      auth_required: yes
+    next_action: tree-level inspection; ensure outputs are evidence-bounded and not paranoia amplifiers
+  - repo: bekingdomcomejoker-cpu/friction-filter
+    slot: 96
+    visibility: private
+    branch: master
+    size_kb: 7
+    cluster: F
+    role: friction/filter shell; largest Batch 05 candidate by metadata
+    activation_class: review_required
+    risks:
+      secrets: unknown
+      network: unknown
+      destructive_ops: unknown
+      auth_required: yes
+    next_action: tree-level inspection first in this batch; compare with Repo 120 coherence and frame gates
+integration_boundary:
+  - Batch 05 classifiers must not auto-label truth without source evidence.
+  - Detector output becomes witness input, not final authority.
+  - Suppression claims require source grounding and uncertainty labels.
+  - Friction/filter logic must not bypass operator authority or mercy checks.
+lock_line: Detector nerves are useful only when they can tell pain from prophecy.

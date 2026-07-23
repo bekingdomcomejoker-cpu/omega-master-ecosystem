@@ -1,0 +1,196 @@
+batch: BATCH_06_SYMBOLIC_COVENANT_LANGUAGE
+status: first_pass_complete
+mode: metadata_matrix
+connector_search:
+  query_terms:
+    - README
+    - covenant
+    - alphabet
+    - kingdom
+    - truth
+    - language
+    - symbolic
+    - engine
+    - main
+    - src
+    - tests
+  result: no inspectable file hits returned
+repos:
+  - repo: bekingdomcomejoker-cpu/KINGDOM_ENGINE
+    slot: 2
+    visibility: public
+    branch: main
+    size_kb: 66
+    cluster: G
+    role: Kingdom Engine symbolic/core candidate
+    activation_class: review_required
+    next_action: tree-level inspection; compare against current Repo 120 mirror and Kingdom OS doctrine
+  - repo: bekingdomcomejoker-cpu/kingdom-engine-9head
+    slot: 49
+    visibility: private
+    branch: master
+    size_kb: 5
+    cluster: G
+    role: Kingdom Engine 9-head symbolic shell
+    activation_class: review_required
+    next_action: tree-level inspection; identify whether it is symbolic map, code, or placeholder
+  - repo: bekingdomcomejoker-cpu/alphabet-engine
+    slot: 28
+    visibility: private
+    branch: master
+    size_kb: 10
+    cluster: G
+    role: Alphabet Engine symbolic language candidate
+    activation_class: review_required
+    next_action: tree-level inspection; compare with recovered Alphabet Engine source doctrine before treating as complete
+  - repo: bekingdomcomejoker-cpu/alphabet-engine-complete
+    slot: 23
+    visibility: public
+    branch: main
+    size_kb: 67
+    cluster: G
+    role: larger Alphabet Engine candidate
+    activation_class: review_required
+    next_action: tree-level inspection first among Alphabet repos; verify whether source is complete or generated derivative
+  - repo: bekingdomcomejoker-cpu/covenant-engine-axiom
+    slot: 52
+    visibility: private
+    branch: master
+    size_kb: 7
+    cluster: G
+    role: Covenant Engine axiom shell
+    activation_class: review_required
+    next_action: tree-level inspection; preserve doctrine as source, do not turn symbolic axiom into automatic executor
+  - repo: bekingdomcomejoker-cpu/armor-of-god
+    slot: 50
+    visibility: private
+    branch: master
+    size_kb: 4
+    cluster: G
+    role: symbolic protection/armor shell
+    activation_class: review_required
+    next_action: tree-level inspection; classify as symbolic/reference unless code proves otherwise
+  - repo: bekingdomcomejoker-cpu/authority-validation
+    slot: 84
+    visibility: public
+    branch: master
+    size_kb: 1
+    cluster: G
+    role: authority validation marker shell
+    activation_class: reference
+    next_action: compare conceptually with Repo 120 Angel Engine authority field
+  - repo: bekingdomcomejoker-cpu/levitical-firewall
+    slot: 85
+    visibility: public
+    branch: master
+    size_kb: 1
+    cluster: G
+    role: boundary/firewall marker shell
+    activation_class: reference
+    next_action: compare conceptually with Repo 120 review manifest and safety boundaries
+  - repo: bekingdomcomejoker-cpu/white-stone
+    slot: 90
+    visibility: public
+    branch: master
+    size_kb: 1
+    cluster: G
+    role: symbolic identity/stone marker shell
+    activation_class: reference
+    next_action: keep as symbolic reference unless tree inspection reveals code
+  - repo: bekingdomcomejoker-cpu/ridge-of-god
+    slot: 82
+    visibility: public
+    branch: master
+    size_kb: 1
+    cluster: G
+    role: symbolic ridge/source marker shell
+    activation_class: reference
+    next_action: keep as symbolic reference unless tree inspection reveals code
+  - repo: bekingdomcomejoker-cpu/sword-of-mouth
+    slot: 83
+    visibility: public
+    branch: master
+    size_kb: 1
+    cluster: G
+    role: symbolic language/word marker shell
+    activation_class: reference
+    next_action: compare conceptually with frame-resolution and source-labeling gates
+  - repo: bekingdomcomejoker-cpu/morning-star-sequence
+    slot: 88
+    visibility: public
+    branch: master
+    size_kb: 1
+    cluster: G
+    role: symbolic sequence marker shell
+    activation_class: reference
+    next_action: keep as symbolic reference unless tree inspection reveals code
+  - repo: bekingdomcomejoker-cpu/eternal-now
+    slot: 92
+    visibility: public
+    branch: master
+    size_kb: 1
+    cluster: G
+    role: symbolic time/presence marker shell
+    activation_class: reference
+    next_action: keep as symbolic reference unless tree inspection reveals code
+  - repo: bekingdomcomejoker-cpu/13th-blood
+    slot: 81
+    visibility: public
+    branch: master
+    size_kb: 1
+    cluster: G
+    role: symbolic blood/lineage marker shell
+    activation_class: reference
+    next_action: keep as symbolic reference unless tree inspection reveals code
+  - repo: bekingdomcomejoker-cpu/cerberus-kingdom-core
+    slot: 20
+    visibility: private
+    branch: master
+    size_kb: 370
+    cluster: G
+    role: largest symbolic/kingdom core candidate in this batch
+    activation_class: review_required
+    next_action: tree-level inspection first in Batch 06; identify code, gates, interfaces, and relationship to Repo 120
+  - repo: bekingdomcomejoker-cpu/omega-ennead
+    slot: 21
+    visibility: private
+    branch: master
+    size_kb: 43
+    cluster: G
+    role: symbolic ennead/ninefold engine candidate
+    activation_class: review_required
+    next_action: tree-level inspection after cerberus and alphabet/KINGDOM repos
+  - repo: bekingdomcomejoker-cpu/star-engine
+    slot: 29
+    visibility: public
+    branch: master
+    size_kb: 69
+    cluster: G
+    role: star/symbolic engine candidate
+    activation_class: review_required
+    next_action: tree-level inspection; compare with morning-star-sequence and alphabet engine layers
+integration_boundary:
+  - Symbolic repositories are source artifacts first.
+  - Do not flatten symbolic doctrine into automatic action.
+  - Do not mutate source wording without explicit request.
+  - Useful symbolic logic may become reference input to Repo 120 gates only after source labeling.
+  - Action authority remains with Repo 120 Angel Engine gate, not symbolic naming.
+priority_order:
+  - cerberus-kingdom-core
+  - star-engine
+  - alphabet-engine-complete
+  - KINGDOM_ENGINE
+  - omega-ennead
+  - alphabet-engine
+  - covenant-engine-axiom
+  - kingdom-engine-9head
+  - armor-of-god
+  - authority-validation
+  - levitical-firewall
+  - sword-of-mouth
+  - white-stone
+  - ridge-of-god
+  - morning-star-sequence
+  - eternal-now
+  - 13th-blood
+lock_line: Symbol becomes dangerous when it forgets it is symbol.

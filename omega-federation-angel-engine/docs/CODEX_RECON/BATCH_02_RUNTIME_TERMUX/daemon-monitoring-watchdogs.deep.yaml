@@ -1,0 +1,52 @@
+repo: bekingdomcomejoker-cpu/daemon-monitoring-watchdogs
+inspection_level: deep_connector_read
+inspected_at: "2026-05-13T21:52:00+02:00"
+default_branch: master
+source_files_read:
+  - daemon_monitoring_watchdogs.py current master
+role: >-
+  Intended daemon monitoring / watchdog component for runtime health checks.
+actual_contents:
+  - daemon_monitoring_watchdogs.py defines DaemonMonitorConfig and DaemonMonitor.
+  - initialize() and shutdown() only flip an initialized boolean.
+  - monitor() returns {status: success, method: monitor} without inspecting any process/service.
+  - check_health() returns {status: success, method: check_health} without checking health.
+  - execute() initializes if needed and echoes input_data inside a success result.
+entrypoints:
+  - python daemon_monitoring_watchdogs.py
+runtime_surfaces:
+  filesystem: none observed
+  process_monitoring: none implemented
+  network_monitoring: none implemented
+  daemon_control: none implemented
+  logs: none implemented
+  external_dependencies: none observed
+risk_review:
+  positive:
+    - No destructive behavior observed.
+    - No process killing/restarting observed.
+    - No shell/subprocess/network/file mutation observed.
+  gaps:
+    - Not a real watchdog yet.
+    - Does not monitor configured daemon names, PID files, ports, HTTP health endpoints, log freshness, or restart state.
+    - No JSONL bus output.
+    - No Termux notification integration.
+    - Production-ready claim is not supported by behavior.
+activation_class: placeholder_not_runtime_ready
+activation_reason: >-
+  This repository is currently a placeholder API shape, not a runtime watchdog. It can be used as a naming
+  seed, but it does not provide monitoring or health checks.
+recommended_patches_if_approved:
+  - Add a manifest of watched services with name, pid_file, port, health_url, log_path, and restart_policy.
+  - Implement read-only status checks first: PID exists, process alive, port open, health URL reachable, log mtime fresh.
+  - Write JSONL watchdog events to ~/omega-local/logs/watchdogs.jsonl.
+  - Add Termux notification output as optional visible feedback.
+  - Do not restart services until explicit operator route exists.
+  - Add tests with fake PID/log files and disabled restart behavior.
+relationship_to_runtime_lane: >-
+  Candidate monitoring limb for omega-os-monolith/local bridge after real checks are implemented. Currently
+  not connected to installer, Termux suite, scanner, or Repo 120 gate.
+next_action: >-
+  Finish Batch 02 deep recon summary and sync Drive/Mem. If operator requests build work, this is a good
+  candidate for non-destructive implementation because it currently has no real watchdog behavior.
+status: inspected_not_activated

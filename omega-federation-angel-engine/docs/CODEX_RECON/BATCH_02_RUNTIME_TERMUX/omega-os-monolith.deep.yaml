@@ -1,0 +1,75 @@
+repo: bekingdomcomejoker-cpu/omega-os-monolith
+inspection_level: deep_connector_read
+inspected_at: "2026-05-13T21:52:00+02:00"
+source_files_read:
+  - CONTROL_PLANE/README.md
+  - CONTROL_PLANE/omega_terminal_router_http.py
+  - CONTROL_PLANE/start_local_llama.sh
+  - CONTROL_PLANE/STARTUP_ORDER_AND_FALLBACKS.md
+  - CONTROL_PLANE/TERMUX_CONTROL_PLANE_BOOTSTRAP.md
+  - OMEGA_HANDOFF_MANIFEST.md via commit diff
+role: >-
+  Termux/local control-plane layer for Omega OS Monolith. Provides a direct terminal
+  ingress named `oroute`, local-first inference through a localhost llama-server,
+  fallback to Gemini when local inference fails, and structured command/result
+  logging under ~/omega-local.
+actual_contents:
+  - CONTROL_PLANE/README.md describes direct terminal ingress, local llama bootstrap, Gemini fallback, and command/result logging.
+  - CONTROL_PLANE/omega_terminal_router_http.py implements route_once(), shell_loop(), local HTTP model calls, Gemini fallback, clipboard output, notification output, JSONL bus writes, and state file writes.
+  - CONTROL_PLANE/start_local_llama.sh locates llama-server/model files, stops prior process for the selected port, then starts llama-server with nohup and records PID/log files.
+  - STARTUP_ORDER_AND_FALLBACKS.md requires local backend verification before secondary clipboard/notification ingress layers.
+  - TERMUX_CONTROL_PLANE_BOOTSTRAP.md defines the direct terminal route as the command surface of record.
+entrypoints:
+  - python CONTROL_PLANE/omega_terminal_router_http.py
+  - oroute <route> <prompt> wrapper described in install guide
+  - bash CONTROL_PLANE/start_local_llama.sh 8080
+runtime_surfaces:
+  local_files:
+    - ~/omega-local/logs/comm_bus.jsonl
+    - ~/omega-local/logs/llama_server.log
+    - ~/omega-local/state/terminal_router_state.json
+    - ~/omega-local/state/llama_server.pid
+  local_network:
+    - http://127.0.0.1:8080/v1/chat/completions
+  termux_api:
+    - termux-clipboard-set
+    - termux-notification
+  external_api:
+    - Gemini fallback via GEMINI_API_KEY or GOOGLE_API_KEY
+risk_review:
+  secrets: >-
+    Reads GEMINI_API_KEY or GOOGLE_API_KEY from environment. No hard-coded key observed
+    in inspected files, but local environment handling must be verified before activation.
+  network: >-
+    Localhost HTTP to llama-server by default. External network may be used only through
+    Gemini fallback if API key exists and local backend fails.
+  process_control: >-
+    start_local_llama.sh can kill an existing llama-server matching the selected port
+    and starts a new background process with nohup. Requires operator review before use.
+  filesystem: >-
+    Writes logs and state under ~/omega-local. Model discovery uses find under HOME with
+    pruning for selected cache directories; this can be slow/noisy on large local trees.
+  clipboard_notification: >-
+    Router copies model output to clipboard and sends a Termux notification. This is useful
+    but should remain secondary and operator-visible.
+  destructive_ops: none_observed_in_python_router; process_kill_observed_in_start_script
+activation_class: review_required
+activation_reason: >-
+  This is a real runtime control-plane candidate, not just a shell. It must remain dry-run / manual
+  until the operator verifies local paths, model selection, API key handling, PID behavior,
+  and Termux API behavior on the owned device.
+safe_demo: >-
+  Do not run directly from connector context. Manual owned-device test sequence should begin with
+  reading files, verifying paths, checking no secrets are committed, then invoking the router only
+  after local llama-server health is confirmed.
+recommended_patches_before_activation:
+  - Add DRY_RUN=1 support to start_local_llama.sh that prints selected server/model/port without killing or starting processes.
+  - Add OMEGA_MODEL_PATH override and prefer it before recursive HOME search.
+  - Narrow pkill matching or avoid pkill unless explicit OMEGA_ALLOW_KILL=1 is set.
+  - Add a router flag to disable clipboard writes and notifications during tests.
+  - Add a healthcheck command that only checks localhost endpoint and file permissions.
+  - Add README warning that Gemini fallback sends prompt text to an external service.
+next_action: >-
+  Create a safe runtime patch branch for omega-os-monolith with dry-run controls and safer
+  model/process selection, or mirror this as an issue in that repository before activation.
+status: inspected_not_activated

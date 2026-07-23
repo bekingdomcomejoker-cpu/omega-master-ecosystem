@@ -1,0 +1,37 @@
+repo: bekingdomcomejoker-cpu/termux-merkabah-suite
+slot: 41
+visibility: private
+branch: master
+cluster: D
+role: intended Termux runtime suite; shell until tree inspection proves scripts
+actual_contents:
+  - repository metadata visible
+  - size reported as 2 KB
+  - no file hits returned from connector search for README/install/setup/termux/bash/python/main/requirements
+entrypoints:
+  - unknown
+install_commands:
+  - none_found
+relationships:
+  uses:
+    - Termux local runtime concept
+  extends: []
+  deploys:
+    - intended Termux suite pending inspection
+  visualizes: []
+  governs: []
+  verifies: []
+  recovers: []
+risks:
+  secrets: unknown
+  network: unknown
+  destructive_ops: unknown
+  auth_required: yes
+activation_class: review_required
+safe_demo: none
+next_action: tree-level Codex/local inspection required; compare with Huawei/Termux Drive and Mem checkpoints
+notes: >
+  Previously treated as active install candidate, but connector evidence only proves a tiny repo exists. Do not run or clone into active runtime until contents are inspected.
+source_evidence:
+  - get_repo metadata confirmed repository exists, size 2 KB, branch master
+  - connector search returned no file hits for install/setup/termux terms

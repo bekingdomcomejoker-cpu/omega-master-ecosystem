@@ -1,0 +1,38 @@
+repo: bekingdomcomejoker-cpu/omega-federation-extended
+slot: 32
+visibility: private
+branch: main
+cluster: A
+role: possible extended federation module; unresolved until tree inspection
+actual_contents:
+  - repository metadata visible
+  - no file hits returned from connector code search for README/main/manifest/src/package/py
+entrypoints:
+  - unknown
+install_commands:
+  - none_found
+relationships:
+  uses: []
+  extends:
+    - omega-federation
+    - omega-federation-core
+  deploys: []
+  visualizes: []
+  governs: []
+  verifies: []
+  recovers: []
+risks:
+  secrets: unknown
+  network: unknown
+  destructive_ops: unknown
+  auth_required: yes
+activation_class: review_required
+safe_demo: none
+next_action: inspect repository tree with Codex/local clone; classify actual files before activation
+notes: >
+  Repository exists with admin/maintain/push permissions and size 113 KB, but
+  connector search returned no file hits for common manifest/code terms. Because
+  size is larger than omega-federation-core, tree-level inspection is important.
+source_evidence:
+  - get_repo metadata confirmed repository exists
+  - connector search returned no results for README/main/manifest/src/package/py

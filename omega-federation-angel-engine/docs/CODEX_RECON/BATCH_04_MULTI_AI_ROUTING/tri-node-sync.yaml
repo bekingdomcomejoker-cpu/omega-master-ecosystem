@@ -1,0 +1,40 @@
+repo: bekingdomcomejoker-cpu/tri-node-sync
+slot: 97
+visibility: private
+branch: master
+cluster: E
+role: possible tri-node continuity sync shell
+actual_contents:
+  - repository metadata visible
+  - size reported as 10 KB
+  - no file hits returned from connector search for routing/orchestrator/sync/node terms
+entrypoints:
+  - unknown_from_connector_search
+install_commands:
+  - none_found
+relationships:
+  uses:
+    - tri-node federation concept
+    - node state sync concept
+  extends:
+    - Repo 120 frame and authorization gates
+  deploys: []
+  visualizes: []
+  governs:
+    - possible node sync state pending inspection
+  verifies: []
+  recovers:
+    - possible continuity handoff pending inspection
+risks:
+  secrets: unknown
+  network: unknown
+  destructive_ops: unknown
+  auth_required: yes
+activation_class: review_required
+safe_demo: none
+next_action: tree-level inspection; verify sync state format, source labels, and no hidden persistence
+notes: >
+  Largest Batch 04 repo by metadata. Inspect first in this batch.
+source_evidence:
+  - get_repo metadata confirmed repository exists, size 10 KB, branch master
+  - connector search returned no file hits

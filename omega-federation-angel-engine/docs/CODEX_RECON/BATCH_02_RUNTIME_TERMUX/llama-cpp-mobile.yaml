@@ -1,0 +1,38 @@
+repo: bekingdomcomejoker-cpu/llama-cpp-mobile
+slot: 57
+visibility: private
+branch: master
+cluster: D
+role: intended local/mobile llama.cpp runtime helper; shell until tree inspection proves model path
+actual_contents:
+  - repository metadata visible
+  - size reported as 4 KB
+  - no file hits returned from connector search for README/install/setup/termux/bash/python/main/requirements
+entrypoints:
+  - unknown
+install_commands:
+  - none_found
+relationships:
+  uses:
+    - local model runtime concept
+    - Termux/Huawei runtime lane
+  extends: []
+  deploys:
+    - intended local inference runtime pending inspection
+  visualizes: []
+  governs: []
+  verifies: []
+  recovers: []
+risks:
+  secrets: unknown
+  network: unknown
+  destructive_ops: unknown
+  auth_required: yes
+activation_class: review_required
+safe_demo: none
+next_action: tree-level Codex/local inspection required; verify model paths, install commands, storage footprint, and no unsafe downloads
+notes: >
+  Local model runtime is high-value but must be verified for device constraints, model locations, and reversible setup. Search did not expose implementation details.
+source_evidence:
+  - get_repo metadata confirmed repository exists, size 4 KB, branch master
+  - connector search returned no file hits for runtime/setup terms

@@ -1,0 +1,72 @@
+repo: bekingdomcomejoker-cpu/python-hybrid-interpreter
+inspection_level: deep_connector_read
+inspected_at: "2026-05-13T21:52:00+02:00"
+default_branch: master
+source_files_read:
+  - README.md via commit diff
+  - python-modules/hybrid_interpreter.py current master
+role: >-
+  Pure Python interpreter / operator console with symbolic Merkabah routing.
+  Intended to execute Python snippets, Python files, interactive input, and routed commands.
+actual_contents:
+  - README describes zero-dependency hybrid interpreter with sync/async/hybrid execution and Merkabah routing.
+  - python-modules/hybrid_interpreter.py defines ExecutionMode, Face, HybridExecutor, MerkabahRouter,
+    PythonHybridInterpreter, interactive mode, file execution, -c command execution, --status, and --merkabah.
+entrypoints:
+  - python3 python-modules/hybrid_interpreter.py
+  - python3 python-modules/hybrid_interpreter.py -c "<python code>"
+  - python3 python-modules/hybrid_interpreter.py <file.py>
+  - python3 python-modules/hybrid_interpreter.py --status
+  - python3 python-modules/hybrid_interpreter.py --merkabah "<python code>"
+runtime_surfaces:
+  execution:
+    - exec(code, exec_context)
+    - interactive input loop
+    - file read + exec for supplied .py files
+  builtins_exposed:
+    - print
+    - len/range/list/dict/str/int/float/bool/sum/max/min/sorted/reversed/enumerate/zip/map/filter/abs/round/pow
+    - isinstance/type/dir/help/input/open
+    - json module object
+  filesystem:
+    - execute_file reads supplied file path
+    - exposed open builtin allows user-provided code to read/write files subject to Python/process permissions
+  network:
+    - no direct network code observed in interpreter itself
+  shell:
+    - no direct subprocess/shell code observed in interpreter itself
+risk_review:
+  positive:
+    - No external dependencies.
+    - No direct shell/subprocess execution observed.
+    - No direct network call observed.
+    - Useful as local operator console for deliberate Python evaluation.
+  gaps:
+    - Not sandboxed: exec runs arbitrary Python inside the current process.
+    - Exposes open and input in builtins.
+    - File execution runs arbitrary supplied Python file content.
+    - Merkabah routing is symbolic only; it does not change actual execution constraints.
+    - ASYNC mode is simulated and still uses exec synchronously.
+    - Output capture only reads __output__; normal print output is not captured into result.
+    - README path examples mention hybrid_interpreter.py at repo root, but actual path is python-modules/hybrid_interpreter.py.
+activation_class: operator_console_review_required
+activation_reason: >-
+  This is a real code execution surface. It should be used only as an operator-owned local console,
+  not as an automatic executor for model-generated code. It is useful but sharp.
+connectivity_status: >-
+  Can operate standalone. It is not currently wired into Repo 120 gates, Omega bus, Termux wrapper, or installer manifests.
+recommended_patches_if_approved:
+  - Add --safe-status and --self-test commands that do not execute arbitrary code.
+  - Add --no-open option or restricted builtin profile for low-risk use.
+  - Add explicit --unsafe-exec flag requirement for -c and file execution, if the operator wants a guarded mode.
+  - Add JSONL execution ledger under ~/omega-local/logs/hybrid_interpreter.jsonl.
+  - Add wrapper path or README correction for python-modules/hybrid_interpreter.py.
+  - Add tests for route classification, status, file-not-found, and __output__ capture.
+  - Add integration note: never pipe free-form model output directly into this interpreter.
+relationship_to_runtime_lane: >-
+  Candidate local operator console / Python execution limb. It can be connected later to Repo 120's gate
+  as an explicit tool route, but should not be wired to automatic model output execution.
+next_action: >-
+  Continue Codex inspection with daemon-monitoring-watchdogs, then decide whether to build an external
+  operator wrapper/ledger across runtime tools.
+status: inspected_not_activated

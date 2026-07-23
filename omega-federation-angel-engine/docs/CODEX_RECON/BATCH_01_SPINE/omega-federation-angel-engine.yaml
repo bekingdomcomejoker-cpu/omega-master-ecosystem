@@ -1,0 +1,73 @@
+repo: bekingdomcomejoker-cpu/omega-federation-angel-engine
+slot: 120
+visibility: private
+branch: main
+cluster: A
+role: capstone conscience gate and estate authorization layer
+actual_contents:
+  - SAFE_SPEC.md
+  - src/angel_engine.py
+  - src/coherence_gate.py
+  - src/active_aletheia_probe.py
+  - src/frame_resolution_gate.py
+  - tests/test_angel_engine.py
+  - tests/test_coherence_gate.py
+  - tests/test_active_aletheia_probe.py
+  - tests/test_frame_resolution_gate.py
+  - docs/COMPLETE_120_SLOT_MIRROR.md
+  - docs/RELATIONSHIP_GRAPH.md
+  - docs/RECON_EXECUTION_PLAN.md
+  - docs/RELEASE_READINESS_GATE.md
+  - docs/ACTIVATION_MANIFEST.md
+  - docs/REVIEW_MANIFEST.md
+entrypoints:
+  - src.AngelEngine
+  - src.evaluate_coherence
+  - src.active_aletheia_probe
+  - src.resolve_frame
+install_commands:
+  - python -m pip install --upgrade pip pytest
+  - python -m pytest -q
+relationships:
+  uses:
+    - omega-federation final repository docs
+    - Drive 120-slot mirror
+    - Mem continuity witness
+    - Dropbox archive surface
+  extends:
+    - repository estate mirror
+    - Angel Engine safe decision gate
+  deploys: []
+  visualizes:
+    - relationship graph docs
+  governs:
+    - action authorization
+    - truth/love coherence
+    - frame resolution
+    - release readiness
+  verifies:
+    - intent
+    - authority
+    - evidence
+    - reversibility
+    - mercy
+    - source grounding
+    - speaker frame
+  recovers:
+    - estate completion path
+risks:
+  secrets: none_found_in_new_files
+  network: none
+  destructive_ops: none
+  auth_required: yes
+activation_class: active_candidate
+safe_demo: python -m pytest -q
+next_action: run tests in local or Codex environment; continue Batch 01 and Batch 02 recon
+notes: >
+  Repo 120 now contains a merged safe decision gate plus coherence, Aletheia,
+  and frame-resolution gates. It returns structured decisions only and does not
+  execute actions.
+source_evidence:
+  - PR #1 merged with safe decision gate
+  - docs/RELEASE_READINESS_GATE.md
+  - TESTING.md

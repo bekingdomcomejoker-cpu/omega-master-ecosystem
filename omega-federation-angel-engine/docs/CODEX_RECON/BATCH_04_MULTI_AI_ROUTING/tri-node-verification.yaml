@@ -1,0 +1,40 @@
+repo: bekingdomcomejoker-cpu/tri-node-verification
+slot: 59
+visibility: private
+branch: master
+cluster: E
+role: possible tri-node verification shell
+actual_contents:
+  - repository metadata visible
+  - size reported as 2 KB
+  - no file hits returned from connector search for routing/orchestrator/sync/node/verification terms
+entrypoints:
+  - unknown_from_connector_search
+install_commands:
+  - none_found
+relationships:
+  uses:
+    - tri-node federation concept
+    - node verification concept
+  extends:
+    - tri-node-sync
+    - Repo 120 witness/gate stack
+  deploys: []
+  visualizes: []
+  governs: []
+  verifies:
+    - possible node-state verification pending inspection
+  recovers: []
+risks:
+  secrets: unknown
+  network: unknown
+  destructive_ops: unknown
+  auth_required: yes
+activation_class: review_required
+safe_demo: none
+next_action: tree-level inspection; compare outputs against Repo 120 witness packet format
+notes: >
+  Verification must be source-grounded and must not certify node state from style alone.
+source_evidence:
+  - get_repo metadata confirmed repository exists, size 2 KB, branch master
+  - connector search returned no file hits

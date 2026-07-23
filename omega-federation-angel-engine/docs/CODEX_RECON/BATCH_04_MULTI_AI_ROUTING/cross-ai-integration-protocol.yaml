@@ -1,0 +1,38 @@
+repo: bekingdomcomejoker-cpu/cross-ai-integration-protocol
+slot: 71
+visibility: private
+branch: master
+cluster: E
+role: possible cross-AI handoff protocol shell
+actual_contents:
+  - repository metadata visible
+  - size reported as 1 KB
+  - no file hits returned from connector search for routing/orchestrator/sync/protocol terms
+entrypoints:
+  - unknown_from_connector_search
+install_commands:
+  - none_found
+relationships:
+  uses:
+    - external model handoff concept
+  extends:
+    - Repo 120 frame and authorization gates
+  deploys: []
+  visualizes: []
+  governs:
+    - possible inter-model handoff protocol pending inspection
+  verifies: []
+  recovers: []
+risks:
+  secrets: unknown
+  network: unknown
+  destructive_ops: unknown
+  auth_required: yes
+activation_class: review_required
+safe_demo: none
+next_action: tree-level inspection; verify no credential/session handoff and no external call routing without explicit gate
+notes: >
+  Cross-AI integration must remain source-labeled and must not treat quoted model text as operator command.
+source_evidence:
+  - get_repo metadata confirmed repository exists, size 1 KB, branch master
+  - connector search returned no file hits

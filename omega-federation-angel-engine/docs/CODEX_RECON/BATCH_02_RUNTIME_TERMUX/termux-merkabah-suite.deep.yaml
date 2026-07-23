@@ -1,0 +1,57 @@
+repo: bekingdomcomejoker-cpu/termux-merkabah-suite
+inspection_level: deep_connector_read
+inspected_at: "2026-05-13T21:52:00+02:00"
+default_branch: master
+source_files_read:
+  - README.md current master
+  - scripts/install_termux_merkabah.sh current master
+  - termux_merkabah_suite.py via latest commit diff
+role: >-
+  Intended Termux-native Merkabah command suite with four-face routing, process/status commands,
+  harmony monitoring, background-service wrapper, and mobile/offline usage.
+actual_contents:
+  - README describes merkabah start/status/process/faces/harmony watch commands.
+  - scripts/install_termux_merkabah.sh installs dependencies, creates $PREFIX/opt/merkabah directories,
+    copies scripts/merkabah_termux_core.sh into $PREFIX/opt/merkabah/bin, writes $PREFIX/bin/merkabah wrapper,
+    writes config/termux.conf, and writes $PREFIX/etc/init.d/merkabah service wrapper.
+  - termux_merkabah_suite.py is a minimal placeholder class and is not connected to the Bash installer.
+missing_required_files:
+  - scripts/merkabah_termux_core.sh was referenced by installer but not found on current master.
+entrypoints:
+  - bash scripts/install_termux_merkabah.sh
+  - merkabah start/status/process/faces/harmony once installed, but wrapper depends on missing core file
+  - python termux_merkabah_suite.py placeholder only
+runtime_surfaces:
+  termux_prefix:
+    - $PREFIX/bin/merkabah
+    - $PREFIX/opt/merkabah/bin/merkabah_termux_core.sh
+    - $PREFIX/opt/merkabah/config/termux.conf
+    - $PREFIX/etc/init.d/merkabah
+  package_manager:
+    - apt-get update -y
+    - apt-get install -y python3 python3-pip git curl wget
+  local_filesystem:
+    - creates opt/merkabah bin/lib/config/data/logs
+risk_review:
+  positive:
+    - Termux environment check exists.
+    - No network calls beyond package installation observed in current installer.
+    - No direct Android secure/system mutation observed.
+  gaps:
+    - Critical core script is missing, so installed merkabah command is likely broken.
+    - Uses apt-get in Termux; pkg is usually the Termux-facing package manager.
+    - No dry-run mode.
+    - No verify/status install mode.
+    - Background service wrapper is created, but daemon behavior depends on missing core file.
+    - README production-ready claim is not supported by current source.
+activation_class: not_ready_missing_core
+activation_reason: >-
+  Installer references a missing core runtime file. This repo cannot be treated as runnable until
+  scripts/merkabah_termux_core.sh is recovered, restored, or generated from source and then verified.
+connectivity_status: >-
+  Intended local Termux command surface exists conceptually, but actual command runtime is disconnected
+  because the core file is missing.
+recommended_next_action: >-
+  Search Drive/Dropbox/Mem/local exports for merkabah_termux_core.sh or older Termux Merkabah Suite archive.
+  If found, restore source-preserved copy. If not found, create a new core script only after explicit operator approval.
+status: inspected_not_activated

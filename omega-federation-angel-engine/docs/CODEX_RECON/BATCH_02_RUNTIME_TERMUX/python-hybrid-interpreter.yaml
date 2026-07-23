@@ -1,0 +1,40 @@
+repo: bekingdomcomejoker-cpu/python-hybrid-interpreter
+slot: 42
+visibility: private
+branch: master
+cluster: D
+role: intended hybrid Python interpreter/runtime bridge; review required until tree inspection proves scope
+actual_contents:
+  - repository metadata visible
+  - size reported as 4 KB
+  - no file hits returned from connector search for README/install/setup/termux/bash/python/main/requirements
+entrypoints:
+  - unknown
+install_commands:
+  - none_found
+relationships:
+  uses:
+    - Python runtime concept
+    - Termux/Huawei local body lane
+  extends: []
+  deploys:
+    - intended interpreter path pending inspection
+  visualizes: []
+  governs: []
+  verifies: []
+  recovers: []
+risks:
+  secrets: unknown
+  network: unknown
+  destructive_ops: unknown
+  auth_required: yes
+activation_class: review_required
+safe_demo: none
+next_action: tree-level Codex/local inspection required; verify no arbitrary eval/exec path before activation
+notes: >
+  Interpreter repos can become unsafe if they execute free-form model output.
+  Treat as review-required until source is inspected for eval, exec, subprocess,
+  shell passthrough, imports, and network behavior.
+source_evidence:
+  - get_repo metadata confirmed repository exists, size 4 KB, branch master
+  - connector search returned no file hits for runtime/setup terms

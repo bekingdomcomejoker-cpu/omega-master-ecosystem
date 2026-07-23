@@ -1,0 +1,66 @@
+repo: bekingdomcomejoker-cpu/llm-placement-strategy
+inspection_level: deep_connector_read
+inspected_at: "2026-05-13T21:52:00+02:00"
+default_branch: master
+source_files_read:
+  - README.md via commit diff
+  - python-modules/llm_placement.py current master
+role: >-
+  Offline model placement/recommendation skeleton. It analyzes prompt length/keywords and ranks
+  hardcoded model profiles by context fit, latency, cost, and quality heuristics.
+actual_contents:
+  - ModelSize enum: TINY, SMALL, MEDIUM, LARGE.
+  - OptimizationGoal enum: LATENCY, COST, QUALITY, BALANCED.
+  - ModelRegistry with hardcoded profiles for gpt-4, claude-3, gemini-2.5, llama-7b, mistral-7b,
+    phi-2.7b, codellama, and orca.
+  - QueryAnalyzer estimates complexity, context_needed, and estimated_response_length from prompt length and keywords.
+  - PlacementOptimizer scores hardcoded model profiles and returns top recommendations.
+  - CLI supports analyze, recommend, optimize, compare, and list.
+entrypoints:
+  - python3 python-modules/llm_placement.py analyze "<query>"
+  - python3 python-modules/llm_placement.py recommend "<query>" [LATENCY|COST|QUALITY|BALANCED]
+  - python3 python-modules/llm_placement.py optimize <goal>
+  - python3 python-modules/llm_placement.py compare
+  - python3 python-modules/llm_placement.py list
+runtime_surfaces:
+  filesystem: none observed
+  network: none observed
+  subprocess_shell: none observed
+  model_api_calls: none observed
+  external_dependencies: none observed
+risk_review:
+  positive:
+    - No API calls or model execution observed.
+    - No shell/subprocess behavior observed.
+    - No file mutation observed.
+    - Useful as a local strategy/recommendation module.
+  gaps:
+    - Hardcoded model metadata may be stale or fictionalized.
+    - Does not measure actual local resources, latency, cost, tokenization, model availability, or provider status.
+    - README advertises load balancing, fallback strategies, monitoring, and resource-aware placement, but implementation is static scoring only.
+    - README install path references scripts/install_placement.sh, but no such script was inspected/found in current deep pass.
+    - CLI recommend goal parsing only recognizes uppercase goals as the last argument.
+    - Context estimation is very rough.
+activation_class: safe_strategy_skeleton_not_live_router
+activation_reason: >-
+  The module is non-destructive and useful for strategy, but it is not production placement infrastructure.
+  It can be used as a starting point for the router decision layer if connected to real model inventory,
+  local resource probes, measured latency/cost data, and Repo 120 gate outputs.
+connectivity_status: >-
+  Standalone CLI only. Not connected to omega-os-monolith router, Machine Bridge, Repo 120 gate,
+  local model inventory, or provider APIs.
+recommended_patches_if_approved:
+  - Replace hardcoded registry with config/model_registry.json.
+  - Add local model inventory ingestion from llama-server/model directory scan.
+  - Add measured latency records from Sovereign Bus logs.
+  - Add privacy/local-first preference weighting.
+  - Add explicit route output format consumable by omega-os-monolith/oroute.
+  - Add tests for analyzer, scoring, goal parsing, and model list.
+  - Align README with actual CLI path and implemented commands.
+relationship_to_runtime_lane: >-
+  Candidate routing brain for model selection, but currently only a static recommendation tool.
+  Best next role is to feed route suggestions into the local-first Machine Bridge after calibration.
+next_action: >-
+  Batch 02 deep recon is complete for priority runtime repos. Update Drive sync and Batch 02 summary,
+  then decide whether to begin patches or move to Batch 03 in the other chat.
+status: inspected_not_activated

@@ -1,0 +1,40 @@
+repo: bekingdomcomejoker-cpu/trinity-truth-engine-v3
+slot: 100
+visibility: private
+branch: master
+cluster: B
+role: Trinity Truth Engine v3 candidate; medium priority for truth/coherence comparison
+actual_contents:
+  - repository metadata visible
+  - size reported as 42 KB
+  - no file hits returned from connector search for README/truth/aletheia/alignment/evaluation/dataset/training/tests/main/src/app
+entrypoints:
+  - unknown_from_connector_search
+install_commands:
+  - none_found
+relationships:
+  uses:
+    - Trinity Truth Engine concept
+    - Aletheia/Agape coherence model
+  extends:
+    - aletheia-engine
+  deploys: []
+  visualizes: []
+  governs:
+    - possible truth/coherence logic pending inspection
+  verifies:
+    - possible truth/love/wisdom mapping pending inspection
+  recovers: []
+risks:
+  secrets: unknown
+  network: unknown
+  destructive_ops: unknown
+  auth_required: yes
+activation_class: review_required
+safe_demo: none
+next_action: tree-level inspection; compare with Repo 120 coherence_gate and active_aletheia_probe
+notes: >
+  Nontrivial size and doctrinal importance. Inspect after aletheia-engine and before training-data repos.
+source_evidence:
+  - get_repo metadata confirmed repository exists, size 42 KB, branch master
+  - connector search returned no file hits for truth/evaluation terms

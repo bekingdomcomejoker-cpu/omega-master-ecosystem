@@ -1,0 +1,29 @@
+{
+  "routes": {
+    "reason": {
+      "description": "reasoning and synthesis",
+      "default_action": "summarize",
+      "preferred_model": "local"
+    },
+    "code": {
+      "description": "code generation and repair",
+      "default_action": "code",
+      "preferred_model": "local"
+    },
+    "checkpoint": {
+      "description": "write continuity checkpoint",
+      "default_action": "checkpoint",
+      "preferred_model": "local"
+    },
+    "archive": {
+      "description": "archive and package metadata",
+      "default_action": "archive",
+      "preferred_model": "local"
+    },
+    "gemini": {
+      "description": "force external Gemini route",
+      "default_action": "reason",
+      "preferred_model": "gemini"
+    }
+  }
+}

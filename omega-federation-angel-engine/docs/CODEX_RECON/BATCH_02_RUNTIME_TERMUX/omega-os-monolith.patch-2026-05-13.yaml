@@ -1,0 +1,51 @@
+repo: bekingdomcomejoker-cpu/omega-os-monolith
+patch_level: source_improvement
+patched_at: "2026-05-13T21:52:00+02:00"
+intent: >-
+  Preserve omega-os-monolith runtime behavior while making the local control-plane easier to verify,
+  override, and operate from explicit operator commands. This is source-improving work, not source-neutering.
+files_changed:
+  - path: CONTROL_PLANE/start_local_llama.sh
+    commit: 1975898fefd673f620fc78f9280065679a2289d4
+    changes:
+      - Added command form: start, stop, status, dry-run.
+      - Preserved legacy form: start_local_llama.sh [port].
+      - Added OMEGA_MODEL_PATH override to bypass recursive model discovery.
+      - Added OMEGA_SERVER_BIN override to bypass llama-server discovery.
+      - Added OMEGA_LOCAL_HOST, OMEGA_LOCAL_BASE, OMEGA_LLAMA_THREADS, OMEGA_LLAMA_CTX.
+      - Added OMEGA_ALLOW_KILL toggle for pkill fallback.
+      - Added status printing and PID-file based checks.
+      - Added local /v1/models healthcheck after start.
+  - path: CONTROL_PLANE/omega_terminal_router_http.py
+    commit: 71fd8a72e2ec2d706b24a94cb1a3f32d2900503a
+    changes:
+      - Added --local-only flag and OMEGA_LOCAL_ONLY environment control.
+      - Added --no-clipboard flag and OMEGA_ENABLE_CLIPBOARD environment control.
+      - Added --no-notify flag and OMEGA_ENABLE_NOTIFY environment control.
+      - Added healthcheck command.
+      - Added OMEGA_GEMINI_MODEL override.
+      - Logged local_only / clipboard_enabled / notify_enabled state into bus and state file.
+      - Preserved default behavior: local first, Gemini fallback, clipboard, notification.
+  - path: CONTROL_PLANE/README.md
+    commit: 77c3f4a2fffb0e38d490f67b7d807e61e32ac099
+    changes:
+      - Documented local llama command form.
+      - Documented overrides.
+      - Documented router flags and environment controls.
+      - Documented primary workflow.
+operator_value:
+  - Can dry-run model/server discovery before starting anything.
+  - Can force exact model/server paths.
+  - Can test without clipboard or notifications.
+  - Can force local-only mode for privacy/testing.
+  - Can check local backend health directly.
+  - Can stop/status/start local llama with one script.
+source_preservation:
+  - Runtime is preserved.
+  - Default local-first behavior remains.
+  - Gemini fallback remains available unless disabled.
+  - Clipboard/notification behavior remains available unless disabled.
+status: patched_and_synced_to_repo120
+next_action: >-
+  Owned-device test sequence: dry-run, status, start with OMEGA_MODEL_PATH if needed, router healthcheck,
+  local-only route test, normal route test, inspect ~/omega-local/logs/comm_bus.jsonl and state file.

@@ -1,0 +1,9 @@
+{
+  "github": {
+    "api_token": "ghu_ubFfoTMaMd473S602UYZIH8w0kXIWI33Dffz",
+    "api_url": "https://api.github.com",
+    "owner": "bekingdomcomejoker-cpu",
+    "timeout": 30,
+    "rate_limit_buffer": 10
+  }
+}

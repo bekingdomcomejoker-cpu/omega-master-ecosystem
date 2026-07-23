@@ -1,0 +1,81 @@
+repo: bekingdomcomejoker-cpu/complete-system-installer
+inspection_level: deep_connector_read
+inspected_at: "2026-05-13T21:52:00+02:00"
+default_branch: master
+source_files_read:
+  - README.md via commit diff
+  - scripts/install_complete_system.sh current master
+  - complete_system_installer.py via latest commit diff
+role: >-
+  Installer repository intended to clone/install a group of Aletheia/Omega component repositories.
+  Current state contains a real Bash installer plus a lightweight Python wrapper class.
+actual_contents:
+  - README claims one-command deployment, dependency management, rollback, health verification, and component selection.
+  - scripts/install_complete_system.sh performs pre-flight checks, optional dependency installation, clones 13 GitHub repositories, verifies directories, and creates a placeholder aletheia-control script.
+  - complete_system_installer.py is a minimal placeholder component class with initialize/shutdown/execute/status methods.
+entrypoints:
+  - bash scripts/install_complete_system.sh --dry-run
+  - bash scripts/install_complete_system.sh --install-dir <path>
+  - python complete_system_installer.py
+components_declared:
+  - omega-os-v3
+  - merkabah-engine
+  - merkabah-integrated
+  - aletheia-unified-system
+  - multi-llm-orchestrator
+  - merkabah-dashboard
+  - mega-engine-repair
+  - termux-merkabah-suite
+  - python-hybrid-interpreter
+  - dominique-unified-system
+  - ultimate-merkabah-kernel
+  - termux-system-scanner-advanced
+  - llm-placement-strategy
+runtime_surfaces:
+  package_manager:
+    - apt-get via sudo
+    - brew
+  network:
+    - git clone from github.com/bekingdomcomejoker-cpu/<component>.git
+  filesystem:
+    - creates installation.log
+    - creates target install directory
+    - creates bin/aletheia-control
+  execution:
+    - chmod +x generated control script
+    - executes git clone and dependency install commands when not dry-run
+risk_review:
+  positive:
+    - Has --dry-run mode for clone preview.
+    - Skips already-existing component directories.
+    - Does not currently run downloaded component code after cloning.
+  gaps:
+    - README advertises --components selection but script does not implement it.
+    - README advertises rollback but script does not implement rollback.
+    - README advertises health verification but script only checks directory existence.
+    - Uses sudo apt-get without an explicit operator confirmation prompt.
+    - Not Termux-aware; apt-get/brew logic does not cover pkg/Termux.
+    - Component repo names include omega-os-v3, but estate inventory uses omega-os-v3 style inconsistently with visible repos.
+    - aletheia-control is a placeholder and does not manage services.
+activation_class: review_required_but_promotable
+activation_reason: >-
+  This is a real installer skeleton, not merely metadata. It can clone multiple repositories and install
+  packages. It should become the operator installer, but first needs component selection, manifest-driven repo names,
+  Termux support, confirmation gates for package installation, better verification, and honest README updates.
+recommended_patches:
+  - Convert component list to a manifest file consumed by the script.
+  - Implement --components selection.
+  - Add --no-deps, --yes, and --termux flags.
+  - Make package installation dry-run/confirmation-first by default.
+  - Add git clone depth option and branch/ref capture.
+  - Add real verify mode that checks repo directory, git status, branch, and required files.
+  - Add rollback as removal of directories created in current run only, based on an install ledger.
+  - Make aletheia-control call status/verify commands instead of being a placeholder.
+  - Align README with actual behavior.
+relationship_to_runtime_lane: >-
+  This repo should become the controlled installer for owned-device setup after Repo 120 gates and manifests are stable.
+  It should not be used as a blind all-components installer yet.
+next_action: >-
+  Patch complete-system-installer into a manifest-driven, dry-run-first operator installer or proceed to inspect
+  termux-merkabah-suite before patching.
+status: inspected_not_activated

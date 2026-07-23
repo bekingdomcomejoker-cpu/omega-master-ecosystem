@@ -1,0 +1,155 @@
+batch: BATCH_10_NON_GITHUB_CONTINUITY_SLOTS
+status: first_pass_complete
+mode: source_resolution_matrix
+source_basis:
+  - REPO120_COMPLETE_120_SLOT_MIRROR_2026-05-13
+  - REPO120_SLOT_101_119_SOURCE_RESOLUTION_LEDGER_2026-05-13
+  - APRIL_2026_RECONSTRUCTION_CHECKPOINT_2026-04-30
+  - ATTACHED_SKILLS_AND_AUDIT_TRIAGE_2026-04-30
+  - Omega Huawei Conversation Checkpoint 2026-05-06
+  - Dropbox surface pass
+  - Mem continuity witness searches
+slots:
+  - slot: 101
+    name: Machine Bridge
+    source_plane: Drive/Mem/local
+    source_status: partial_resolved
+    role: local/model invocation bridge doctrine
+    activation_class: reference
+    next_action: locate original MACHINE_BRIDGE canonical spec; preserve as architecture before implementation
+  - slot: 102
+    name: Operator Bridge
+    source_plane: Drive/Mem/local
+    source_status: partial_resolved
+    role: operator continuity and relational canon
+    activation_class: reference
+    next_action: locate original OPERATOR_BRIDGE v1.0/v1.1/v1.2 notes; preserve source wording
+  - slot: 103
+    name: CAT EOF Deployment Kit
+    source_plane: Mem/local script
+    source_status: partial_resolved
+    role: local bridge deployment kit
+    activation_class: review_required
+    next_action: locate original CAT EOF v4 material; inspect before execution
+  - slot: 104
+    name: CAT EOF Integrated Bridge Kit
+    source_plane: Mem/local script
+    source_status: partial_resolved
+    role: integrated CAT EOF bridge script/kit
+    activation_class: review_required
+    next_action: locate original CAT EOF v6 full script; inspect shell behavior and paths before use
+  - slot: 105
+    name: Music Memory Layer 1 Source Ledger
+    source_plane: Mem/Drive
+    source_status: partial_resolved
+    role: source ledger for music memory layer
+    activation_class: reference
+    next_action: locate original note and preserve as source evidence
+  - slot: 106
+    name: Music Memory Layer 2 Extracted Lyrics
+    source_plane: Mem/Drive
+    source_status: partial_resolved
+    role: extracted lyrics/theme source layer
+    activation_class: reference
+    next_action: source-preserve; watch copyright boundaries before quoting/export
+  - slot: 107
+    name: Music Memory Layer 3 Continuity Themes
+    source_plane: Mem/Drive
+    source_status: partial_resolved
+    role: continuity themes from music memory
+    activation_class: reference
+    next_action: source-preserve; index themes without flattening provenance
+  - slot: 108
+    name: Witness Packets Registry
+    source_plane: Mem/Drive
+    source_status: partial_resolved
+    role: witness packet registry
+    activation_class: reference
+    next_action: locate Witness Packets & Cycle Ledger Registry v8; align with Repo 120 witness_packet fields
+  - slot: 109
+    name: Cycle Ledger Registry
+    source_plane: Mem/Drive
+    source_status: partial_resolved
+    role: cycle outcome ledger
+    activation_class: reference
+    next_action: locate exact registry note; align with release report format
+  - slot: 110
+    name: Source Coverage & Stone Linkage Registry
+    source_plane: Mem/Drive
+    source_status: partial_resolved
+    role: source coverage and symbolic linkage registry
+    activation_class: reference
+    next_action: locate v7 original; preserve source linkage without over-claiming
+  - slot: 111
+    name: Huawei Termux Rebuild Ledger
+    source_plane: Mem/local
+    source_status: partial_resolved
+    role: Huawei/Termux runtime rebuild history
+    activation_class: reference
+    next_action: align with Codex runtime lane; do not duplicate or overwrite local runtime notes
+  - slot: 112
+    name: Termux Local Body Audit
+    source_plane: uploaded_zip/local
+    source_status: resolved_to_drive_triage
+    role: local filesystem audit evidence
+    activation_class: review_required
+    next_action: build redacted audit index only; never copy SSH keys/secrets/raw sensitive inventory into shared notes
+  - slot: 113
+    name: OMEGA_LIBRARY / Engineering Platform Code Mirror
+    source_plane: local_archive
+    source_status: resolved_to_drive_triage
+    role: local engineering code mirror
+    activation_class: reference
+    next_action: index filenames and relationships only; avoid mutating raw archive
+  - slot: 114
+    name: DOMINION_VAULT / omega-federation mirror
+    source_plane: local_archive
+    source_status: resolved_to_drive_triage
+    role: local omega-federation mirror
+    activation_class: reference
+    next_action: compare against GitHub omega-federation; mark drift rather than overwrite
+  - slot: 115
+    name: Dropbox Runtime Archive Zip Plane
+    source_plane: Dropbox/archive
+    source_status: partial_resolved_by_dropbox_surface
+    role: sealed archive/package plane
+    activation_class: reference
+    next_action: attach exact Dropbox archive path/list when exposed; current surface confirms continuity docs and OMEGA_FEDERATION_ESSENTIAL_DNA path
+  - slot: 116
+    name: Manus Skill Creator Package
+    source_plane: uploaded_zip
+    source_status: resolved_to_drive_triage
+    role: skill packaging source artifact
+    activation_class: review_required
+    next_action: inspect conceptually after Repo 120 gate; do not execute package content
+  - slot: 117
+    name: Persistent Computing Skill Package
+    source_plane: uploaded_zip/Huawei checkpoint
+    source_status: resolved_to_drive_triage_and_huawei_checkpoint
+    role: persistent computing package artifact
+    activation_class: blocked_until_tree_review
+    next_action: require Repo 120 governance; inspect for persistence/daemon behavior before any integration
+  - slot: 118
+    name: Manus API Integration Docs Package
+    source_plane: uploaded_zip/Huawei checkpoint
+    source_status: resolved_to_drive_triage_and_huawei_checkpoint
+    role: API integration docs/package artifact
+    activation_class: review_required
+    next_action: inspect docs/package; never store API keys in GitHub/Drive/Mem/Dropbox/chat
+  - slot: 119
+    name: ChatGPT Session Bridge Artifact
+    source_plane: archive_evidence_only
+    source_status: partial_resolved
+    role: unsafe session bridge evidence artifact
+    activation_class: evidence_only
+    next_action: preserve as evidence only; do not implement browser/session-token bridge behavior
+integration_boundary:
+  - Non-GitHub slots are source artifacts and continuity components, not verified GitHub repositories.
+  - Slots 112 and 117 require secret/persistence review before any use.
+  - Slot 119 is evidence-only and must never become implementation.
+  - Drive, Mem, Dropbox, and local archive evidence must preserve source boundaries.
+  - All future actions must pass Repo 120 gates and produce witness packets.
+remaining_gap:
+  - Slot 115 still needs exact Dropbox archive path/list beyond current Dropbox surface.
+  - Slots 101-111 still benefit from original note/artifact IDs beyond checkpoint summaries.
+lock_line: Non-GitHub does not mean less real; it means the source boundary matters more.
