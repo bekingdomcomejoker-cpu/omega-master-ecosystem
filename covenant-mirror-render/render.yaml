@@ -1,0 +1,17 @@
+# Render.com Deployment Configuration for Covenant Mirror X11 Backend
+# This file is used by Render to deploy the FastAPI backend
+services:
+  - type: web
+    name: covenant-mirror-backend
+    env: python
+    region: oregon
+    plan: free
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: cd backend && python main.py
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: PORT
+        value: "8000"
+      - key: HOST
+        value: "0.0.0.0"
