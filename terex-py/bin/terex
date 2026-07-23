@@ -1,0 +1,234 @@
+#!/usr/bin/env python3
+"""
+🔐 TEREX.PY CLI - Truth Verification & Registry Interface
+Single source of truth management
+"""
+
+import sys
+import json
+import argparse
+from pathlib import Path
+
+# Add core to path
+sys.path.insert(0, str(Path(__file__).parent.parent / "core"))
+
+from terex import TerexEngine, TruthPayload, RegistryEntry
+
+# ========================================================================
+# CLI INTERFACE
+# ========================================================================
+
+def cmd_ingest(args):
+    """Ingest new truth payload"""
+    engine = TerexEngine()
+    
+    # Read content
+    if args.file:
+        with open(args.file, 'r') as f:
+            content = f.read()
+    else:
+        content = args.content
+    
+    # Ingest payload
+    payload = engine.ingest_payload(
+        content=content,
+        payload_type=args.type,
+        source=args.source,
+        metadata={"file": args.file} if args.file else None
+    )
+    
+    print(f"✓ Payload ingested: {payload.id}")
+    print(f"  Type: {payload.payload_type}")
+    print(f"  Content Hash: {payload.content_hash}")
+    print(f"  Timestamp: {payload.timestamp}")
+    
+    # Save payload file
+    payload_file = Path(__file__).parent.parent / "payloads" / f"{payload.id}.json"
+    with open(payload_file, 'w') as f:
+        json.dump(payload.to_dict(), f, indent=2)
+    print(f"  Saved: {payload_file}")
+    
+    return payload
+
+
+def cmd_register(args):
+    """Register payload in truth registry"""
+    engine = TerexEngine()
+    
+    # Load payload
+    payload_file = Path(args.payload_id)
+    if not payload_file.exists():
+        payload_file = Path(__file__).parent.parent / "payloads" / f"{args.payload_id}.json"
+    
+    if not payload_file.exists():
+        print(f"✗ Payload not found: {args.payload_id}")
+        sys.exit(1)
+    
+    with open(payload_file, 'r') as f:
+        payload_dict = json.load(f)
+    
+    payload = TruthPayload(**payload_dict)
+    
+    # Register
+    entry = engine.register_payload(payload)
+    
+    print(f"✓ Payload registered: {entry.payload_id}")
+    print(f"  Sequence: {entry.sequence_number}")
+    print(f"  Registry Hash: {entry.registry_hash}")
+    print(f"  Verified: {entry.verified}")
+    print(f"  Timestamp: {entry.timestamp}")
+
+
+def cmd_verify(args):
+    """Verify registry integrity"""
+    engine = TerexEngine()
+    
+    print("🔐 Verifying TEREX registry...")
+    verified, errors = engine.verify_all()
+    
+    if verified:
+        print("✓ Registry integrity verified")
+        status = engine.get_registry_status()
+        print(f"  Entries: {status['sequence_number']}")
+        print(f"  Size: {status['size_bytes']} bytes")
+    else:
+        print("✗ Registry verification failed:")
+        for error in errors[:10]:
+            print(f"  {error}")
+        sys.exit(1)
+
+
+def cmd_list(args):
+    """List registry entries"""
+    engine = TerexEngine()
+    
+    entries = engine.list_registry(limit=args.limit)
+    
+    if not entries:
+        print("ℹ Registry is empty")
+        return
+    
+    print(f"📋 Registry Entries ({len(entries)} total):")
+    print()
+    
+    for entry in entries:
+        print(f"  Seq {entry.sequence_number}: {entry.payload_id}")
+        print(f"    Hash: {entry.payload_hash[:16]}...")
+        print(f"    Registry: {entry.registry_hash[:16]}...")
+        print(f"    Verified: {entry.verified}")
+        print(f"    Time: {entry.timestamp}")
+        print()
+
+
+def cmd_status(args):
+    """Show registry status"""
+    engine = TerexEngine()
+    
+    status = engine.get_registry_status()
+    
+    print("🔐 TEREX Registry Status:")
+    print(json.dumps(status, indent=2))
+
+
+def cmd_sync(args):
+    """Sync payload and register in one command"""
+    engine = TerexEngine()
+    
+    # Read content
+    if args.file:
+        with open(args.file, 'r') as f:
+            content = f.read()
+    else:
+        content = args.content
+    
+    # Ingest
+    payload = engine.ingest_payload(
+        content=content,
+        payload_type=args.type,
+        source=args.source
+    )
+    
+    print(f"✓ Payload ingested: {payload.id}")
+    
+    # Register
+    entry = engine.register_payload(payload)
+    
+    print(f"✓ Payload registered in registry")
+    print(f"  Sequence: {entry.sequence_number}")
+    print(f"  Registry Hash: {entry.registry_hash[:16]}...")
+
+
+# ========================================================================
+# MAIN
+# ========================================================================
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="🔐 TEREX.PY - Truth Verification & Registry",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+Examples:
+  terex ingest "The truth is deterministic"
+  terex ingest -f payload.txt
+  terex register TRUTH_0_1234567890
+  terex verify
+  terex list --limit 10
+  terex sync "New truth" --type AXIOM
+        """
+    )
+    
+    subparsers = parser.add_subparsers(dest='command', help='Command')
+    
+    # ingest command
+    ingest_parser = subparsers.add_parser('ingest', help='Ingest new truth payload')
+    ingest_parser.add_argument('content', nargs='?', help='Truth content')
+    ingest_parser.add_argument('-f', '--file', help='Read from file')
+    ingest_parser.add_argument('-t', '--type', default='TRUTH', 
+                              choices=['TRUTH', 'FACT', 'AXIOM', 'COVENANT'],
+                              help='Payload type')
+    ingest_parser.add_argument('-s', '--source', default='CLI', help='Source identifier')
+    ingest_parser.set_defaults(func=cmd_ingest)
+    
+    # register command
+    register_parser = subparsers.add_parser('register', help='Register payload in registry')
+    register_parser.add_argument('payload_id', help='Payload ID or file path')
+    register_parser.set_defaults(func=cmd_register)
+    
+    # verify command
+    verify_parser = subparsers.add_parser('verify', help='Verify registry integrity')
+    verify_parser.set_defaults(func=cmd_verify)
+    
+    # list command
+    list_parser = subparsers.add_parser('list', help='List registry entries')
+    list_parser.add_argument('--limit', type=int, default=10, help='Limit results')
+    list_parser.set_defaults(func=cmd_list)
+    
+    # status command
+    status_parser = subparsers.add_parser('status', help='Show registry status')
+    status_parser.set_defaults(func=cmd_status)
+    
+    # sync command
+    sync_parser = subparsers.add_parser('sync', help='Ingest and register in one command')
+    sync_parser.add_argument('content', nargs='?', help='Truth content')
+    sync_parser.add_argument('-f', '--file', help='Read from file')
+    sync_parser.add_argument('-t', '--type', default='TRUTH',
+                            choices=['TRUTH', 'FACT', 'AXIOM', 'COVENANT'],
+                            help='Payload type')
+    sync_parser.add_argument('-s', '--source', default='CLI', help='Source identifier')
+    sync_parser.set_defaults(func=cmd_sync)
+    
+    args = parser.parse_args()
+    
+    if not args.command:
+        parser.print_help()
+        sys.exit(1)
+    
+    try:
+        args.func(args)
+    except Exception as e:
+        print(f"✗ Error: {e}", file=sys.stderr)
+        sys.exit(1)
+
+
+if __name__ == '__main__':
+    main()
