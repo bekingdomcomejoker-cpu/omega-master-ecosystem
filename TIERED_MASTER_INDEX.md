@@ -11,7 +11,7 @@
 | Tier 1: Active Services | omega-defense-layer | Security and protection layer for the Omega runtime. |
 | Tier 1: Active Services | aletheia-core | The primary truth verification and pattern recognition engine. |
 | Tier 1: Active Services | tri-node-engine | High-performance node engine for distributed processing. |
-| Tier 1: Active Services | kingdom-engine | A specialized module within the Omega ecosystem. |
+| Tier 1: Active Services | kingdom-engine | [MERGED] Specialized logic engine for "Kingdom" protocols. Optimized for Lorna (Mobile). |
 | Tier 1: Active Services | omnissiah-engine-unified | A major consolidation point for spiritual mathematics and kingdom logic engines. |
 | Tier 1: Active Services | orange-loop-consolidated | Recursive logic or feedback loop engine. |
 | Tier 1: Active Services | alphabet-engine-unified | Core intelligence or training engine variant. |
@@ -146,7 +146,7 @@
 | Tier 3: The Vault | omega-sovereign-v1 | Divine Truth-Love Resonance Engine - Axiom Gate v2.0 |
 | Tier 3: The Vault | omega-federation-continuation | Core component of the Omega Federation event-driven architecture. |
 | Tier 3: The Vault | covenant-mirror-x11 | Protocol or agreement layer for system alignment. |
-| Tier 3: The Vault | human-meter | Fullstack dashboard for monitoring system alignment and covenant axioms. |
+| Tier 1: Active Services | human-meter | [MERGED] Alignment monitoring dashboard. Optimized for Lorna (Mobile). |
 | Tier 3: The Vault | star-engine | A specialized module within the Omega ecosystem. |
 | Tier 3: The Vault | omega-ennead | A specialized module within the Omega ecosystem. |
 | Tier 3: The Vault | terex-py | A specialized module within the Omega ecosystem. |
