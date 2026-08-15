@@ -51,17 +51,17 @@
 | Tier 2: Connectors | lorna-ecosystem-unified | Consolidated mobile agent framework for Android-based automation. |
 | Tier 2: Connectors | termux-suite | Mobile terminal environment tools and scripts. |
 | Tier 2: Connectors | mikrotik-oauth-demo | Networking and mesh integration for MikroTik hardware. |
-| Tier 2: Connectors | omega-bridge | A specialized module within the Omega ecosystem. |
+| Tier 2: Connectors | omega-bridge | [MERGED] Universal connectivity bridge. Optimized for Lorna. |
 | Tier 2: Connectors | ble-tester-android | A specialized module within the Omega ecosystem. |
 | Tier 2: Connectors | mikrotik-integration | Networking and mesh integration for MikroTik hardware. |
 | Tier 2: Connectors | termux-merkabah-suite | Sacred geometry-based routing or optimization engine. |
 | Tier 2: Connectors | LORNA-Android-Final | Android-based mobile agent or integration module. |
 | Tier 2: Connectors | Lorna | Android-based mobile agent or integration module. |
 | Tier 2: Connectors | lorna-mobile-app | Android-based mobile agent or integration module. |
-| Tier 2: Connectors | standerton-mesh | A specialized module within the Omega ecosystem. |
-| Tier 2: Connectors | resonance-sync | A specialized module within the Omega ecosystem. |
-| Tier 2: Connectors | zenith-standerton-bridge | A specialized module within the Omega ecosystem. |
-| Tier 2: Connectors | termux-system-scanner-advanced | Mobile terminal environment tools and scripts. |
+| Tier 2: Connectors | standerton-mesh | [MERGED] Mesh topology manager. Optimized for Lorna. |
+| Tier 2: Connectors | resonance-sync | [MERGED] State synchronization utility. Optimized for Lorna. |
+| Tier 2: Connectors | zenith-standerton-bridge | [MERGED] Cross-node bridge logic. Optimized for Lorna. |
+| Tier 2: Connectors | termux-system-scanner-advanced | [MERGED] Advanced system scanner for Termux. Optimized for Lorna. |
 | Tier 2: Connectors | omega-spore | A specialized module within the Omega ecosystem. |
 | Tier 2: Connectors | exploratory-edge-sync | A specialized module within the Omega ecosystem. |
 | Tier 3: The Vault | omega-federation-unified | Core component of the Omega Federation event-driven architecture. |
