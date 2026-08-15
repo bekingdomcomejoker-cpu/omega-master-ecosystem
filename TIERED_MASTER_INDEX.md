@@ -5,17 +5,17 @@
 | Tier 0: Sovereign Core | omega-federation-core-v2 | The sovereign foundation and primary orchestration daemon for the Omega runtime. |
 | Tier 0: Sovereign Core | omega-os-core | Operating system layer or monolith variant for the Omega ecosystem. |
 | Tier 0: Sovereign Core | omega-master-ecosystem | The central intelligence hub containing documentation, recon reports, and relationship graphs. |
-| Tier 1: Active Services | divine-warfare-unified | Unified security and defensive protocol layer for the federation. |
-| Tier 1: Active Services | omega-identity-layer | Identity and covenant management layer. |
-| Tier 1: Active Services | omega-llm-engine | Language model orchestration or training module. |
-| Tier 1: Active Services | omega-defense-layer | Security and protection layer for the Omega runtime. |
-| Tier 1: Active Services | aletheia-core | The primary truth verification and pattern recognition engine. |
-| Tier 1: Active Services | tri-node-engine | High-performance node engine for distributed processing. |
+| Tier 1: Active Services | divine-warfare-unified | [MERGED] Unified security and defensive protocol layer. Optimized for Lorna. |
+| Tier 1: Active Services | omega-identity-layer | [MERGED] Identity and covenant management layer. Optimized for Lorna. |
+| Tier 1: Active Services | omega-llm-engine | [MERGED] Language model orchestration module. Optimized for Lorna. |
+| Tier 1: Active Services | omega-defense-layer | [MERGED] Security and protection layer. Optimized for Lorna. |
+| Tier 1: Active Services | aletheia-core | [MERGED] Primary truth verification engine. Optimized for Lorna. |
+| Tier 1: Active Services | tri-node-engine | [MERGED] High-performance node engine. Optimized for Lorna. |
 | Tier 1: Active Services | kingdom-engine | [MERGED] Specialized logic engine for "Kingdom" protocols. Optimized for Lorna (Mobile). |
-| Tier 1: Active Services | omnissiah-engine-unified | A major consolidation point for spiritual mathematics and kingdom logic engines. |
-| Tier 1: Active Services | orange-loop-consolidated | Recursive logic or feedback loop engine. |
-| Tier 1: Active Services | alphabet-engine-unified | Core intelligence or training engine variant. |
-| Tier 1: Active Services | aletheia-engine | Truth verification and pattern recognition module for the Aletheia engine. |
+| Tier 1: Active Services | omnissiah-engine-unified | [MERGED] Spiritual mathematics and kingdom logic engines. Optimized for Lorna. |
+| Tier 1: Active Services | orange-loop-consolidated | [MERGED] Recursive logic and feedback loop engine. Optimized for Lorna. |
+| Tier 1: Active Services | alphabet-engine-unified | [MERGED] Core intelligence training engine. Optimized for Lorna. |
+| Tier 1: Active Services | aletheia-engine | [MERGED] Pattern recognition module for Aletheia. Optimized for Lorna. |
 | Tier 1: Active Services | omnissiah-unified-v3 | Spiritual mathematics and core kingdom logic engine. |
 | Tier 1: Active Services | aletheia-regularization | Truth verification and pattern recognition module for the Aletheia engine. |
 | Tier 1: Active Services | KINGDOM_ENGINE | A specialized module within the Omega ecosystem. |
